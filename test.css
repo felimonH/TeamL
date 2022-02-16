@@ -28,7 +28,7 @@ body {
     grid-column-end: 2;
     grid-row-start: 2;
     grid-row-end: 4;
-    background-color: purple;
+    background-color: cyan;
 }
 
 #lowerControlUI {
@@ -36,7 +36,7 @@ body {
     grid-column-end: 2;
     grid-row-start: 4;
     grid-row-end: 5;
-    background-color: blue;
+    background-color: lightgreen;
 }
 
 #rightParameterUI {
@@ -44,7 +44,7 @@ body {
     grid-column-end: 3;
     grid-row-start: 3;
     grid-row-end: 5;
-    background-color: green;
+    background-color: lightcoral;
 }
 
 #rightDrawingUI {
@@ -60,7 +60,7 @@ body {
     grid-column-end: 3;
     grid-row-start: 5;
     grid-row-end: 6;
-    background-color: brown;
+    background-color: grey;
 }
 
 #test {
