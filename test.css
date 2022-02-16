@@ -11,12 +11,16 @@ body {
 
 
 
-#navbar {
+#naving {
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
     grid-row-end: 2;
-    background-color: rgba(0, 0, 0, 0.87);
+    background-color: black
+}
+
+.black {
+    background-color: black;
 }
 
 #canvasSpace {
@@ -58,6 +62,13 @@ body {
     grid-row-end: 6;
     background-color: brown;
 }
+
+#test {
+
+    background-color: coral;
+}
+
+
 
 @media only screen and (max-width: 500px) {
     body {
