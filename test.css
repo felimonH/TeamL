@@ -6,21 +6,17 @@ body {
     margin: 0;
     display: grid;
     grid-template-columns: 80vw 20vw;
-    grid-template-rows: 15vh 35vh 20vh 15vh 15vh;
+    grid-template-rows: 10vh 40vh 20vh 15vh 15vh;
 }
 
-@media only screen and (max-width: 500px) {
-    body {
-        background-color: aqua;
-    }
-}
+
 
 #navbar {
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
     grid-row-end: 2;
-    background-color: red;
+    background-color: rgba(0, 0, 0, 0.87);
 }
 
 #canvasSpace {
@@ -61,4 +57,10 @@ body {
     grid-row-start: 5;
     grid-row-end: 6;
     background-color: brown;
+}
+
+@media only screen and (max-width: 500px) {
+    body {
+        background-color: aqua;
+    }
 }

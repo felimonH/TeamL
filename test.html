@@ -7,11 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Demo </title>
 
-    <!-- Link to Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Link to Bootstrap 5 CSS -->
 
 
+
+        <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="test.css">
 
@@ -20,7 +27,41 @@
 <body>
 
     <div id = "navbar">
-        navbar area
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">DemoSite</a>
+              </div>
+              <ul class="nav navbar-nav">
+                  
+                <li class="active"><a href="#">CSSHome</a></li>
+
+
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithims
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Algorithim 1</a></li>
+                    <li><a href="#">Algorithim 2</a></li>
+                    <li><a href="#">Algorithim 3</a></li>
+                  </ul>
+                </li>
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Model 1</a></li>
+                      <li><a href="#">Model 2</a></li>
+                      <li><a href="#">Model 3</a></li>
+                    </ul>
+                </li>
+
+
+                <li><a href="#">Other Example</a></li>
+              </ul>
+            </div>
+          </nav>
     </div>
     
     <div id = "canvasSpace">
