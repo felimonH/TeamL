@@ -1,81 +1,75 @@
 body {
-
-    text-align: center;
-    width: 100vw;
-    background: white;
-    margin: 0;
-    display: grid;
-    grid-template-columns: 80vw 20vw;
-    grid-template-rows: 10vh 40vh 20vh 15vh 15vh;
+  text-align: center;
+  width: 100vw;
+  background: white;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 80vw 20vw;
+  grid-template-rows: 10vh 40vh 20vh 15vh 15vh;
 }
 
-
-
 #naving {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 1;
-    grid-row-end: 2;
-    background-color: black
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  background-color: black;
 }
 
 .black {
-    background-color: black;
+  background-color: black;
 }
 
 #canvasSpace {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 2;
-    grid-row-end: 4;
-    background-color: cyan;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  background-color: cyan;
 }
 
 #lowerControlUI {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row-start: 4;
-    grid-row-end: 5;
-    background-color: lightgreen;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 4;
+  grid-row-end: 5;
+  background-color: lightgreen;
 }
 
 #rightParameterUI {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 3;
-    grid-row-end: 5;
-    background-color: lightcoral;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 5;
+  background-color: lightcoral;
 }
 
 #rightDrawingUI {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
-    background-color: yellow;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  background-color: yellow;
 }
 
 #foot {
-    grid-column-start: 1;
-    grid-column-end: 3;
-    grid-row-start: 5;
-    grid-row-end: 6;
-    background-color: grey;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 5;
+  grid-row-end: 6;
+  background-color: grey;
 }
 
 #test {
-
-    background-color: coral;
+  background-color: coral;
 }
 
-
-
 @media only screen and (max-width: 500px) {
-    body {
-        background-color: aqua;
-    }
+  body {
+    background-color: aqua;
+  }
 }
 
 #canvas {
-    border: 1px solid red;
+  border: 1px solid red;
 }

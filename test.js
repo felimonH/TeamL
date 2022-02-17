@@ -1,5 +1,6 @@
 var canvas=document.getElementById("canvas");
 var context=canvas.getContext("2d");
+
 var cw=canvas.width;
 var ch=canvas.height;
 function reOffset(){
@@ -16,7 +17,13 @@ context.strokeStyle='blue';
 
 var coordinates = [];
 var isDone=false;
-
+var m = 0;
+$('#play').click(function() {
+  alert("Play functionality must be implemented")
+})
+$('#pause').click(function() {
+  alert("Pause functionality must be implemented")
+})
 $('#done').click(function(){
   isDone=true;
 });
