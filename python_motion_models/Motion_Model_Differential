@@ -1,20 +1,15 @@
 import numpy as np
-
-#Bicycle Robot Model
-############################################################
-#THE BICYCLE IS EXACTLY THE SAME AS THE TRICYCLE, WITH L=0
-#(the distance between the two back wheels is 0, representing only one wheel)
-############################################################
+#Differential Drive Robot Model
 #Input:
 #Input Vehicle parameters:
-#r = radius of the front wheel
-#d = distance between the front wheel and the two back wheels
-#L = 0 (only one back wheel)
+#r_l = radius of the left wheel
+#r_r = radius of the right wheel
+#L = distance between the two wheels
 #Control Input parameters:
-#u = front wheel angular velocity
-#alpha = steering angle of the front wheel
+#u_l = left wheel angular velocity
+#u_r = right wheel angular velocity
 #Robot State Input parameters
-#(x,y) = initial robot position in 2D, measured at the center between the two back wheels
+#(x,y) = initial robot position in 2D, measured at the center between the two wheels
 #theta = initial robot orientation, angle counterclockwise from the x-axis
 
 #Output: New robot state
@@ -22,7 +17,8 @@ import numpy as np
 #theta = angle with respect to the x-axis
 
 #The following input parameters should be reflected in the visualization of the robot model:
-#r, alpha, d
+#r_l, r_r, L
+
 
 #this method is the same for all robot models
 def forwardKinematics(R, omega, ICC, x, y, theta, t):
@@ -39,15 +35,17 @@ def straightMotion(v, x, y, theta, t):
     return [x_new, y_new, theta_new]
 
 
-#this is the only part that's different from the differential drive model
-def robotStep(r, d, u, alpha, x, y, theta, t):
-    v = u * r                               #linear velocity of the front wheel
+#one step of the robot's motion
+def robotStep(r_l, r_r, L, u_l, u_r, x, y, theta, t):
+    v_l = u_l * r_l                                  #linear velocity of the left wheel
+    v_r = u_r * r_r                                  #linear velocity of the right wheel
 
-    if alpha == 0:                          #driving straight
-        [x,y,theta] = straightMotion(v, x, y, theta, t)
+    if v_l == v_r:                                   #driving straight
+        [x,y,theta] = straightMotion(v_l, x, y, theta, t)
+
     else:
-        R = d * np.tan((np.pi/2) - alpha)
-        omega = v/np.sqrt(d**2 + R**2)
+        R = (L/2) * (v_l + v_r)/(v_r - v_l)
+        omega = (v_r - v_l)/L
         ICC = [x - R * np.sin(theta), y + R * np.cos(theta)] #Instantaneous Center of Curvature
 
         [x,y,theta] = forwardKinematics(R, omega, ICC, x,y, theta, t)
@@ -55,24 +53,25 @@ def robotStep(r, d, u, alpha, x, y, theta, t):
     return [x,y,theta]
 
 
-def main(x, y, r, d, u, alpha, theta):
-    
+def main(r_l, r_r, L, u_l, u_r, x, y, theta):
+
     robot_path = []
 
     t = 0
-    t_step = 1                       #update rate for the visualization
+    t_step = 0.1                                       #update rate for the visualization
 
     #read all the input parameters described above from the user interface
 
     robot_path.append((x,y))
 
+    #main loop
     loopy = 0
     
-    #main loop
-    while(loopy < 10):
+    
+    while(loopy < 100):
         t = t+t_step
-        [x, y , theta] = robotStep(r, d, u, alpha, x, y, theta, t_step)
+        [x, y , theta] = robotStep(r_l, r_r, L, u_l, u_r, x, y, theta, t_step)
         robot_path.append((x,y))
-        loopy += 1
+        loopy += 1;
         
     print(robot_path)
