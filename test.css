@@ -15,6 +15,10 @@ body {
   background-color: black;
 }
 
+.container-fluid {
+  background-color: rgb(23, 19, 56);
+}
+
 #naving {
   border-radius: 5px;
   grid-column-start: 1;
@@ -30,7 +34,7 @@ body {
   grid-column-end: 2;
   grid-row-start: 2;
   grid-row-end: 4;
-  background-color: cyan;
+  background-color: #91c4f2;
 }
 
 #lowerControlUI {
@@ -39,7 +43,7 @@ body {
   grid-column-end: 2;
   grid-row-start: 4;
   grid-row-end: 5;
-  background-color: lightgreen;
+  background-color: #8ca0d7;
 }
 
 #rightParameterUI {
@@ -48,7 +52,7 @@ body {
   grid-column-end: 3;
   grid-row-start: 3;
   grid-row-end: 5;
-  background-color: lightcoral;
+  background-color: #9d79bc;
 }
 
 #rightDrawingUI {
@@ -57,7 +61,7 @@ body {
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 3;
-  background-color: yellow;
+  background-color: #45d4c6;
 }
 
 #foot {
@@ -66,7 +70,7 @@ body {
   grid-column-end: 3;
   grid-row-start: 5;
   grid-row-end: 6;
-  background-color: grey;
+  background-color: rgb(68, 170, 173);
 }
 
 #canvas {
