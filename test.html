@@ -1,49 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Demo </title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Interactive Robotics Education Tool</title>
 
-    <!-- Link to Bootstrap 5 CSS -->
-
-
-
-        <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="test.css">
-
+  <!-- Bootstrap CSS File -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Bootstrap JS File -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- CSS File -->
+  <link rel="stylesheet" type="text/css" href="test.css">
 </head>
 
 <body>
-
     <div id = "naving">
-        <nav  class="navbar navbar-inverse black">
+        <nav class="navbar navbar-inverse">
             <div class="container-fluid">
               <div class="navbar-header">
-                <a class="navbar-brand" href="#">DemoSite</a>
+                <a class="navbar-brand" href="#">Start Here</a>
               </div>
+
               <ul class="nav navbar-nav">
-
-                <li class="active"><a href="#">CSSHome</a></li>
-
-
                 <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithims
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
                   <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="#">Algorithim 1</a></li>
-                    <li><a href="#">Algorithim 2</a></li>
-                    <li><a href="#">Algorithim 3</a></li>
+                    <li><a href="#">Algorithm 1</a></li>
+                    <li><a href="#">Algorithm 2</a></li>
+                    <li><a href="#">Algorithm 3</a></li>
                   </ul>
                 </li>
                 
@@ -56,24 +45,20 @@
                       <li><a href="#">Model 3</a></li>
                     </ul>
                 </li>
-
-
-                <li><a id = "test" href="#">Other Example</a></li>
               </ul>
             </div>
           </nav>
     </div>
     
     <div id = "canvasSpace">
-        canvas drawing area
-        
-<canvas id="canvas" width=300 height=300></canvas>
+      canvas drawing area
+      <canvas id="canvas" width=300 height=300></canvas>
     </div>
 
     <div id = "lowerControlUI">
         lowerControl UI area
-          <button id="play">Play</button>
-          <button id="pause">Pause</button>
+        <button id="play">Play</button>
+        <button id="pause">Pause</button>
     </div>
 
     <div id = "rightParameterUI">
@@ -90,7 +75,5 @@
     </div>
 
     <script type="text/javascript" src="test.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </body>
-
 </html>
