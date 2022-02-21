@@ -1,9 +1,34 @@
+
+
+function establishCanvas() {
+  //Gets width and height to fill space 
+  //Dynamic Canvas size
+//width 80vw height 60 vh
+  var div = document.getElementById("canvasSpace");
+  var canvas = document.createElement('canvas');
+  var sizeWidth = 80 * window.innerWidth / 100,
+      sizeHeight = 60 * window.innerHeight / 100 || 766;
+    canvas.width = sizeWidth;
+    canvas.height = sizeHeight;
+   document.getElementById("canvas").remove();
+    div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth+ ' height='+ sizeHeight+ '></canvas>';
+
+
+ 
+    
+  }
+  establishCanvas()
+
 var canvas = document.getElementById("canvas");
+
+
 var context = canvas.getContext("2d");
 
 var cw = canvas.width;
 var ch = canvas.height;
 var offsetX, offsetY;
+
+
 
 function reOffset() {
   var BB = canvas.getBoundingClientRect();
@@ -12,6 +37,7 @@ function reOffset() {
 }
 
 reOffset();
+
 window.onscroll = function(e) { reOffset(); }
 
 context.lineWidth = 2;
