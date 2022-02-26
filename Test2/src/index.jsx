@@ -2,8 +2,25 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 
 class App extends React.Component {
+   
+   constructor(props) {
+    super(props);
+    this.state = {
+      filterText: '',
+    };
+    
+    this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+
+  }
+    handleFilterTextChange(filterText) {
+    this.setState({
+      filterText: filterText
+    });
+    
+  }
+
     render() {
-        return(<><Navbar/><Canvas/><RightDrawingUI/><RightParameterUI/><Footer/><LowerControlUI/></>
+        return(<><Navbar/><Canvas/><RightDrawingUI/><RightParameterUI  onFilterTextChange={this.handleFilterTextChange}/><Footer/><LowerControlUI/></>
             )
     }
 }
@@ -61,11 +78,26 @@ class LowerControlUI extends React.Component {
     }
 }
 class RightParameterUI extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+  }
+   handleFilterTextChange(e) {
+    this.props.onFilterTextChange(e.target.value);
+  }
+
+  
     render() {
         return( <div id = "rightParameterUI">
         Parameters (just as a reminder for the future, we need to do error checking on all parameters)
         <label for = "parameter_1">Parameter 1:</label>
-        <input type = "number" id = "parameter1"/>
+          <input
+          type="text"
+          placeholder="Search..."
+          value={this.props.filterText}
+          onChange={this.handleFilterTextChange}
+        />
         <br></br>
         <label for = "parameter_2">Parameter 2:</label>
         <input type = "number" id = "parameter2"/>
