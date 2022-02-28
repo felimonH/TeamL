@@ -6,26 +6,44 @@ class App extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
-      filterText: '',
+     showButton: false,
+     filterText: '',
     };
     
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
-
+    this.toggleButton = this.toggleButton.bind(this)
+    this.toggleButton2 = this.toggleButton2.bind(this)
   }
     handleFilterTextChange(filterText) {
     this.setState({
       filterText: filterText
     });
-    
   }
-
+    toggleButton () {
+    this.setState({ showButton: true });
+  };
+   toggleButton2() {
+    this.setState({ showButton: false });
+  };
     render() {
-        return(<><Navbar/><Canvas/><RightDrawingUI/><RightParameterUI  onFilterTextChange={this.handleFilterTextChange}/><Footer/><LowerControlUI/></>
+        return(<><Navbar toggleButton = {this.toggleButton} toggleButton2 = {this.toggleButton2}/><Canvas/><RightDrawingUI/>{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange}/> : null}<Footer/><LowerControlUI/></>
             )
     }
 }
 class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.toggleButton = this.toggleButton.bind(this)
+    this.toggleButton2 = this.toggleButton2.bind(this)
+  }
+  toggleButton () {
+    this.props.toggleButton()
+  }
+  toggleButton2 () {
+    this.props.toggleButton2()
+  }
     render() {
+    
         return(<div id = "naving">
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
@@ -38,9 +56,9 @@ class Navbar extends React.Component {
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
                   <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="#">Algorithm 1</a></li>
-                    <li><a href="#">Algorithm 2</a></li>
-                    <li><a href="#">Algorithm 3</a></li>
+                    <li><a href="#Algorithm_1" onClick={this.toggleButton2}>Algorithm 1</a></li>
+                    <li><a href="#Algorithm_2" onClick={this.toggleButton2}>Algorithm 2</a></li>
+                    <li><a href="#Algorithm_3" onClick={this.toggleButton2}>Algorithm 3</a></li>
                   </ul>
                 </li>
                 
@@ -48,9 +66,9 @@ class Navbar extends React.Component {
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
                     <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Model 1</a></li>
-                      <li><a href="#">Model 2</a></li>
-                      <li><a href="#">Model 3</a></li>
+                      <li><a href="#Model_1" onClick={this.toggleButton}>Model 1</a></li>
+                      <li><a href="#Model_2" onClick={this.toggleButton}>Model 2</a></li>
+                      <li><a href="#Model_3" onClick={this.toggleButton}>Model 3</a></li>
                     </ul>
                 </li>
               </ul>
@@ -84,6 +102,7 @@ class RightParameterUI extends React.Component {
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
   }
    handleFilterTextChange(e) {
+    alert(e.target.value)
     this.props.onFilterTextChange(e.target.value);
   }
 
@@ -91,16 +110,16 @@ class RightParameterUI extends React.Component {
     render() {
         return( <div id = "rightParameterUI">
         Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-        <label for = "parameter_1">Parameter 1:</label>
+        <label for = "parameter_1" id = "label_1">Parameter 1:</label>
           <input
           type="text"
           placeholder="Search..."
-          value={this.props.filterText}
           onChange={this.handleFilterTextChange}
+          id = "parameter_1"
         />
         <br></br>
-        <label for = "parameter_2">Parameter 2:</label>
-        <input type = "number" id = "parameter2"/>
+        <label for = "parameter_2" id = "label_2">Parameter 2:</label>
+        <input type = "number" id = "parameter_2"/>
     </div>)
     }
 }
@@ -179,6 +198,7 @@ $('#pause').click(function() {
 $('#done').click(function(){
   isDone = true;
 });
+
 
 $("#canvas").mousedown(function(e) {handleMouseDown(e);});
 
