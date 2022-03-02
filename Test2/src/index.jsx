@@ -140,8 +140,20 @@ class Footer extends React.Component {
     </div>)
   }
 }
+
+
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
+//button-clicking functionality
+$('#play').click(function () {
+  alert("Play functionality must be implemented")
+})
+$('#pause').click(function () {
+  alert("Pause functionality must be implemented")
+})
+
+//Canvas Stuff begins here
 function establishCanvas() {
   //Gets width and height to fill space 
   //Dynamic Canvas size
@@ -186,18 +198,11 @@ context.lineWidth = 2;
 context.strokeStyle = 'blue';
 
 var coordinates = [];
-var isDone = false;
+var isDone = 0;
 
-//button-clicking functionality
-$('#play').click(function () {
-  alert("Play functionality must be implemented")
-})
-$('#pause').click(function () {
-  alert("Pause functionality must be implemented")
-})
 //button for finishing drawing points
 $('#done').click(function () {
-  isDone = true;
+  isDone = isDone + 1;
 });
 
 //code for drawing polygon
@@ -210,7 +215,11 @@ $('#done').click(function () {
 $("#canvas").mousedown(function (e) { handleMouseDown(e); });
 
 function handleMouseDown(e) {
-  if (isDone || coordinates.length > 10) { return; }
+  //Stops when there is 5 shapes or there the current point has 10 coords.
+  if (isDone > 5 || coordinates[isDone].length > 10) {
+    alert("too much stuff")
+    return;
+  }
 
   // tell the browser we're handling this event
   e.preventDefault();
@@ -225,9 +234,9 @@ function handleMouseDown(e) {
 function drawPolygon() {
   context.clearRect(0, 0, cw, ch);
   context.beginPath();
-  context.moveTo(coordinates[0].x, coordinates[0].y);
-  for (var index = 1; index < coordinates.length; index++) {
-    context.lineTo(coordinates[index].x, coordinates[index].y);
+  context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
+  for (var index = 1; index < coordinates[isDone].length; index++) {
+    context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
   }
   context.closePath();
   context.stroke();
