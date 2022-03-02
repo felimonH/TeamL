@@ -206,6 +206,7 @@ $('#done').click(function () {
 //  keep double array count based on how many times isDone is clicked
 //  isDone should be a numerical variable now 
 
+
 $("#canvas").mousedown(function (e) { handleMouseDown(e); });
 
 function handleMouseDown(e) {
