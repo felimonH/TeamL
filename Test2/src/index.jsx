@@ -6,9 +6,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-     showButton: true,
-     filterText: '',
-     num: 0,
+      showButton: true,
+      filterText: '',
+      num: 0,
     };
 
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
@@ -16,8 +16,8 @@ class App extends React.Component {
     this.toggleButton2 = this.toggleButton2.bind(this)
     this.toggleButton3 = this.toggleButton3.bind(this)
   }
-    
-    handleFilterTextChange(filterText) {
+
+  handleFilterTextChange(filterText) {
     this.setState({
       filterText: filterText
     });
@@ -28,17 +28,17 @@ class App extends React.Component {
   toggleButton2() {
     this.setState({ showButton: false });
   };
-  toggleButton3() { 
-   this.setState((prevState, props) => ({
-    num: prevState.num + 1
-})); 
-alert(this.state.num);
-};
- 
-    render() {
-        return(<><Navbar toggleButton = {this.toggleButton} toggleButton2 = {this.toggleButton2}/><Canvas/>{this.state.showButton ? <RightDrawingUI/> : <RightObstacleUI toggleButton3 = {this.toggleButton3}/>}{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange}/> : null}<Footer/><LowerControlUI/></>
-            )
-    }
+  toggleButton3() {
+    this.setState((prevState, props) => ({
+      num: prevState.num + 1
+    }));
+    alert(this.state.num);
+  };
+
+  render() {
+    return (<><Navbar toggleButton={this.toggleButton} toggleButton2={this.toggleButton2} /><Canvas />{this.state.showButton ? <RightDrawingUI /> : <RightObstacleUI toggleButton3={this.toggleButton3} />}{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange} /> : null}<Footer /><LowerControlUI /></>
+    )
+  }
 }
 class Navbar extends React.Component {
   constructor(props) {
@@ -91,139 +91,152 @@ class Canvas extends React.Component {
 
   jQueryCode = () => {
     function establishCanvas() {
-  //Gets width and height to fill space 
-  //Dynamic Canvas size
-  //width 80vw height 60 vh
-  var div = document.getElementById("canvasSpace");
-  var canvas = document.createElement('canvas');
-  var sizeWidth = 80 * window.innerWidth / 100,
-    sizeHeight = 60 * window.innerHeight / 100 || 766;
-  canvas.width = sizeWidth;
-  canvas.height = sizeHeight;
-  document.getElementById("canvas").remove();
-  div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
+      //Gets width and height to fill space 
+      //Dynamic Canvas size
+      //width 80vw height 60 vh
+      var div = document.getElementById("canvasSpace");
+      var canvas = document.createElement('canvas');
+      var sizeWidth = 80 * window.innerWidth / 100,
+        sizeHeight = 60 * window.innerHeight / 100 || 766;
+      canvas.width = sizeWidth;
+      canvas.height = sizeHeight;
+      document.getElementById("canvas").remove();
+      div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
 
 
 
 
-}
-establishCanvas()
+    }
+    establishCanvas()
 
-var canvas = document.getElementById("canvas");
-
-
-var context = canvas.getContext("2d");
-
-var cw = canvas.width;
-var ch = canvas.height;
-var offsetX, offsetY;
+    var canvas = document.getElementById("canvas");
 
 
+    var context = canvas.getContext("2d");
 
-function reOffset() {
-  var BB = canvas.getBoundingClientRect();
-  offsetX = BB.left;
-  offsetY = BB.top;
-}
-
-reOffset();
-
-window.onscroll = function (e) { reOffset(); }
-
-context.lineWidth = 2;
-context.strokeStyle = 'blue';
-
-//Does Creates a double array
-var coordinates = [];
-var isDone = 0;
-var innerArray = [];
-coordinates.push(innerArray);
+    var cw = canvas.width;
+    var ch = canvas.height;
+    var offsetX, offsetY;
 
 
 
-$('#done').click(function(){
-  isDone = true;
-});
+    function reOffset() {
+      var BB = canvas.getBoundingClientRect();
+      offsetX = BB.left;
+      offsetY = BB.top;
+    }
+
+    reOffset();
+
+    window.onscroll = function (e) { reOffset(); }
+
+    context.lineWidth = 2;
+    context.strokeStyle = 'blue';
+
+    //Does Creates a double array
+    var coordinates = [];
+    var isDone = 0;
+    var innerArray = [];
+    coordinates.push(innerArray);
 
 
 
-$("#canvas").mousedown(function (e) { handleMouseDown(e); });
+    $('#done').click(function () {
+      isDone = isDone + 1;
+    });
 
-function handleMouseDown(e) {
-  //Stops when there is 5 shapes or there the current point has 10 coords.
-  //prevents too many objects
-  if (isDone > 5) {
-    alert("too much arrays")
-    return;
+
+
+    $("#canvas").mousedown(function (e) { handleMouseDown(e); });
+
+    function handleMouseDown(e) {
+      //Stops when there is 5 shapes or there the current point has 10 coords.
+      //prevents too many objects
+      if (isDone > 5) {
+        alert("too much arrays")
+        return;
+      }
+
+      //prevents too many points to an object
+      if (coordinates[isDone].length > 10) {
+        alert("too many points")
+        return;
+      }
+
+
+
+      // tell the browser we're handling this event
+      e.preventDefault();
+      e.stopPropagation();
+
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+      coordinates[isDone].push({ x: mouseX, y: mouseY });
+
+      drawPolygon();
+    }
+
+    function drawPolygon() {
+      //context.clearRect(0, 0, cw, ch);
+      context.beginPath();
+      context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
+      for (var index = 1; index < coordinates[isDone].length; index++) {
+        context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
+      }
+      context.closePath();
+
+      //Colors/Fills Shapes
+      context.fillStyle = 'blue';
+      context.fill();
+
+      context.stroke();
+    }
+
+    function detectPixel(x, y) {
+      var pixel = context.getImageData(x, y, 1, 1).data;
+      if (pixel[2] == 255 || pixel[3] == 255) {
+        return true;
+      }
+    }
   }
 
-  //prevents too many points to an object
-  if (coordinates[isDone].length > 10) {
-    alert("too many points")
-    return;
-  }
-
-
-
-  // tell the browser we're handling this event
-  e.preventDefault();
-  e.stopPropagation();
-
-  var mouseX = parseInt(e.clientX - offsetX);
-  var mouseY = parseInt(e.clientY - offsetY);
-  coordinates[isDone].push({ x: mouseX, y: mouseY });
-
-  drawPolygon();
-}
-
-function drawPolygon() {
-  //context.clearRect(0, 0, cw, ch);
-  context.beginPath();
-  context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
-  for (var index = 1; index < coordinates[isDone].length; index++) {
-    context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
-  }
-  context.closePath();
-
-  //Colors/Fills Shapes
-  context.fillStyle = 'blue';
-  context.fill();
-
-  context.stroke();
-}
-  }
   componentDidMount() {
     this.jQueryCode()
   }
-    render() {
-        return( <div id = "canvasSpace">
+  render() {
+    return (<div id="canvasSpace">
       <canvas id="canvas" width={900} height={300}></canvas>
     </div>)
-    }
+  }
+
+
 }
+
+
 class LowerControlUI extends React.Component {
-  
-jQueryCode = () => {
-$('#play').click(function() {
-  alert("Play functionality must be implemented")
-})
-$('#pause').click(function() {
-  alert("Pause functionality must be implemented")
-})}
 
-componentDidMount = () => {
-  this.jQueryCode();
-}
+  jQueryCode = () => {
+    $('#play').click(function () {
+      alert("Play functionality must be implemented")
+    })
+    $('#pause').click(function () {
+      alert("Pause functionality must be implemented")
+    })
+  }
 
-    render() {
-        return(<div id = "lowerControlUI">
-        Simulation Control
-        <div>
-          <button id="play">Start Simulation</button>
-          <button id="pause">Pause Simulation</button>
-        </div>
+  componentDidMount = () => {
+    this.jQueryCode();
+  }
+
+  render() {
+    return (<div id="lowerControlUI">
+      Simulation Control
+      <div>
+        <button id="play">Start Simulation</button>
+        <button id="pause">Pause Simulation</button>
+      </div>
     </div>)
-    }
+  }
 }
 class RightParameterUI extends React.Component {
 
@@ -231,68 +244,68 @@ class RightParameterUI extends React.Component {
     super(props);
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
   }
-   handleFilterTextChange(e) {
+  handleFilterTextChange(e) {
     alert(e.target.value)
     this.props.onFilterTextChange(e.target.value);
   }
 
-  
-    render() {
-        return( <div id = "rightParameterUI">
-        Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-        <label for = "parameter_1" id = "label_1">Parameter 1:</label>
-          <input
-          type="text"
-          placeholder="Search..."
-          onChange={this.handleFilterTextChange}
-          id = "parameter_1"
-        />
-        <br></br>
-        <label for = "parameter_2" id = "label_2">Parameter 2:</label>
-        <input type = "number" id = "parameter_2"/>
+
+  render() {
+    return (<div id="rightParameterUI">
+      Parameters (just as a reminder for the future, we need to do error checking on all parameters)
+      <label for="parameter_1" id="label_1">Parameter 1:</label>
+      <input
+        type="text"
+        placeholder="Search..."
+        onChange={this.handleFilterTextChange}
+        id="parameter_1"
+      />
+      <br></br>
+      <label for="parameter_2" id="label_2">Parameter 2:</label>
+      <input type="number" id="parameter_2" />
     </div>)
-    }
+  }
 }
 class RightDrawingUI extends React.Component {
-    render() {
-        return( <div id = "rightDrawingUI">
-        Drawing UI
-        <div>
-          <button id="done">Click when done assigning points</button>
-        </div>
+  render() {
+    return (<div id="rightDrawingUI">
+      Drawing UI
+      <div>
+        <button id="done">Click when done assigning points</button>
+      </div>
     </div>)
-    }
+  }
 }
 class RightObstacleUI extends React.Component {
- constructor(props) {
-   super(props);
-   this.state = {
-     num: 0,
-   }
-  this.toggleButton3 = this.toggleButton3.bind(this)
- }
- toggleButton3() {
-   this.props.toggleButton3()
- };
+  constructor(props) {
+    super(props);
+    this.state = {
+      num: 0,
+    }
+    this.toggleButton3 = this.toggleButton3.bind(this)
+  }
+  toggleButton3() {
+    this.props.toggleButton3()
+  };
   render() {
-    return (<div id = "rightObstacleUI">Obstacle UI
-      <div><img width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
-      <button id = "Circle" onClick = {this.toggleButton3}>Add a Circle</button>
+    return (<div id="rightObstacleUI">Obstacle UI
+      <div><img width={60} src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
+        <button id="Circle" onClick={this.toggleButton3}>Add a Circle</button>
       </div>
-      <div><img width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/2/27/Red_square.svg"></img>
-      <button id = "Square">Add a Square</button></div>
-       <div>
-         <img width = {60}  src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
-      <button id = "Rectangle">Add a Rectangle</button>
+      <div><img width={60} src="https://upload.wikimedia.org/wikipedia/commons/2/27/Red_square.svg"></img>
+        <button id="Square">Add a Square</button></div>
+      <div>
+        <img width={60} src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
+        <button id="Rectangle">Add a Rectangle</button>
       </div></div>)
   }
 }
 class Footer extends React.Component {
-    render() {
-        return(<div id= "foot">
-        Random Footer :)
+  render() {
+    return (<div id="foot">
+      Random Footer :)
     </div>)
-    }
+  }
 }
 ReactDOM.render(<App />, document.getElementById('root'));
 
