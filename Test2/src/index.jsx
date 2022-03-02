@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 
 class App extends React.Component {
-   
-   constructor(props) {
+
+  constructor(props) {
     super(props);
     this.state = {
      showButton: true,
      filterText: '',
      num: 0,
     };
-    
+
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
     this.toggleButton = this.toggleButton.bind(this)
     this.toggleButton2 = this.toggleButton2.bind(this)
@@ -22,10 +22,10 @@ class App extends React.Component {
       filterText: filterText
     });
   }
-    toggleButton () {
+  toggleButton() {
     this.setState({ showButton: true });
   };
-   toggleButton2() {
+  toggleButton2() {
     this.setState({ showButton: false });
   };
   toggleButton3() { 
@@ -46,46 +46,46 @@ class Navbar extends React.Component {
     this.toggleButton = this.toggleButton.bind(this)
     this.toggleButton2 = this.toggleButton2.bind(this)
   }
-  toggleButton () {
+  toggleButton() {
     this.props.toggleButton()
   }
-  toggleButton2 () {
+  toggleButton2() {
     this.props.toggleButton2()
   }
-    render() {
-    
-        return(<div id = "naving">
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <a class="navbar-brand" href="#">Start Here</a>
-              </div>
+  render() {
 
-              <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
-                  <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#Algorithm_1" onClick={this.toggleButton2}>Algorithm 1</a></li>
-                    <li><a href="#Algorithm_2" onClick={this.toggleButton2}>Algorithm 2</a></li>
-                    <li><a href="#Algorithm_3" onClick={this.toggleButton2}>Algorithm 3</a></li>
-                  </ul>
-                </li>
-                
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
-                    <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#Model_1" onClick={this.toggleButton}>Model 1</a></li>
-                      <li><a href="#Model_2" onClick={this.toggleButton}>Model 2</a></li>
-                      <li><a href="#Model_3" onClick={this.toggleButton}>Model 3</a></li>
-                    </ul>
-                </li>
+    return (<div id="naving">
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Start Here</a>
+          </div>
+
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#Algorithm_1" onClick={this.toggleButton2}>Algorithm 1</a></li>
+                <li><a href="#Algorithm_2" onClick={this.toggleButton2}>Algorithm 2</a></li>
+                <li><a href="#Algorithm_3" onClick={this.toggleButton2}>Algorithm 3</a></li>
               </ul>
-            </div>
-          </nav>
+            </li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#Model_1" onClick={this.toggleButton}>Model 1</a></li>
+                <li><a href="#Model_2" onClick={this.toggleButton}>Model 2</a></li>
+                <li><a href="#Model_3" onClick={this.toggleButton}>Model 3</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>)
-    }
+  }
 }
 class Canvas extends React.Component {
 
@@ -93,21 +93,21 @@ class Canvas extends React.Component {
     function establishCanvas() {
   //Gets width and height to fill space 
   //Dynamic Canvas size
-//width 80vw height 60 vh
+  //width 80vw height 60 vh
   var div = document.getElementById("canvasSpace");
   var canvas = document.createElement('canvas');
   var sizeWidth = 80 * window.innerWidth / 100,
-      sizeHeight = 60 * window.innerHeight / 100 || 766;
-    canvas.width = sizeWidth;
-    canvas.height = sizeHeight;
-   document.getElementById("canvas").remove();
-    div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth+ ' height='+ sizeHeight+ '></canvas>';
+    sizeHeight = 60 * window.innerHeight / 100 || 766;
+  canvas.width = sizeWidth;
+  canvas.height = sizeHeight;
+  document.getElementById("canvas").remove();
+  div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
 
 
- 
-    
-  }
-  establishCanvas()
+
+
+}
+establishCanvas()
 
 var canvas = document.getElementById("canvas");
 
@@ -123,18 +123,21 @@ var offsetX, offsetY;
 function reOffset() {
   var BB = canvas.getBoundingClientRect();
   offsetX = BB.left;
-  offsetY = BB.top;        
+  offsetY = BB.top;
 }
 
 reOffset();
 
-window.onscroll = function(e) { reOffset(); }
+window.onscroll = function (e) { reOffset(); }
 
 context.lineWidth = 2;
 context.strokeStyle = 'blue';
 
+//Does Creates a double array
 var coordinates = [];
-var isDone = false;
+var isDone = 0;
+var innerArray = [];
+coordinates.push(innerArray);
 
 
 
@@ -143,10 +146,24 @@ $('#done').click(function(){
 });
 
 
-$("#canvas").mousedown(function(e) {handleMouseDown(e);});
+
+$("#canvas").mousedown(function (e) { handleMouseDown(e); });
 
 function handleMouseDown(e) {
-  if(isDone || coordinates.length > 10) {return;}
+  //Stops when there is 5 shapes or there the current point has 10 coords.
+  //prevents too many objects
+  if (isDone > 5) {
+    alert("too much arrays")
+    return;
+  }
+
+  //prevents too many points to an object
+  if (coordinates[isDone].length > 10) {
+    alert("too many points")
+    return;
+  }
+
+
 
   // tell the browser we're handling this event
   e.preventDefault();
@@ -154,18 +171,24 @@ function handleMouseDown(e) {
 
   var mouseX = parseInt(e.clientX - offsetX);
   var mouseY = parseInt(e.clientY - offsetY);
-  coordinates.push({x:mouseX, y:mouseY});
+  coordinates[isDone].push({ x: mouseX, y: mouseY });
+
   drawPolygon();
 }
 
 function drawPolygon() {
-  context.clearRect(0,0,cw,ch);
+  //context.clearRect(0, 0, cw, ch);
   context.beginPath();
-  context.moveTo(coordinates[0].x, coordinates[0].y);
-  for (var index = 1; index<coordinates.length; index++) {
-    context.lineTo(coordinates[index].x, coordinates[index].y);
+  context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
+  for (var index = 1; index < coordinates[isDone].length; index++) {
+    context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
   }
   context.closePath();
+
+  //Colors/Fills Shapes
+  context.fillStyle = 'blue';
+  context.fill();
+
   context.stroke();
 }
   }
