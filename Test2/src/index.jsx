@@ -6,14 +6,17 @@ class App extends React.Component {
    constructor(props) {
     super(props);
     this.state = {
-     showButton: false,
+     showButton: true,
      filterText: '',
+     num: 0,
     };
     
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
     this.toggleButton = this.toggleButton.bind(this)
     this.toggleButton2 = this.toggleButton2.bind(this)
+    this.toggleButton3 = this.toggleButton3.bind(this)
   }
+    
     handleFilterTextChange(filterText) {
     this.setState({
       filterText: filterText
@@ -25,8 +28,15 @@ class App extends React.Component {
    toggleButton2() {
     this.setState({ showButton: false });
   };
+  toggleButton3() { 
+   this.setState((prevState, props) => ({
+    num: prevState.num + 1
+})); 
+alert(this.state.num);
+};
+ 
     render() {
-        return(<><Navbar toggleButton = {this.toggleButton} toggleButton2 = {this.toggleButton2}/><Canvas/><RightDrawingUI/>{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange}/> : null}<Footer/><LowerControlUI/></>
+        return(<><Navbar toggleButton = {this.toggleButton} toggleButton2 = {this.toggleButton2}/><Canvas/>{this.state.showButton ? <RightDrawingUI/> : <RightObstacleUI toggleButton3 = {this.toggleButton3}/>}{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange}/> : null}<Footer/><LowerControlUI/></>
             )
     }
 }
@@ -78,6 +88,90 @@ class Navbar extends React.Component {
     }
 }
 class Canvas extends React.Component {
+
+  jQueryCode = () => {
+    function establishCanvas() {
+  //Gets width and height to fill space 
+  //Dynamic Canvas size
+//width 80vw height 60 vh
+  var div = document.getElementById("canvasSpace");
+  var canvas = document.createElement('canvas');
+  var sizeWidth = 80 * window.innerWidth / 100,
+      sizeHeight = 60 * window.innerHeight / 100 || 766;
+    canvas.width = sizeWidth;
+    canvas.height = sizeHeight;
+   document.getElementById("canvas").remove();
+    div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth+ ' height='+ sizeHeight+ '></canvas>';
+
+
+ 
+    
+  }
+  establishCanvas()
+
+var canvas = document.getElementById("canvas");
+
+
+var context = canvas.getContext("2d");
+
+var cw = canvas.width;
+var ch = canvas.height;
+var offsetX, offsetY;
+
+
+
+function reOffset() {
+  var BB = canvas.getBoundingClientRect();
+  offsetX = BB.left;
+  offsetY = BB.top;        
+}
+
+reOffset();
+
+window.onscroll = function(e) { reOffset(); }
+
+context.lineWidth = 2;
+context.strokeStyle = 'blue';
+
+var coordinates = [];
+var isDone = false;
+
+
+
+$('#done').click(function(){
+  isDone = true;
+});
+
+
+$("#canvas").mousedown(function(e) {handleMouseDown(e);});
+
+function handleMouseDown(e) {
+  if(isDone || coordinates.length > 10) {return;}
+
+  // tell the browser we're handling this event
+  e.preventDefault();
+  e.stopPropagation();
+
+  var mouseX = parseInt(e.clientX - offsetX);
+  var mouseY = parseInt(e.clientY - offsetY);
+  coordinates.push({x:mouseX, y:mouseY});
+  drawPolygon();
+}
+
+function drawPolygon() {
+  context.clearRect(0,0,cw,ch);
+  context.beginPath();
+  context.moveTo(coordinates[0].x, coordinates[0].y);
+  for (var index = 1; index<coordinates.length; index++) {
+    context.lineTo(coordinates[index].x, coordinates[index].y);
+  }
+  context.closePath();
+  context.stroke();
+}
+  }
+  componentDidMount() {
+    this.jQueryCode()
+  }
     render() {
         return( <div id = "canvasSpace">
       <canvas id="canvas" width={900} height={300}></canvas>
@@ -85,6 +179,19 @@ class Canvas extends React.Component {
     }
 }
 class LowerControlUI extends React.Component {
+  
+jQueryCode = () => {
+$('#play').click(function() {
+  alert("Play functionality must be implemented")
+})
+$('#pause').click(function() {
+  alert("Pause functionality must be implemented")
+})}
+
+componentDidMount = () => {
+  this.jQueryCode();
+}
+
     render() {
         return(<div id = "lowerControlUI">
         Simulation Control
@@ -133,6 +240,30 @@ class RightDrawingUI extends React.Component {
     </div>)
     }
 }
+class RightObstacleUI extends React.Component {
+ constructor(props) {
+   super(props);
+   this.state = {
+     num: 0,
+   }
+  this.toggleButton3 = this.toggleButton3.bind(this)
+ }
+ toggleButton3() {
+   this.props.toggleButton3()
+ };
+  render() {
+    return (<div id = "rightObstacleUI">Obstacle UI
+      <div><img width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
+      <button id = "Circle" onClick = {this.toggleButton3}>Add a Circle</button>
+      </div>
+      <div><img width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/2/27/Red_square.svg"></img>
+      <button id = "Square">Add a Square</button></div>
+       <div>
+         <img width = {60}  src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
+      <button id = "Rectangle">Add a Rectangle</button>
+      </div></div>)
+  }
+}
 class Footer extends React.Component {
     render() {
         return(<div id= "foot">
@@ -142,86 +273,3 @@ class Footer extends React.Component {
 }
 ReactDOM.render(<App />, document.getElementById('root'));
 
-function establishCanvas() {
-  //Gets width and height to fill space 
-  //Dynamic Canvas size
-//width 80vw height 60 vh
-  var div = document.getElementById("canvasSpace");
-  var canvas = document.createElement('canvas');
-  var sizeWidth = 80 * window.innerWidth / 100,
-      sizeHeight = 60 * window.innerHeight / 100 || 766;
-    canvas.width = sizeWidth;
-    canvas.height = sizeHeight;
-   document.getElementById("canvas").remove();
-    div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth+ ' height='+ sizeHeight+ '></canvas>';
-
-
- 
-    
-  }
-  establishCanvas()
-
-var canvas = document.getElementById("canvas");
-
-
-var context = canvas.getContext("2d");
-
-var cw = canvas.width;
-var ch = canvas.height;
-var offsetX, offsetY;
-
-
-
-function reOffset() {
-  var BB = canvas.getBoundingClientRect();
-  offsetX = BB.left;
-  offsetY = BB.top;        
-}
-
-reOffset();
-
-window.onscroll = function(e) { reOffset(); }
-
-context.lineWidth = 2;
-context.strokeStyle = 'blue';
-
-var coordinates = [];
-var isDone = false;
-
-//button-clicking functionality
-$('#play').click(function() {
-  alert("Play functionality must be implemented")
-})
-$('#pause').click(function() {
-  alert("Pause functionality must be implemented")
-})
-$('#done').click(function(){
-  isDone = true;
-});
-
-
-$("#canvas").mousedown(function(e) {handleMouseDown(e);});
-
-function handleMouseDown(e) {
-  if(isDone || coordinates.length > 10) {return;}
-
-  // tell the browser we're handling this event
-  e.preventDefault();
-  e.stopPropagation();
-
-  var mouseX = parseInt(e.clientX - offsetX);
-  var mouseY = parseInt(e.clientY - offsetY);
-  coordinates.push({x:mouseX, y:mouseY});
-  drawPolygon();
-}
-
-function drawPolygon() {
-  context.clearRect(0,0,cw,ch);
-  context.beginPath();
-  context.moveTo(coordinates[0].x, coordinates[0].y);
-  for (var index = 1; index<coordinates.length; index++) {
-    context.lineTo(coordinates[index].x, coordinates[index].y);
-  }
-  context.closePath();
-  context.stroke();
-}
