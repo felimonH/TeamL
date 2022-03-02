@@ -2,80 +2,98 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 
 class App extends React.Component {
-   
-   constructor(props) {
+
+  constructor(props) {
     super(props);
     this.state = {
+      showButton: false,
       filterText: '',
     };
-    
-    this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
 
+    this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+    this.toggleButton = this.toggleButton.bind(this)
+    this.toggleButton2 = this.toggleButton2.bind(this)
   }
-    handleFilterTextChange(filterText) {
+  handleFilterTextChange(filterText) {
     this.setState({
       filterText: filterText
     });
-    
   }
-
-    render() {
-        return(<><Navbar/><Canvas/><RightDrawingUI/><RightParameterUI  onFilterTextChange={this.handleFilterTextChange}/><Footer/><LowerControlUI/></>
-            )
-    }
+  toggleButton() {
+    this.setState({ showButton: true });
+  };
+  toggleButton2() {
+    this.setState({ showButton: false });
+  };
+  render() {
+    return (<><Navbar toggleButton={this.toggleButton} toggleButton2={this.toggleButton2} /><Canvas /><RightDrawingUI />{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange} /> : null}<Footer /><LowerControlUI /></>
+    )
+  }
 }
 class Navbar extends React.Component {
-    render() {
-        return(<div id = "naving">
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <a class="navbar-brand" href="#">Start Here</a>
-              </div>
+  constructor(props) {
+    super(props);
+    this.toggleButton = this.toggleButton.bind(this)
+    this.toggleButton2 = this.toggleButton2.bind(this)
+  }
+  toggleButton() {
+    this.props.toggleButton()
+  }
+  toggleButton2() {
+    this.props.toggleButton2()
+  }
+  render() {
 
-              <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
-                  <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Algorithm 1</a></li>
-                    <li><a href="#">Algorithm 2</a></li>
-                    <li><a href="#">Algorithm 3</a></li>
-                  </ul>
-                </li>
-                
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
-                    <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a href="#">Model 1</a></li>
-                      <li><a href="#">Model 2</a></li>
-                      <li><a href="#">Model 3</a></li>
-                    </ul>
-                </li>
+    return (<div id="naving">
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Start Here</a>
+          </div>
+
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#Algorithm_1" onClick={this.toggleButton2}>Algorithm 1</a></li>
+                <li><a href="#Algorithm_2" onClick={this.toggleButton2}>Algorithm 2</a></li>
+                <li><a href="#Algorithm_3" onClick={this.toggleButton2}>Algorithm 3</a></li>
               </ul>
-            </div>
-          </nav>
+            </li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#Model_1" onClick={this.toggleButton}>Model 1</a></li>
+                <li><a href="#Model_2" onClick={this.toggleButton}>Model 2</a></li>
+                <li><a href="#Model_3" onClick={this.toggleButton}>Model 3</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>)
-    }
+  }
 }
 class Canvas extends React.Component {
-    render() {
-        return( <div id = "canvasSpace">
+  render() {
+    return (<div id="canvasSpace">
       <canvas id="canvas" width={900} height={300}></canvas>
     </div>)
-    }
+  }
 }
 class LowerControlUI extends React.Component {
-    render() {
-        return(<div id = "lowerControlUI">
-        Simulation Control
-        <div>
-          <button id="play">Start Simulation</button>
-          <button id="pause">Pause Simulation</button>
-        </div>
+  render() {
+    return (<div id="lowerControlUI">
+      Simulation Control
+      <div>
+        <button id="play">Start Simulation</button>
+        <button id="pause">Pause Simulation</button>
+      </div>
     </div>)
-    }
+  }
 }
 class RightParameterUI extends React.Component {
 
@@ -83,64 +101,77 @@ class RightParameterUI extends React.Component {
     super(props);
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
   }
-   handleFilterTextChange(e) {
+  handleFilterTextChange(e) {
+    alert(e.target.value)
     this.props.onFilterTextChange(e.target.value);
   }
 
-  
-    render() {
-        return( <div id = "rightParameterUI">
-        Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-        <label for = "parameter_1">Parameter 1:</label>
-          <input
-          type="text"
-          placeholder="Search..."
-          value={this.props.filterText}
-          onChange={this.handleFilterTextChange}
-        />
-        <br></br>
-        <label for = "parameter_2">Parameter 2:</label>
-        <input type = "number" id = "parameter2"/>
+
+  render() {
+    return (<div id="rightParameterUI">
+      Parameters (just as a reminder for the future, we need to do error checking on all parameters)
+      <label for="parameter_1" id="label_1">Parameter 1:</label>
+      <input
+        type="text"
+        placeholder="Search..."
+        onChange={this.handleFilterTextChange}
+        id="parameter_1"
+      />
+      <br></br>
+      <label for="parameter_2" id="label_2">Parameter 2:</label>
+      <input type="number" id="parameter_2" />
     </div>)
-    }
+  }
 }
 class RightDrawingUI extends React.Component {
-    render() {
-        return( <div id = "rightDrawingUI">
-        Drawing UI
-        <div>
-          <button id="done">Click when done assigning points</button>
-        </div>
+  render() {
+    return (<div id="rightDrawingUI">
+      Drawing UI
+      <div>
+        <button id="done">Click when done assigning points</button>
+      </div>
     </div>)
-    }
+  }
 }
 class Footer extends React.Component {
-    render() {
-        return(<div id= "foot">
-        Random Footer :)
+  render() {
+    return (<div id="foot">
+      Random Footer :)
     </div>)
-    }
+  }
 }
+
+
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
+//button-clicking functionality
+$('#play').click(function () {
+  alert("Play functionality must be implemented")
+})
+$('#pause').click(function () {
+  alert("Pause functionality must be implemented")
+})
+
+//Canvas Stuff begins here
 function establishCanvas() {
   //Gets width and height to fill space 
   //Dynamic Canvas size
-//width 80vw height 60 vh
+  //width 80vw height 60 vh
   var div = document.getElementById("canvasSpace");
   var canvas = document.createElement('canvas');
   var sizeWidth = 80 * window.innerWidth / 100,
-      sizeHeight = 60 * window.innerHeight / 100 || 766;
-    canvas.width = sizeWidth;
-    canvas.height = sizeHeight;
-   document.getElementById("canvas").remove();
-    div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth+ ' height='+ sizeHeight+ '></canvas>';
+    sizeHeight = 60 * window.innerHeight / 100 || 766;
+  canvas.width = sizeWidth;
+  canvas.height = sizeHeight;
+  document.getElementById("canvas").remove();
+  div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
 
 
- 
-    
-  }
-  establishCanvas()
+
+
+}
+establishCanvas()
 
 var canvas = document.getElementById("canvas");
 
@@ -156,34 +187,49 @@ var offsetX, offsetY;
 function reOffset() {
   var BB = canvas.getBoundingClientRect();
   offsetX = BB.left;
-  offsetY = BB.top;        
+  offsetY = BB.top;
 }
 
 reOffset();
 
-window.onscroll = function(e) { reOffset(); }
+window.onscroll = function (e) { reOffset(); }
 
 context.lineWidth = 2;
 context.strokeStyle = 'blue';
 
+//Does Creates a double array
 var coordinates = [];
-var isDone = false;
+var isDone = 0;
+var innerArray = [];
+coordinates.push(innerArray);
 
-//button-clicking functionality
-$('#play').click(function() {
-  alert("Play functionality must be implemented")
-})
-$('#pause').click(function() {
-  alert("Pause functionality must be implemented")
-})
-$('#done').click(function(){
-  isDone = true;
+
+//Does: Creates new array for new object points per object
+$('#done').click(function () {
+  isDone = isDone + 1;
+  var innerArray = [];
+  coordinates.push(innerArray);
 });
 
-$("#canvas").mousedown(function(e) {handleMouseDown(e);});
+
+
+$("#canvas").mousedown(function (e) { handleMouseDown(e); });
 
 function handleMouseDown(e) {
-  if(isDone || coordinates.length > 10) {return;}
+  //Stops when there is 5 shapes or there the current point has 10 coords.
+  //prevents too many objects
+  if (isDone > 5) {
+    alert("too much arrays")
+    return;
+  }
+
+  //prevents too many points to an object
+  if (coordinates[isDone].length > 10) {
+    alert("too many points")
+    return;
+  }
+
+
 
   // tell the browser we're handling this event
   e.preventDefault();
@@ -191,17 +237,23 @@ function handleMouseDown(e) {
 
   var mouseX = parseInt(e.clientX - offsetX);
   var mouseY = parseInt(e.clientY - offsetY);
-  coordinates.push({x:mouseX, y:mouseY});
+  coordinates[isDone].push({ x: mouseX, y: mouseY });
+
   drawPolygon();
 }
 
 function drawPolygon() {
-  context.clearRect(0,0,cw,ch);
+  //context.clearRect(0, 0, cw, ch);
   context.beginPath();
-  context.moveTo(coordinates[0].x, coordinates[0].y);
-  for (var index = 1; index<coordinates.length; index++) {
-    context.lineTo(coordinates[index].x, coordinates[index].y);
+  context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
+  for (var index = 1; index < coordinates[isDone].length; index++) {
+    context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
   }
   context.closePath();
+
+  //Colors/Fills Shapes
+  context.fillStyle = 'blue';
+  context.fill();
+
   context.stroke();
 }
