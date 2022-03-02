@@ -90,7 +90,6 @@ class Navbar extends React.Component {
 class Canvas extends React.Component {
 
   jQueryCode = () => {
-    //Canvas Stuff begins here
     function establishCanvas() {
       //Gets width and height to fill space 
       //Dynamic Canvas size
@@ -141,11 +140,9 @@ class Canvas extends React.Component {
     coordinates.push(innerArray);
 
 
-    //Does: Creates new array for new object points per object
+
     $('#done').click(function () {
       isDone = isDone + 1;
-      var innerArray = [];
-      coordinates.push(innerArray);
     });
 
 
