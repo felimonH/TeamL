@@ -197,29 +197,39 @@ window.onscroll = function (e) { reOffset(); }
 context.lineWidth = 2;
 context.strokeStyle = 'blue';
 
+//Does Creates a double array
 var coordinates = [];
 var isDone = 0;
+var innerArray = [];
+coordinates.push(innerArray);
 
-//button for finishing drawing points
+
+//Does: Creates new array for new object points per object
 $('#done').click(function () {
   isDone = isDone + 1;
+  var innerArray = [];
+  coordinates.push(innerArray);
 });
 
-//code for drawing polygon
-//TODO: make more than one polygon
-//  double array for coordniates 
-//  keep double array count based on how many times isDone is clicked
-//  isDone should be a numerical variable now 
 
 
 $("#canvas").mousedown(function (e) { handleMouseDown(e); });
 
 function handleMouseDown(e) {
   //Stops when there is 5 shapes or there the current point has 10 coords.
-  if (isDone > 5 || coordinates[isDone].length > 10) {
-    alert("too much stuff")
+  //prevents too many objects
+  if (isDone > 5) {
+    alert("too much arrays")
     return;
   }
+
+  //prevents too many points to an object
+  if (coordinates[isDone].length > 10) {
+    alert("too many points")
+    return;
+  }
+
+
 
   // tell the browser we're handling this event
   e.preventDefault();
@@ -227,17 +237,23 @@ function handleMouseDown(e) {
 
   var mouseX = parseInt(e.clientX - offsetX);
   var mouseY = parseInt(e.clientY - offsetY);
-  coordinates.push({ x: mouseX, y: mouseY });
+  coordinates[isDone].push({ x: mouseX, y: mouseY });
+
   drawPolygon();
 }
 
 function drawPolygon() {
-  context.clearRect(0, 0, cw, ch);
+  //context.clearRect(0, 0, cw, ch);
   context.beginPath();
   context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
   for (var index = 1; index < coordinates[isDone].length; index++) {
     context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
   }
   context.closePath();
+
+  //Colors/Fills Shapes
+  context.fillStyle = 'blue';
+  context.fill();
+
   context.stroke();
 }
