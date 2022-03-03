@@ -90,6 +90,7 @@ class Navbar extends React.Component {
 class Canvas extends React.Component {
 
   jQueryCode = () => {
+    //Canvas Stuff begins here
     function establishCanvas() {
       //Gets width and height to fill space 
       //Dynamic Canvas size
@@ -137,17 +138,33 @@ class Canvas extends React.Component {
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
+
     coordinates.push(innerArray);
 
 
-
+    //Does: Creates new array for new object points per object
     $('#done').click(function () {
       isDone = isDone + 1;
+      var innerArray = [];
+      coordinates.push(innerArray);
     });
 
+    //Resets all 
+    $('#delete').click(function () {
+      context.clearRect(0, 0, cw, ch);
+      isDone = 0;
+      coordinates = [];
+      innerArray = [];
+      coordinates.push(innerArray);
+    });
+
+    $("#canvas").mousedown(function (e) {
 
 
-    $("#canvas").mousedown(function (e) { handleMouseDown(e); });
+      handleMouseDown(e);
+
+
+    });
 
     function handleMouseDown(e) {
       //Stops when there is 5 shapes or there the current point has 10 coords.
@@ -177,7 +194,7 @@ class Canvas extends React.Component {
     }
 
     function drawPolygon() {
-      //context.clearRect(0, 0, cw, ch);
+
       context.beginPath();
       context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
       for (var index = 1; index < coordinates[isDone].length; index++) {
@@ -198,6 +215,7 @@ class Canvas extends React.Component {
         return true;
       }
     }
+
   }
 
   componentDidMount() {
@@ -272,6 +290,7 @@ class RightDrawingUI extends React.Component {
       Drawing UI
       <div>
         <button id="done">Click when done assigning points</button>
+        <button id="delete">Click to delete all shapes</button>
       </div>
     </div>)
   }
