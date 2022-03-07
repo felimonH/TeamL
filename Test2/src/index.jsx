@@ -6,9 +6,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< HEAD
+<<<<<<< HEAD
+     default: true,
+     showButton: true,
+     filterText: '',
+     num: 0,
+=======
       showButton: true,
       filterText: '',
       num: 0,
+>>>>>>> bb9fc1d374835b66c7d35e8448d26c346fe51077
     };
 
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
@@ -31,6 +39,28 @@ class App extends React.Component {
     this.setState({ showButton: false });
     this.setState({ default: false });
   };
+<<<<<<< HEAD
+
+  toggleButton3() { 
+    if (this.state.num == 5) {
+      alert("too many obstacles, remember, there is a limit of 5 at the current moment")
+      
+} else {
+   this.setState((prevState, props) => ({
+    num: prevState.num + 1
+})); 
+}
+};
+
+    render() {
+        return(<><Navbar toggleButton = {this.toggleButton} toggleButton2 = {this.toggleButton2}/><HomePage/>{this.state.default ? null : <Canvas/>}{this.state.default ? null : (this.state.showButton ? <RightDrawingUI/> : <RightObstacleUI toggleButton3 = {this.toggleButton3}/>)}{this.state.default ? null : (this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange}/> : null)}{this.state.default ? null : <Footer/>}{this.state.default ? null : <LowerControlUI/>}</>
+            )
+    }
+  }
+class HomePage extends React.Component {
+  render() {
+    return (<div>HomePage</div>)
+=======
   toggleButton3() {
     this.setState((prevState, props) => ({
       num: prevState.num + 1
@@ -41,6 +71,7 @@ class App extends React.Component {
   render() {
     return (<><Navbar toggleButton={this.toggleButton} toggleButton2={this.toggleButton2} /><Canvas />{this.state.showButton ? <RightDrawingUI /> : <RightObstacleUI toggleButton3={this.toggleButton3} />}{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange} /> : null}<Footer /><LowerControlUI /></>
     )
+>>>>>>> bb9fc1d374835b66c7d35e8448d26c346fe51077
   }
 }
 class Navbar extends React.Component {
@@ -299,6 +330,29 @@ class RightDrawingUI extends React.Component {
   }
 }
 class RightObstacleUI extends React.Component {
+<<<<<<< HEAD
+ constructor(props) {
+   super(props);
+   
+  this.toggleButton3 = this.toggleButton3.bind(this)
+
+ }
+
+ toggleButton3() {
+   this.props.toggleButton3()
+ };
+
+  render() {
+    return (<div id = "rightObstacleUI">Obstacle UI
+      <div><img draggable = {true} width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
+      <button id = "Circle" onClick = {this.toggleButton3}>Add a Circle</button>
+      </div>
+      <div><img width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/2/27/Red_square.svg"></img>
+      <button id = "Square" onClick = {this.toggleButton3}>Add a Square</button></div>
+       <div>
+         <img width = {60}  src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
+      <button id = "Rectangle" onClick = {this.toggleButton3}>Add a Rectangle</button>
+=======
   constructor(props) {
     super(props);
     this.state = {
@@ -319,6 +373,7 @@ class RightObstacleUI extends React.Component {
       <div>
         <img width={60} src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
         <button id="Rectangle">Add a Rectangle</button>
+>>>>>>> bb9fc1d374835b66c7d35e8448d26c346fe51077
       </div></div>)
   }
 }
