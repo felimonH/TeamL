@@ -7,7 +7,11 @@ class App extends React.Component {
     super(props);
     this.state = {
      default: true,
-     showButton: true,
+     pathfinding_algorithm_1: false,
+     pathfinding_algorithm_2: false,
+     motion_model_1: false,
+     motion_model_2: false,
+     motion_model_3: false, 
      filterText: '',
      num: 0,
     };
@@ -15,6 +19,9 @@ class App extends React.Component {
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
     this.toggleButton = this.toggleButton.bind(this)
     this.toggleButton2 = this.toggleButton2.bind(this)
+    this.toggleButton4 = this.toggleButton4.bind(this)
+    this.toggleButton5 = this.toggleButton5.bind(this)
+    this.toggleButton6 = this.toggleButton6.bind(this)
     this.toggleButton3 = this.toggleButton3.bind(this)
 
   }
@@ -25,12 +32,29 @@ class App extends React.Component {
     });
   }
   toggleButton() {
-    this.setState({ showButton: true });
+    this.setState({ pathfinding_algorithm_1: true });
     this.setState({ default: false });
+    alert("pathfinding_algorithm_1")
   };
   toggleButton2() {
-    this.setState({ showButton: false });
+    this.setState({ pathfinding_algorithm_2: true });
     this.setState({ default: false });
+    alert("pathfinding_algorithm_2")
+  };
+  toggleButton4() {
+    this.setState({ motion_model_1: true });
+    this.setState({ default: false });
+      alert("motion_model_1")
+  };
+  toggleButton5() {
+    this.setState({ motion_model_2: true });
+    this.setState({ default: false });
+     alert("motion_model_2")
+  };
+  toggleButton6() {
+    this.setState({ motion_model_3: true });
+    this.setState({ default: false });
+     alert("motion_model_3")
   };
 
   toggleButton3() { 
@@ -45,7 +69,7 @@ class App extends React.Component {
 };
 
     render() {
-        return(<><Navbar toggleButton = {this.toggleButton} toggleButton2 = {this.toggleButton2}/><HomePage/>{this.state.default ? null : <Canvas/>}{this.state.default ? null : (this.state.showButton ? <RightDrawingUI/> : <RightObstacleUI toggleButton3 = {this.toggleButton3}/>)}{this.state.default ? null : (this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange}/> : null)}{this.state.default ? null : <Footer/>}{this.state.default ? null : <LowerControlUI/>}</>
+        return(<><Navbar toggleButton = {this.toggleButton} toggleButton2 = {this.toggleButton2} toggleButton3 = {this.toggleButton3} toggleButton4 = {this.toggleButton4} toggleButton5 = {this.toggleButton5} toggleButton6 = {this.toggleButton6}/><HomePage/>{this.state.default ? null : <Canvas/>}{this.state.default ? null : (this.state.showButton ? <RightDrawingUI/> : <RightObstacleUI toggleButton3 = {this.toggleButton3}/>)}{this.state.default ? null : (this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange}/> : null)}{this.state.default ? null : <Footer/>}{this.state.default ? null : <LowerControlUI/>}</>
             )
     }
   }
@@ -59,12 +83,24 @@ class Navbar extends React.Component {
     super(props);
     this.toggleButton = this.toggleButton.bind(this)
     this.toggleButton2 = this.toggleButton2.bind(this)
+    this.toggleButton4 = this.toggleButton4.bind(this)
+    this.toggleButton5 = this.toggleButton5.bind(this)
+    this.toggleButton6 = this.toggleButton6.bind(this)
   }
   toggleButton() {
     this.props.toggleButton()
   }
   toggleButton2() {
     this.props.toggleButton2()
+  }
+  toggleButton4() {
+    this.props.toggleButton4()
+  }
+  toggleButton5() {
+    this.props.toggleButton5()
+  }
+  toggleButton6() {
+    this.props.toggleButton6()
   }
   render() {
 
@@ -80,9 +116,8 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Algorithm_1"  onClick={this.toggleButton2}>Algorithm 1</a></li>
+                <li><a href="#Algorithm_1"  onClick={this.toggleButton}>Algorithm 1</a></li>
                 <li><a href="#Algorithm_2"  onClick={this.toggleButton2}>Algorithm 2</a></li>
-                <li><a href="#Algorithm_3"  onClick={this.toggleButton2}>Algorithm 3</a></li>
               </ul>
             </li>
 
@@ -90,9 +125,9 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Model_1"  onClick={this.toggleButton}>Model 1</a></li>
-                <li><a href="#Model_2"  onClick={this.toggleButton}>Model 2</a></li>
-                <li><a href="#Model_3"  onClick={this.toggleButton}>Model 3</a></li>
+                <li><a href="#Model_1"  onClick={this.toggleButton4}>Model 1</a></li>
+                <li><a href="#Model_2"  onClick={this.toggleButton5}>Model 2</a></li>
+                <li><a href="#Model_3"  onClick={this.toggleButton6}>Model 3</a></li>
               </ul>
             </li>
           </ul>
@@ -101,6 +136,7 @@ class Navbar extends React.Component {
     </div>)
   }
 }
+
 class Canvas extends React.Component {
 
   jQueryCode = () => {
