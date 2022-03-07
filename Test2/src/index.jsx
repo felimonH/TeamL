@@ -329,5 +329,7 @@ class Footer extends React.Component {
     </div>)
   }
 }
+
 ReactDOM.render(<App />, document.getElementById('root'));
+
 
