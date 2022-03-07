@@ -6,17 +6,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-<<<<<<< HEAD
-<<<<<<< HEAD
      default: true,
      showButton: true,
      filterText: '',
      num: 0,
-=======
-      showButton: true,
-      filterText: '',
-      num: 0,
->>>>>>> bb9fc1d374835b66c7d35e8448d26c346fe51077
     };
 
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
@@ -39,7 +32,6 @@ class App extends React.Component {
     this.setState({ showButton: false });
     this.setState({ default: false });
   };
-<<<<<<< HEAD
 
   toggleButton3() { 
     if (this.state.num == 5) {
@@ -60,18 +52,6 @@ class App extends React.Component {
 class HomePage extends React.Component {
   render() {
     return (<div>HomePage</div>)
-=======
-  toggleButton3() {
-    this.setState((prevState, props) => ({
-      num: prevState.num + 1
-    }));
-    alert(this.state.num);
-  };
-
-  render() {
-    return (<><Navbar toggleButton={this.toggleButton} toggleButton2={this.toggleButton2} /><Canvas />{this.state.showButton ? <RightDrawingUI /> : <RightObstacleUI toggleButton3={this.toggleButton3} />}{this.state.showButton ? <RightParameterUI onFilterTextChange={this.handleFilterTextChange} /> : null}<Footer /><LowerControlUI /></>
-    )
->>>>>>> bb9fc1d374835b66c7d35e8448d26c346fe51077
   }
 }
 class Navbar extends React.Component {
@@ -100,9 +80,9 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Algorithm_1" onClick={this.toggleButton2}>Algorithm 1</a></li>
-                <li><a href="#Algorithm_2" onClick={this.toggleButton2}>Algorithm 2</a></li>
-                <li><a href="#Algorithm_3" onClick={this.toggleButton2}>Algorithm 3</a></li>
+                <li><a href="#Algorithm_1"  onClick={this.toggleButton2}>Algorithm 1</a></li>
+                <li><a href="#Algorithm_2"  onClick={this.toggleButton2}>Algorithm 2</a></li>
+                <li><a href="#Algorithm_3"  onClick={this.toggleButton2}>Algorithm 3</a></li>
               </ul>
             </li>
 
@@ -110,9 +90,9 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Model_1" onClick={this.toggleButton}>Model 1</a></li>
-                <li><a href="#Model_2" onClick={this.toggleButton}>Model 2</a></li>
-                <li><a href="#Model_3" onClick={this.toggleButton}>Model 3</a></li>
+                <li><a href="#Model_1"  onClick={this.toggleButton}>Model 1</a></li>
+                <li><a href="#Model_2"  onClick={this.toggleButton}>Model 2</a></li>
+                <li><a href="#Model_3"  onClick={this.toggleButton}>Model 3</a></li>
               </ul>
             </li>
           </ul>
@@ -330,7 +310,6 @@ class RightDrawingUI extends React.Component {
   }
 }
 class RightObstacleUI extends React.Component {
-<<<<<<< HEAD
  constructor(props) {
    super(props);
    
@@ -352,28 +331,6 @@ class RightObstacleUI extends React.Component {
        <div>
          <img width = {60}  src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
       <button id = "Rectangle" onClick = {this.toggleButton3}>Add a Rectangle</button>
-=======
-  constructor(props) {
-    super(props);
-    this.state = {
-      num: 0,
-    }
-    this.toggleButton3 = this.toggleButton3.bind(this)
-  }
-  toggleButton3() {
-    this.props.toggleButton3()
-  };
-  render() {
-    return (<div id="rightObstacleUI">Obstacle UI
-      <div><img width={60} src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
-        <button id="Circle" onClick={this.toggleButton3}>Add a Circle</button>
-      </div>
-      <div><img width={60} src="https://upload.wikimedia.org/wikipedia/commons/2/27/Red_square.svg"></img>
-        <button id="Square">Add a Square</button></div>
-      <div>
-        <img width={60} src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
-        <button id="Rectangle">Add a Rectangle</button>
->>>>>>> bb9fc1d374835b66c7d35e8448d26c346fe51077
       </div></div>)
   }
 }
