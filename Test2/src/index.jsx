@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class App extends React.Component {
-
+  /*TO SUMMARIZE, THE APP CLASS MANAGES ALL STATE CHANGES AND ACTS ALMOST LIKE A PARENT CLASS. THE TERM 'CLASS' AND 'COMPONENT' ARE USED
+  INTERCHANGEABLY. ALL STATE CHANGES ARE MADE, HOWEVER, BY CHILD CLASSES VIA EVENT HANDLERS. THINK ENCAPSULATION FROM COMP401.*/
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +19,7 @@ class App extends React.Component {
   console.log('');
 }); 
 };
-
+//rendering components conditionally based on what tab you clicked on: (this.state.page). Right now, all tabs are rendering the same stuff but that can be changed. 
     render() {   
       switch(this.state.page) {
         case 'RET':
@@ -41,7 +43,7 @@ class App extends React.Component {
     }
   }
 }
-
+//NEEDS SOME WORK TO MAKE THE HOME PAGE LOOK A LITTLE BETTER
 class HomePage extends React.Component {
   render() {
     return (<div class="center">
@@ -98,7 +100,7 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
   }
-
+//THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   jQueryCodeRET = () => {
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
@@ -367,7 +369,7 @@ class Canvas extends React.Component {
     reOffset();
     window.onscroll = function (e) { reOffset(); }
   }
-
+//rendering jQuery code when you first render the Canvas Component
   componentDidMount() {
    
     switch(this.props.jQuery) {
@@ -387,7 +389,8 @@ class Canvas extends React.Component {
         this.jQueryCodeTricycle();
         break;
     }
-  }
+  } 
+//using JQuery code when you re-render (update) the Canvas Component
   componentDidUpdate() {
     switch(this.props.jQuery) {
       case "RET":
@@ -493,3 +496,8 @@ class Footer extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
+//some questions for our next meeting: 1.) Arbitrary obstacles vs. drag-and-drop for the pathfinding algorithms. 2.) Any missing pseudocode we may need for pathfinding algorithms/motion models. 3.) Anything back from hosting (UNC hosting)
+//some reminders: 1.) We are not doing separate tabs or "separate" pages. Unfortunately, right now we can't focus on using a router or backend to accomplish navigating through the app by typing in a URL. Really, we don't need this anyways but keep that in mind.
+//2.) Stick to basic coding rules of indentation and commenting. I myself (Adam) am guilty of not doing this but we all need to commit ourselves to making readable code for our own sakes.
+//3.) Some easy things to do over Spring Break: Make home page prettier, find a purpose for the footer or get rid (figure out how to take up the empty space if you do get rid), styling or color issues you may have with the site.
+// Some harder things to do: Fix the file structure so we don't have to cd and then do stuff. Figure out how are we going to get this thing on the web once they figure out hosting. Actually implement the motion models and pathfinding algorithms. 
