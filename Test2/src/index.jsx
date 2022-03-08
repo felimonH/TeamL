@@ -211,6 +211,10 @@ class Canvas extends React.Component {
         return true;
       }
     }
+
+    //Do: sets up buttons for start and goal for robot 
+    //Do: setup initalize robot pos/ goal position 
+    //Do: setup collision detection when initalizing robot and obstacles 
   }
 
   jQueryCodePRM = () => {
