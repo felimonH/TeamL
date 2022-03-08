@@ -15,6 +15,13 @@ body {
   background-color: black;
 }
 
+.center {
+  height: 20vh;
+  width: 100vw;
+  text-align: center;
+  margin: auto;
+}
+
 .container-fluid {
   background-color: rgb(23, 19, 56);
 }
