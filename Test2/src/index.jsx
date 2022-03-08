@@ -9,10 +9,8 @@ class App extends React.Component {
      default: true,
      filterText: '',
      page: '',
-     num: 0
     };
     this.toggleButton = this.toggleButton.bind(this)
-
   }
   toggleButton = (num) => {
     this.setState({ page: num }, () => {
@@ -22,27 +20,28 @@ class App extends React.Component {
 
     render() {   
       switch(this.state.page) {
-        case '1':
-          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas/><RightObstacleUI/><LowerControlUI/><Footer/></>)
+        case 'RET':
+          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightObstacleUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
           break;
-        case '2':
-           return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas2/><RightObstacleUI/><LowerControlUI/><Footer/></>)
+        case 'PRM':
+           return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightObstacleUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
           break;
-        case '3':
-           return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas3/><RightDrawingUI/><LowerControlUI/><Footer/></>)
+        case 'Diff. Drive':
+           return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightDrawingUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
           break;
-        case '4':
-          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas4/><RightDrawingUI/><LowerControlUI/><Footer/></>)
+        case 'Bicycle':
+          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightDrawingUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
           break;
-        case '5':
-          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas5/><RightDrawingUI/><LowerControlUI/><Footer/></>)
+        case 'Tricycle':
+          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightDrawingUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
           break;
         default:
           return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/></>)
         
     }
   }
-    }
+}
+
 class HomePage extends React.Component {
   render() {
     return (<div class="center">
@@ -50,6 +49,7 @@ class HomePage extends React.Component {
 </div>)
   }
 }
+
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
@@ -73,8 +73,8 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Algorithm_1"  onClick={this.toggleButton} name = "1">Algorithm 1</a></li>
-                <li><a href="#Algorithm_2"  onClick={this.toggleButton} name = "2">Algorithm 2</a></li>
+                <li><a href="#Algorithm_1"  onClick={this.toggleButton} name = "RET">Rapidly Exploring Random Trees</a></li>
+                <li><a href="#Algorithm_2"  onClick={this.toggleButton} name = "PRM">Probabilistic Road Map</a></li>
               </ul>
             </li>
 
@@ -82,9 +82,9 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Model_1"  onClick={this.toggleButton} name = "3">Model 1</a></li>
-                <li><a href="#Model_2"  onClick={this.toggleButton} name = "4">Model 2</a></li>
-                <li><a href="#Model_3"  onClick={this.toggleButton} name = "5">Model 3</a></li>
+                <li><a href="#Model_1"  onClick={this.toggleButton} name = "Diff. Drive">Differential Drive</a></li>
+                <li><a href="#Model_2"  onClick={this.toggleButton} name = "Bicycle">Bicycle</a></li>
+                <li><a href="#Model_3"  onClick={this.toggleButton} name = "Tricycle">Tricycle</a></li>
               </ul>
             </li>
           </ul>
@@ -99,7 +99,7 @@ class Canvas extends React.Component {
     super(props);
   }
 
-  jQueryCode = () => {
+  jQueryCodeRET = () => {
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
@@ -151,11 +151,7 @@ class Canvas extends React.Component {
     });
 
     $("#canvas").mousedown(function (e) {
-
-
       handleMouseDown(e);
-
-
     });
 
     function handleMouseDown(e) {
@@ -165,15 +161,11 @@ class Canvas extends React.Component {
         alert("too much arrays")
         return;
       }
-
       //prevents too many points to an object
       if (coordinates[isDone].length > 10) {
         alert("too many points")
         return;
       }
-
-
-
       // tell the browser we're handling this event
       e.preventDefault();
       e.stopPropagation();
@@ -207,59 +199,26 @@ class Canvas extends React.Component {
         return true;
       }
     }
-
   }
 
-  componentDidMount() {
-    
-    this.jQueryCode()
-  }
-  render() {
-    return (<div id="canvasSpace">
-      <canvas id="canvas" width={900} height={300}></canvas>
-    </div>)
-  }
-
-
-}
-
-
-
-class Canvas2 extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-///
-  jQueryCode = () => {
-    //Canvas Stuff begins here
+  jQueryCodePRM = () => {
     function establishCanvas() {
-      //Gets width and height to fill space 
-      //Dynamic Canvas size
-      //width 80vw height 60 vh
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
       var sizeWidth = 80 * window.innerWidth / 100,
-        sizeHeight = 60 * window.innerHeight / 100 || 766;
+      sizeHeight = 60 * window.innerHeight / 100 || 766;
       canvas.width = sizeWidth;
       canvas.height = sizeHeight;
       document.getElementById("canvas").remove();
       div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
-
-
-
-
     }
+
     establishCanvas()
-
     var canvas = document.getElementById("canvas");
-
-
     var context = canvas.getContext("2d");
-
     var cw = canvas.width;
     var ch = canvas.height;
     var offsetX, offsetY;
-
 
     function reOffset() {
       var BB = canvas.getBoundingClientRect();
@@ -268,29 +227,21 @@ class Canvas2 extends React.Component {
     }
 
     reOffset();
-
     window.onscroll = function (e) { reOffset(); }
-
-
     context.lineWidth = 2;
     context.strokeStyle = 'blue';
-///
-    //Does Creates a double array
+
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
 
     coordinates.push(innerArray);
-
-
-    //Does: Creates new array for new object points per object
     $('#done').click(function () {
       isDone = isDone + 1;
       var innerArray = [];
       coordinates.push(innerArray);
     });
 
-    //Resets all 
     $('#delete').click(function () {
       context.clearRect(0, 0, cw, ch);
       isDone = 0;
@@ -300,40 +251,25 @@ class Canvas2 extends React.Component {
     });
 
     $("#canvas").mousedown(function (e) {
-
-
       handleMouseDown(e);
-
-
     });
 
     function handleMouseDown(e) {
-      //Stops when there is 5 shapes or there the current point has 10 coords.
-      //prevents too many objects
       if (isDone > 5) {
         alert("too much arrays")
         return;
       }
-
-      //prevents too many points to an object
       if (coordinates[isDone].length > 10) {
         alert("too many points")
         return;
       }
-
-
-
-      // tell the browser we're handling this event
       e.preventDefault();
       e.stopPropagation();
-
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
       coordinates[isDone].push({ x: mouseX, y: mouseY });
-
       drawPolygon();
     }
-
     function drawPolygon() {
 
       context.beginPath();
@@ -342,44 +278,46 @@ class Canvas2 extends React.Component {
         context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
       }
       context.closePath();
-
-      //Colors/Fills Shapes
       context.fillStyle = 'blue';
       context.fill();
-
       context.stroke();
     }
-
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
       if (pixel[2] == 255 || pixel[3] == 255) {
         return true;
       }
     }
-
   }
 
-  componentDidMount() {
-    
-    this.jQueryCode()
-  }
-  render() {
-    return (<div id="canvasSpace">
-      <canvas id="canvas" width={900} height={300}></canvas>
-    </div>)
-  }
-
-
-}
-
-class Canvas3 extends React.Component {
-
-  jQueryCode = () => {
-   //Canvas Stuff begins here
+  jQueryCodeDiffDrive = () => {
     function establishCanvas() {
-      //Gets width and height to fill space 
-      //Dynamic Canvas size
-      //width 80vw height 60 vh
+      var div = document.getElementById("canvasSpace");
+      var canvas = document.createElement('canvas');
+      var sizeWidth = 80 * window.innerWidth / 100,
+      sizeHeight = 60 * window.innerHeight / 100 || 766;
+      canvas.width = sizeWidth;
+      canvas.height = sizeHeight;
+      document.getElementById("canvas").remove();
+      div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
+    }
+    establishCanvas()
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    var cw = canvas.width;
+    var ch = canvas.height;
+    var offsetX, offsetY;
+    function reOffset() {
+      var BB = canvas.getBoundingClientRect();
+      offsetX = BB.left;
+      offsetY = BB.top;
+    }
+    reOffset();
+    window.onscroll = function (e) { reOffset(); }
+  }
+
+  jQueryCodeBicycle = () => {
+    function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
       var sizeWidth = 80 * window.innerWidth / 100,
@@ -388,140 +326,86 @@ class Canvas3 extends React.Component {
       canvas.height = sizeHeight;
       document.getElementById("canvas").remove();
       div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
-
     }
     establishCanvas()
-
     var canvas = document.getElementById("canvas");
-
-
     var context = canvas.getContext("2d");
-
     var cw = canvas.width;
     var ch = canvas.height;
     var offsetX, offsetY;
-
-
     function reOffset() {
       var BB = canvas.getBoundingClientRect();
       offsetX = BB.left;
       offsetY = BB.top;
     }
-
     reOffset();
-
     window.onscroll = function (e) { reOffset(); }
   }
-  componentDidMount() {
-    this.jQueryCode()
-  }
-  render() {
-    return (<div id="canvasSpace">
-      <canvas id="canvas" width={900} height={300}></canvas>
-    </div>)
-  }
-}
 
-
-class Canvas4 extends React.Component {
-
-  jQueryCode = () => {
-   //Canvas Stuff begins here
+  jQueryCodeTricycle = () => {
     function establishCanvas() {
-      //Gets width and height to fill space 
-      //Dynamic Canvas size
-      //width 80vw height 60 vh
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
       var sizeWidth = 80 * window.innerWidth / 100,
-        sizeHeight = 60 * window.innerHeight / 100 || 766;
+      sizeHeight = 60 * window.innerHeight / 100 || 766;
       canvas.width = sizeWidth;
       canvas.height = sizeHeight;
       document.getElementById("canvas").remove();
       div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
-
-
-
-
     }
     establishCanvas()
-
     var canvas = document.getElementById("canvas");
-
-
     var context = canvas.getContext("2d");
-
     var cw = canvas.width;
     var ch = canvas.height;
     var offsetX, offsetY;
-
-
     function reOffset() {
       var BB = canvas.getBoundingClientRect();
       offsetX = BB.left;
       offsetY = BB.top;
     }
-
     reOffset();
-
     window.onscroll = function (e) { reOffset(); }
   }
+
   componentDidMount() {
-    this.jQueryCode()
-  }
-  render() {
-    return (<div id="canvasSpace">
-      <canvas id="canvas" width={900} height={300}></canvas>
-    </div>)
-  }
-}
-
-
-class Canvas5 extends React.Component {
-
-  jQueryCode = () => {
-   //Canvas Stuff begins here
-    function establishCanvas() {
-      //Gets width and height to fill space 
-      //Dynamic Canvas size
-      //width 80vw height 60 vh
-      var div = document.getElementById("canvasSpace");
-      var canvas = document.createElement('canvas');
-      var sizeWidth = 80 * window.innerWidth / 100,
-        sizeHeight = 60 * window.innerHeight / 100 || 766;
-      canvas.width = sizeWidth;
-      canvas.height = sizeHeight;
-      document.getElementById("canvas").remove();
-      div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
-
-
-
-
+   
+    switch(this.props.jQuery) {
+      case "RET":
+        this.jQueryCodeRET();
+        break;
+      case "PRM":
+        this.jQueryCodePRM();
+        break;
+      case "Diff. Drive":
+        this.jQueryCodeDiffDrive();
+        break;
+      case "Bicycle":
+        this.jQueryCodeBicycle();
+        break;
+      case "Tricycle":
+        this.jQueryCodeTricycle();
+        break;
     }
-    establishCanvas()
-
-    var canvas = document.getElementById("canvas");
-
-
-    var context = canvas.getContext("2d");
-
-    var cw = canvas.width;
-    var ch = canvas.height;
-    var offsetX, offsetY;
-
-
-    function reOffset() {
-      var BB = canvas.getBoundingClientRect();
-      offsetX = BB.left;
-      offsetY = BB.top;
-    }
-
-    reOffset();
-
-    window.onscroll = function (e) { reOffset(); }
   }
-  componentDidMount() {
-    this.jQueryCode()
+  componentDidUpdate() {
+    switch(this.props.jQuery) {
+      case "RET":
+        this.jQueryCodeRET();
+        break;
+      case "PRM":
+        this.jQueryCodePRM();
+        break;
+      case "Diff. Drive":
+        this.jQueryCodeDiffDrive();
+        break;
+      case "Bicycle":
+        this.jQueryCodeBicycle();
+        break;
+      case "Tricycle":
+        this.jQueryCodeTricycle();
+        break;
+    }
   }
   render() {
     return (<div id="canvasSpace">
@@ -557,10 +441,6 @@ class LowerControlUI extends React.Component {
 }
 
 class RightParameterUI extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (<div id="rightParameterUI">
       Parameters (just as a reminder for the future, we need to do error checking on all parameters)
@@ -576,6 +456,7 @@ class RightParameterUI extends React.Component {
     </div>)
   }
 }
+
 class RightDrawingUI extends React.Component {
   render() {
     return (<div id="rightDrawingUI">
@@ -587,10 +468,8 @@ class RightDrawingUI extends React.Component {
     </div>)
   }
 }
+
 class RightObstacleUI extends React.Component {
- constructor(props) {
-   super(props);
- }
   render() {
     return (<div id = "rightObstacleUI">Obstacle UI
       <div><img draggable = {true} width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
@@ -604,6 +483,7 @@ class RightObstacleUI extends React.Component {
       </div></div>)
   }
 }
+
 class Footer extends React.Component {
   render() {
     return (<div id="foot">
@@ -613,5 +493,3 @@ class Footer extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-
