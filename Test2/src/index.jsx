@@ -262,9 +262,7 @@ class Canvas extends React.Component {
       reOffset();
     }
 
-    //Does: setup drawing
-    context.lineWidth = 2;
-    context.strokeStyle = 'blue';
+
 
     //Does: Initalizes obstacles
     var coordinates = [];
@@ -308,15 +306,42 @@ class Canvas extends React.Component {
     //Do: make conditions for goal and start
     $("#canvas").mousedown(function (e) {
       if (setStart) {
-
+        placeStart(e);
       } else if (setGoal) {
-
+        placeGoal(e);
       } else {
-        handleMouseDown(e);
+        drawObstacle(e);
       }
     });
+    function placeStart(e) {
+      //Do: edgecase for pre drawn obstacles
+      e.preventDefault();
+      e.stopPropagation();
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'blue';
+      context.fill()
 
-    function handleMouseDown(e) {
+      setStart = false;
+    };
+    function placeGoal(e) {
+      //Do: edgecase for predrawn obstacles
+      e.preventDefault();
+      e.stopPropagation();
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'yellow';
+      context.fill()
+
+      setGoal = false;
+
+    };
+    function drawObstacle(e) {
       //Does: Stops when there is 5 shapes or there the current point has 10 coords.
       //Does: prevents too many objects
       if (isDone > 5) {
@@ -341,7 +366,9 @@ class Canvas extends React.Component {
 
     //Does: Draws obstacles
     function drawPolygon() {
-
+      //Does: setup drawing
+      context.lineWidth = 2;
+      context.strokeStyle = 'red';
       context.beginPath();
       context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
       for (var index = 1; index < coordinates[isDone].length; index++) {
@@ -350,11 +377,13 @@ class Canvas extends React.Component {
       context.closePath();
 
       //Colors/Fills Shapes
-      context.fillStyle = 'blue';
+      context.fillStyle = 'red';
       context.fill();
 
       context.stroke();
     }
+
+
 
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
