@@ -26,7 +26,7 @@ class App extends React.Component {
         return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightObstacleUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
         break;
       case 'PRM':
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightObstacleUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
         break;
       case 'Diff. Drive':
         return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
@@ -143,6 +143,10 @@ class Canvas extends React.Component {
     var innerArray = [];
     coordinates.push(innerArray);
 
+    //Does: next mouse sets goal or start
+    var setGoal = false;
+    var setStart = false;
+
     //Does: Creates new array for new object points per object
     $('#done').click(function () {
       isDone = isDone + 1;
@@ -159,6 +163,18 @@ class Canvas extends React.Component {
       coordinates.push(innerArray);
     });
 
+    //Do: sets up buttons for start and goal for robot 
+    //Do: setup initalize robot pos/ goal position 
+    //Do: setup collision detection when initalizing robot and obstacles 
+    $('#goal').click(function () {
+      setGoal = true;
+      setStart = false;
+    });
+
+    $('#start').click(function () {
+      setStart = true;
+      setGoal = false;
+    });
     //Does: handles when cavas is clicked
     //Do: make conditions for goal and start
     $("#canvas").mousedown(function (e) {
@@ -212,12 +228,11 @@ class Canvas extends React.Component {
       }
     }
 
-    //Do: sets up buttons for start and goal for robot 
-    //Do: setup initalize robot pos/ goal position 
-    //Do: setup collision detection when initalizing robot and obstacles 
+
   }
 
   jQueryCodePRM = () => {
+    //Does: Creates canvas based off screen size
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
@@ -235,7 +250,7 @@ class Canvas extends React.Component {
     var cw = canvas.width;
     var ch = canvas.height;
     var offsetX, offsetY;
-
+    //Does: Setups canvas so you can draw even after scrolling
     function reOffset() {
       var BB = canvas.getBoundingClientRect();
       offsetX = BB.left;
@@ -243,21 +258,32 @@ class Canvas extends React.Component {
     }
 
     reOffset();
-    window.onscroll = function (e) { reOffset(); }
+    window.onscroll = function (e) {
+      reOffset();
+    }
+
+    //Does: setup drawing
     context.lineWidth = 2;
     context.strokeStyle = 'blue';
 
+    //Does: Initalizes obstacles
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
-
     coordinates.push(innerArray);
+
+    //Does: next mouse sets goal or start
+    var setGoal = false;
+    var setStart = false;
+
+    //Does: Creates new array for new object points per object
     $('#done').click(function () {
       isDone = isDone + 1;
       var innerArray = [];
       coordinates.push(innerArray);
     });
 
+    //Does: Resets all of canvas 
     $('#delete').click(function () {
       context.clearRect(0, 0, cw, ch);
       isDone = 0;
@@ -266,26 +292,54 @@ class Canvas extends React.Component {
       coordinates.push(innerArray);
     });
 
+    //Do: sets up buttons for start and goal for robot 
+    //Do: setup initalize robot pos/ goal position 
+    //Do: setup collision detection when initalizing robot and obstacles 
+    $('#goal').click(function () {
+      setGoal = true;
+      setStart = false;
+    });
+
+    $('#start').click(function () {
+      setStart = true;
+      setGoal = false;
+    });
+    //Does: handles when cavas is clicked
+    //Do: make conditions for goal and start
     $("#canvas").mousedown(function (e) {
-      handleMouseDown(e);
+      if (setStart) {
+
+      } else if (setGoal) {
+
+      } else {
+        handleMouseDown(e);
+      }
     });
 
     function handleMouseDown(e) {
+      //Does: Stops when there is 5 shapes or there the current point has 10 coords.
+      //Does: prevents too many objects
       if (isDone > 5) {
         alert("too much arrays")
         return;
       }
+      //Does: prevents too many points to an object
       if (coordinates[isDone].length > 10) {
         alert("too many points")
         return;
       }
+      // Does: tell the browser we're handling this event
       e.preventDefault();
       e.stopPropagation();
+
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
       coordinates[isDone].push({ x: mouseX, y: mouseY });
+
       drawPolygon();
     }
+
+    //Does: Draws obstacles
     function drawPolygon() {
 
       context.beginPath();
@@ -294,10 +348,14 @@ class Canvas extends React.Component {
         context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
       }
       context.closePath();
+
+      //Colors/Fills Shapes
       context.fillStyle = 'blue';
       context.fill();
+
       context.stroke();
     }
+
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
       if (pixel[2] == 255 || pixel[3] == 255) {
@@ -507,6 +565,8 @@ class RightDrawingUI extends React.Component {
       <div>
         <button id="done">Click when done assigning points</button>
         <button id="delete">Click to delete all shapes</button>
+        <button id="goal">Click to set goal</button>
+        <button id="start">Click to set start</button>
       </div>
     </div>)
   }
