@@ -4,42 +4,42 @@ import ReactDOM from 'react-dom';
 class App extends React.Component {
   /*TO SUMMARIZE, THE APP CLASS MANAGES ALL STATE CHANGES AND ACTS ALMOST LIKE A PARENT CLASS. THE TERM 'CLASS' AND 'COMPONENT' ARE USED
   INTERCHANGEABLY. ALL STATE CHANGES ARE MADE, HOWEVER, BY CHILD CLASSES VIA EVENT HANDLERS. THINK ENCAPSULATION FROM COMP401.*/
-  
+
   constructor(props) {
     super(props);
     this.state = {
-     default: true,
-     filterText: '',
-     page: '',
+      default: true,
+      filterText: '',
+      page: '',
     };
     this.toggleButton = this.toggleButton.bind(this)
   }
   toggleButton = (num) => {
     this.setState({ page: num }, () => {
-  console.log('');
-}); 
-};
-//rendering components conditionally based on what tab you clicked on: (this.state.page). Right now, all tabs are rendering the same stuff but that can be changed. 
-    render() {   
-      switch(this.state.page) {
-        case 'RET':
-          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightObstacleUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
-          break;
-        case 'PRM':
-           return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightObstacleUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
-          break;
-        case 'Diff. Drive':
-           return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightDrawingUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
-          break;
-        case 'Bicycle':
-          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightDrawingUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
-          break;
-        case 'Tricycle':
-          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/><Canvas jQuery = {this.state.page}/><RightDrawingUI/><RightParameterUI/><LowerControlUI/><Footer/></>)
-          break;
-        default:
-          return(<><Navbar toggleButton = {this.toggleButton}/><HomePage/></>)
-        
+      console.log('');
+    });
+  };
+  //rendering components conditionally based on what tab you clicked on: (this.state.page). Right now, all tabs are rendering the same stuff but that can be changed. 
+  render() {
+    switch (this.state.page) {
+      case 'RET':
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightObstacleUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+        break;
+      case 'PRM':
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+        break;
+      case 'Diff. Drive':
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+        break;
+      case 'Bicycle':
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+        break;
+      case 'Tricycle':
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+        break;
+      default:
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /></>)
+
     }
   }
 }
@@ -47,8 +47,8 @@ class App extends React.Component {
 class HomePage extends React.Component {
   render() {
     return (<div class="center">
-<img src = "https://media.istockphoto.com/photos/cute-blue-robot-giving-thumbs-up-3d-picture-id1350820098?b=1&k=20&m=1350820098&s=170667a&w=0&h=8gO4GcPH-wsEZS6PYn2WXbQN3ZPPv98vE6mBl-Ckwr8="/>
-</div>)
+      <img src="https://media.istockphoto.com/photos/cute-blue-robot-giving-thumbs-up-3d-picture-id1350820098?b=1&k=20&m=1350820098&s=170667a&w=0&h=8gO4GcPH-wsEZS6PYn2WXbQN3ZPPv98vE6mBl-Ckwr8=" />
+    </div>)
   }
 }
 
@@ -75,8 +75,8 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Path Algorithms
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Algorithm_1"  onClick={this.toggleButton} name = "RET">Rapidly Exploring Random Trees</a></li>
-                <li><a href="#Algorithm_2"  onClick={this.toggleButton} name = "PRM">Probabilistic Road Map</a></li>
+                <li><a href="#Algorithm_1" onClick={this.toggleButton} name="RET">Rapidly Exploring Random Trees</a></li>
+                <li><a href="#Algorithm_2" onClick={this.toggleButton} name="PRM">Probabilistic Road Map</a></li>
               </ul>
             </li>
 
@@ -84,9 +84,9 @@ class Navbar extends React.Component {
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Motion Models
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#Model_1"  onClick={this.toggleButton} name = "Diff. Drive">Differential Drive</a></li>
-                <li><a href="#Model_2"  onClick={this.toggleButton} name = "Bicycle">Bicycle</a></li>
-                <li><a href="#Model_3"  onClick={this.toggleButton} name = "Tricycle">Tricycle</a></li>
+                <li><a href="#Model_1" onClick={this.toggleButton} name="Diff. Drive">Differential Drive</a></li>
+                <li><a href="#Model_2" onClick={this.toggleButton} name="Bicycle">Bicycle</a></li>
+                <li><a href="#Model_3" onClick={this.toggleButton} name="Tricycle">Tricycle</a></li>
               </ul>
             </li>
           </ul>
@@ -100,13 +100,15 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
   }
-//THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   jQueryCodeRET = () => {
+
+    //Does: Creates canvas based off screen size
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
       var sizeWidth = 80 * window.innerWidth / 100,
-      sizeHeight = 60 * window.innerHeight / 100 || 766;
+        sizeHeight = 60 * window.innerHeight / 100 || 766;
       canvas.width = sizeWidth;
       canvas.height = sizeHeight;
       document.getElementById("canvas").remove();
@@ -119,7 +121,7 @@ class Canvas extends React.Component {
     var cw = canvas.width;
     var ch = canvas.height;
     var offsetX, offsetY;
-
+    //Does: Setups canvas so you can draw even after scrolling
     function reOffset() {
       var BB = canvas.getBoundingClientRect();
       offsetX = BB.left;
@@ -127,15 +129,24 @@ class Canvas extends React.Component {
     }
 
     reOffset();
-    window.onscroll = function (e) { reOffset(); }
+    window.onscroll = function (e) {
+      reOffset();
+    }
+
+    //Does: setup drawing
     context.lineWidth = 2;
     context.strokeStyle = 'blue';
 
+    //Does: Initalizes obstacles
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
-
     coordinates.push(innerArray);
+
+    //Does: next mouse sets goal or start
+    var setGoal = false;
+    var setStart = false;
+
     //Does: Creates new array for new object points per object
     $('#done').click(function () {
       isDone = isDone + 1;
@@ -143,7 +154,7 @@ class Canvas extends React.Component {
       coordinates.push(innerArray)
     });
 
-    //Resets all 
+    //Does: Resets all of canvas 
     $('#delete').click(function () {
       context.clearRect(0, 0, cw, ch);
       isDone = 0;
@@ -152,23 +163,37 @@ class Canvas extends React.Component {
       coordinates.push(innerArray);
     });
 
+    //Do: sets up buttons for start and goal for robot 
+    //Do: setup initalize robot pos/ goal position 
+    //Do: setup collision detection when initalizing robot and obstacles 
+    $('#goal').click(function () {
+      setGoal = true;
+      setStart = false;
+    });
+
+    $('#start').click(function () {
+      setStart = true;
+      setGoal = false;
+    });
+    //Does: handles when cavas is clicked
+    //Do: make conditions for goal and start
     $("#canvas").mousedown(function (e) {
       handleMouseDown(e);
     });
 
     function handleMouseDown(e) {
-      //Stops when there is 5 shapes or there the current point has 10 coords.
-      //prevents too many objects
+      //Does: Stops when there is 5 shapes or there the current point has 10 coords.
+      //Does: prevents too many objects
       if (isDone > 5) {
         alert("too much arrays")
         return;
       }
-      //prevents too many points to an object
+      //Does: prevents too many points to an object
       if (coordinates[isDone].length > 10) {
         alert("too many points")
         return;
       }
-      // tell the browser we're handling this event
+      // Does: tell the browser we're handling this event
       e.preventDefault();
       e.stopPropagation();
 
@@ -179,6 +204,7 @@ class Canvas extends React.Component {
       drawPolygon();
     }
 
+    //Does: Draws obstacles
     function drawPolygon() {
 
       context.beginPath();
@@ -201,14 +227,17 @@ class Canvas extends React.Component {
         return true;
       }
     }
+
+
   }
 
   jQueryCodePRM = () => {
+    //Does: Creates canvas based off screen size
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
       var sizeWidth = 80 * window.innerWidth / 100,
-      sizeHeight = 60 * window.innerHeight / 100 || 766;
+        sizeHeight = 60 * window.innerHeight / 100 || 766;
       canvas.width = sizeWidth;
       canvas.height = sizeHeight;
       document.getElementById("canvas").remove();
@@ -221,7 +250,7 @@ class Canvas extends React.Component {
     var cw = canvas.width;
     var ch = canvas.height;
     var offsetX, offsetY;
-
+    //Does: Setups canvas so you can draw even after scrolling
     function reOffset() {
       var BB = canvas.getBoundingClientRect();
       offsetX = BB.left;
@@ -229,21 +258,30 @@ class Canvas extends React.Component {
     }
 
     reOffset();
-    window.onscroll = function (e) { reOffset(); }
-    context.lineWidth = 2;
-    context.strokeStyle = 'blue';
+    window.onscroll = function (e) {
+      reOffset();
+    }
 
+
+
+    //Does: Initalizes obstacles
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
-
     coordinates.push(innerArray);
+
+    //Does: next mouse sets goal or start
+    var setGoal = false;
+    var setStart = false;
+
+    //Does: Creates new array for new object points per object
     $('#done').click(function () {
       isDone = isDone + 1;
       var innerArray = [];
       coordinates.push(innerArray);
     });
 
+    //Does: Resets all of canvas 
     $('#delete').click(function () {
       context.clearRect(0, 0, cw, ch);
       isDone = 0;
@@ -252,38 +290,101 @@ class Canvas extends React.Component {
       coordinates.push(innerArray);
     });
 
-    $("#canvas").mousedown(function (e) {
-      handleMouseDown(e);
+    //Do: sets up buttons for start and goal for robot 
+    //Do: setup initalize robot pos/ goal position 
+    //Do: setup collision detection when initalizing robot and obstacles 
+    $('#goal').click(function () {
+      setGoal = true;
+      setStart = false;
     });
 
-    function handleMouseDown(e) {
-      if (isDone > 5) {
-        alert("too much arrays")
-        return;
+    $('#start').click(function () {
+      setStart = true;
+      setGoal = false;
+    });
+    //Does: handles when cavas is clicked
+    //Do: make conditions for goal and start
+    $("#canvas").mousedown(function (e) {
+      if (setStart) {
+        placeStart(e);
+      } else if (setGoal) {
+        placeGoal(e);
+      } else {
+        drawObstacle(e);
       }
-      if (coordinates[isDone].length > 10) {
-        alert("too many points")
-        return;
-      }
+    });
+    function placeStart(e) {
+      //Do: edgecase for pre drawn obstacles
       e.preventDefault();
       e.stopPropagation();
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'blue';
+      context.fill()
+
+      setStart = false;
+    };
+    function placeGoal(e) {
+      //Do: edgecase for predrawn obstacles
+      e.preventDefault();
+      e.stopPropagation();
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'yellow';
+      context.fill()
+
+      setGoal = false;
+
+    };
+    function drawObstacle(e) {
+      //Does: Stops when there is 5 shapes or there the current point has 10 coords.
+      //Does: prevents too many objects
+      if (isDone > 5) {
+        alert("too much arrays")
+        return;
+      }
+      //Does: prevents too many points to an object
+      if (coordinates[isDone].length > 10) {
+        alert("too many points")
+        return;
+      }
+      // Does: tell the browser we're handling this event
+      e.preventDefault();
+      e.stopPropagation();
+
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
       coordinates[isDone].push({ x: mouseX, y: mouseY });
+
       drawPolygon();
     }
-    function drawPolygon() {
 
+    //Does: Draws obstacles
+    function drawPolygon() {
+      //Does: setup drawing
+      context.lineWidth = 2;
+      context.strokeStyle = 'red';
       context.beginPath();
       context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
       for (var index = 1; index < coordinates[isDone].length; index++) {
         context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
       }
       context.closePath();
-      context.fillStyle = 'blue';
+
+      //Colors/Fills Shapes
+      context.fillStyle = 'red';
       context.fill();
+
       context.stroke();
     }
+
+
+
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
       if (pixel[2] == 255 || pixel[3] == 255) {
@@ -297,7 +398,7 @@ class Canvas extends React.Component {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
       var sizeWidth = 80 * window.innerWidth / 100,
-      sizeHeight = 60 * window.innerHeight / 100 || 766;
+        sizeHeight = 60 * window.innerHeight / 100 || 766;
       canvas.width = sizeWidth;
       canvas.height = sizeHeight;
       document.getElementById("canvas").remove();
@@ -342,6 +443,32 @@ class Canvas extends React.Component {
     }
     reOffset();
     window.onscroll = function (e) { reOffset(); }
+
+
+    //to create animations delete screen and redraw in new position 
+    function testDontImpliment() {
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      //ctx.fillRect(50, 20, 100, 50);
+      //ctx.clearRect(50, 20, 100, 50));
+
+      var rect = { x: 100, y: 100, width: 175, height: 50 };
+
+      // draw the rectangle unrotated
+      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+
+      // draw the rectangle rotated by 45 degrees (==PI/4 radians)
+      ctx.translate(rect.x + rect.width / 2, rect.y + rect.height / 2);
+      ctx.rotate(Math.PI / 4);
+      ctx.translate(-rect.x - rect.width / 2, -rect.y - rect.height / 2);
+
+      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+      var t = 3
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+    };
   }
 
   jQueryCodeTricycle = () => {
@@ -349,7 +476,7 @@ class Canvas extends React.Component {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
       var sizeWidth = 80 * window.innerWidth / 100,
-      sizeHeight = 60 * window.innerHeight / 100 || 766;
+        sizeHeight = 60 * window.innerHeight / 100 || 766;
       canvas.width = sizeWidth;
       canvas.height = sizeHeight;
       document.getElementById("canvas").remove();
@@ -369,10 +496,10 @@ class Canvas extends React.Component {
     reOffset();
     window.onscroll = function (e) { reOffset(); }
   }
-//rendering jQuery code when you first render the Canvas Component
+  //rendering jQuery code when you first render the Canvas Component
   componentDidMount() {
-   
-    switch(this.props.jQuery) {
+
+    switch (this.props.jQuery) {
       case "RET":
         this.jQueryCodeRET();
         break;
@@ -389,10 +516,10 @@ class Canvas extends React.Component {
         this.jQueryCodeTricycle();
         break;
     }
-  } 
-//using JQuery code when you re-render (update) the Canvas Component
+  }
+  //using JQuery code when you re-render (update) the Canvas Component
   componentDidUpdate() {
-    switch(this.props.jQuery) {
+    switch (this.props.jQuery) {
       case "RET":
         this.jQueryCodeRET();
         break;
@@ -467,6 +594,8 @@ class RightDrawingUI extends React.Component {
       <div>
         <button id="done">Click when done assigning points</button>
         <button id="delete">Click to delete all shapes</button>
+        <button id="goal">Click to set goal</button>
+        <button id="start">Click to set start</button>
       </div>
     </div>)
   }
@@ -474,15 +603,15 @@ class RightDrawingUI extends React.Component {
 
 class RightObstacleUI extends React.Component {
   render() {
-    return (<div id = "rightObstacleUI">Obstacle UI
-      <div><img draggable = {true} width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
-      <button id = "Circle">Add a Circle</button>
+    return (<div id="rightObstacleUI">Obstacle UI
+      <div><img draggable={true} width={60} src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle_-_black_simple.svg/500px-Circle_-_black_simple.svg.png"></img>
+        <button id="Circle">Add a Circle</button>
       </div>
-      <div><img width = {60} src = "https://upload.wikimedia.org/wikipedia/commons/2/27/Red_square.svg"></img>
-      <button id = "Square">Add a Square</button></div>
-       <div>
-         <img width = {60}  src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
-      <button id = "Rectangle">Add a Rectangle</button>
+      <div><img width={60} src="https://upload.wikimedia.org/wikipedia/commons/2/27/Red_square.svg"></img>
+        <button id="Square">Add a Square</button></div>
+      <div>
+        <img width={60} src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Rectangle_example.svg/800px-Rectangle_example.svg.png"></img>
+        <button id="Rectangle">Add a Rectangle</button>
       </div></div>)
   }
 }
