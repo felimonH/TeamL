@@ -391,6 +391,8 @@ class Canvas extends React.Component {
         return true;
       }
     }
+
+
   }
 
   jQueryCodeDiffDrive = () => {
@@ -433,29 +435,57 @@ class Canvas extends React.Component {
     establishCanvas()
     var canvas = document.getElementById("canvas");
     var context = canvas.getContext("2d");
-    var cw = canvas.width;
-    var ch = canvas.height;
-    var offsetX, offsetY;
-    function reOffset() {
-      var BB = canvas.getBoundingClientRect();
-      offsetX = BB.left;
-      offsetY = BB.top;
-    }
-    reOffset();
-    window.onscroll = function (e) { reOffset(); }
 
+
+
+    function draw() {
+      var ctx = context;
+      ctx.globalCompositeOperation = 'destination-over';
+      //var rect = { x: 100, y: 100, width: 175, height: 50 };
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+      ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)';
+      ctx.save();
+      ctx.translate(150, 150);
+
+      var time = new Date();
+      ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+      ctx.translate(105, 0);
+      //ctx.fillRect(0, -12, 40, 24); // Shadow
+
+      ctx.fillRect(-12, -12, 60, 60);
+
+      // Moon
+      ctx.save();
+      ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+      context.fillStyle = 'red';
+      ctx.translate(0, 28.5);
+      ctx.fillRect(-3.5, -3.5, 50, 50);
+      ctx.restore();
+
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+      ctx.stroke();
+
+      ctx.fillRect(30, 30, 30, 800);
+
+      window.requestAnimationFrame(draw);
+    }
 
     //to create animations delete screen and redraw in new position 
     function testDontImpliment() {
-      var c = document.getElementById("myCanvas");
+      var c = document.getElementById("canvas");
       var ctx = c.getContext("2d");
 
       //ctx.fillRect(50, 20, 100, 50);
       //ctx.clearRect(50, 20, 100, 50));
-
-      var rect = { x: 100, y: 100, width: 175, height: 50 };
-
       // draw the rectangle unrotated
+
+      alert();
+      var rect = { x: 100, y: 100, width: 175, height: 50 };
       ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
 
       // draw the rectangle rotated by 45 degrees (==PI/4 radians)
@@ -467,8 +497,12 @@ class Canvas extends React.Component {
       var t = 3
 
       context.clearRect(0, 0, canvas.width, canvas.height);
+      num--;
 
     };
+
+    //testDontImpliment()
+    window.requestAnimationFrame(draw);
   }
 
   jQueryCodeTricycle = () => {
