@@ -140,7 +140,7 @@ class Canvas extends React.Component {
     $('#done').click(function () {
       isDone = isDone + 1;
       var innerArray = [];
-      coordinates.push(innerArray);
+      coordinates.push(innerArray)
     });
 
     //Resets all 
