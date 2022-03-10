@@ -141,7 +141,7 @@ class Canvas extends React.Component {
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
-    coordinates.push(innerArray);
+    coordinates.push(innerArray)
 
     //Does: next mouse sets goal or start
     var setGoal = false;
