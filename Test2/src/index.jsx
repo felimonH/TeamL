@@ -37,8 +37,14 @@ class App extends React.Component {
       case 'Tricycle':
         return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
         break;
+      //changing this for testing
       default:
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /></>)
+        //return (<><Navbar toggleButton={this.toggleButton} /><HomePage /></>)
+
+        //return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={'Bicycle'} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={'PRM'} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+
 
     }
   }
@@ -272,7 +278,9 @@ class Canvas extends React.Component {
 
     //Does: next mouse sets goal or start
     var setGoal = false;
+    var goalCoord;
     var setStart = false;
+    var startCoord;
 
     //Does: Creates new array for new object points per object
     $('#done').click(function () {
@@ -324,6 +332,7 @@ class Canvas extends React.Component {
       context.fillStyle = 'blue';
       context.fill()
 
+      startCoord = { x: mouseX, y: mouseY };
       setStart = false;
     };
     function placeGoal(e) {
@@ -338,6 +347,8 @@ class Canvas extends React.Component {
       context.fillStyle = 'yellow';
       context.fill()
 
+
+      goalCoord = { x: mouseX, y: mouseY };
       setGoal = false;
 
     };
@@ -383,7 +394,11 @@ class Canvas extends React.Component {
       context.stroke();
     }
 
-
+    $('#play').click(function () {
+      if (startCoord != undefined) {
+        branch(startCoord.x, startCoord.y);
+      }
+    });
 
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
@@ -391,7 +406,47 @@ class Canvas extends React.Component {
         return true;
       }
     }
+    function branch(x, y) {
+      if (x > 7000) {
+        return;
+      }
 
+      if (x < -400) {
+        return;
+      }
+
+
+      //dot
+      context.beginPath();
+      context.arc(x, y, 10, 0, 2 * Math.PI);
+      context.fillStyle = 'green';
+      context.fill()
+      //split 
+
+      //branch 
+      setTimeout(() => {
+        if (!detectPixel(x + 20, y - 60)) {
+          context.lineWidth = 2;
+          context.strokeStyle = 'yellow';
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x + 20, y - 60);
+          context.stroke();
+          branch(x + 20, y - 60);
+        }
+
+        if (!detectPixel(x + 30, y + 20)) {
+          context.lineWidth = 2;
+          context.strokeStyle = 'red';
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x + 30, y + 20);
+          context.stroke();
+          branch(x + 30, y + 20);
+        }
+      }, 1000);
+
+    }
 
   }
 
@@ -434,9 +489,11 @@ class Canvas extends React.Component {
     }
     establishCanvas()
     var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
+    var ctx = canvas.getContext("2d");
 
-
+    document.getElementById("rightParameterUI").style.gridRowStart = 2;
+    document.getElementById("rightDrawingUI").style.gridRow = 0 / 0;
+    //document.getElementById("rightDrawingUI").style.gridColumn =
 
     function draw() {
       var ctx = context;
@@ -444,16 +501,17 @@ class Canvas extends React.Component {
       //var rect = { x: 100, y: 100, width: 175, height: 50 };
       ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
 
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-      ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)';
-      ctx.save();
-      ctx.translate(150, 150);
 
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2,);
+
+      //earth
       var time = new Date();
       ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
       ctx.translate(105, 0);
       //ctx.fillRect(0, -12, 40, 24); // Shadow
-
+      ctx.fillStyle = 'green';
       ctx.fillRect(-12, -12, 60, 60);
 
       // Moon
@@ -467,42 +525,94 @@ class Canvas extends React.Component {
       ctx.restore();
 
       ctx.beginPath();
-      ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+      ctx.strokeStyle = 'green';
+      ctx.arc(canvas.width / 2, canvas.height / 2, 105, 0, Math.PI * 2, false); // Earth orbit
       ctx.stroke();
 
-      ctx.fillRect(30, 30, 30, 800);
+      //these are not centered 
+      ctx.fillStyle = 'red';
+      var rectWidth = 10;
+      var rectHeight = 10;
+      ctx.fillRect(canvas.width / 2 - rectWidth / 2, canvas.height / 2 - rectHeight / 2, rectWidth, rectHeight);
+      ctx.fillStyle = 'blue';
+      ctx.fillRect(canvas.width / 2, canvas.height / 2, 30, 30);
+
 
       window.requestAnimationFrame(draw);
     }
 
     //to create animations delete screen and redraw in new position 
-    function testDontImpliment() {
-      var c = document.getElementById("canvas");
-      var ctx = c.getContext("2d");
 
-      //ctx.fillRect(50, 20, 100, 50);
-      //ctx.clearRect(50, 20, 100, 50));
-      // draw the rectangle unrotated
 
-      alert();
-      var rect = { x: 100, y: 100, width: 175, height: 50 };
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
 
-      // draw the rectangle rotated by 45 degrees (==PI/4 radians)
-      ctx.translate(rect.x + rect.width / 2, rect.y + rect.height / 2);
-      ctx.rotate(Math.PI / 4);
-      ctx.translate(-rect.x - rect.width / 2, -rect.y - rect.height / 2);
 
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-      var t = 3
 
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      num--;
+    $('#done').click(function () {
 
-    };
+      alert(document.getElementById("degree").value)
 
-    //testDontImpliment()
-    window.requestAnimationFrame(draw);
+    });
+
+    function concept() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+
+      var startX = canvas.width / 2;
+      var startY = canvas.height / 2;
+
+      // draw an unrotated reference rect
+
+      function drawStaticRect() {
+        ctx.beginPath();
+
+        ctx.rect(startX + 50, startY - 10, 200, 30);
+
+        ctx.fillStyle = "blue";
+        ctx.fill();
+      }
+
+
+      // draw a rotated rect
+      drawRotatedRect(startX, startY, 100, 20, document.getElementById("degree").value);
+      drawStaticRect();
+
+
+      function drawRotatedRect(x, y, width, height, degrees) {
+
+        // first save the untranslated/unrotated context
+        ctx.save();
+
+        ctx.beginPath();
+        // move the rotation point to the center of the rect
+        ctx.translate(x + width / 2, y + height / 4);
+        // rotate the rect
+        ctx.rotate(degrees * Math.PI / 180);
+        //ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+
+        // draw the rect on the transformed context
+        // Note: after transforming [0,0] is visually [x,y]
+        //       so the rect needs to be offset accordingly when drawn
+        ctx.rect(-width / 2, -height / 2, width, height);
+
+        ctx.fillStyle = "gold";
+        ctx.fill();
+
+
+
+        // restore the context to its untranslated/unrotated state
+        ctx.restore();
+
+
+
+
+      }
+
+      window.requestAnimationFrame(concept);
+    }
+
+    //testDontImpliment
+    //window.requestAnimationFrame(draw);
+    window.requestAnimationFrame(concept);
   }
 
   jQueryCodeTricycle = () => {
@@ -582,7 +692,7 @@ class LowerControlUI extends React.Component {
 
   jQueryCode = () => {
     $('#play').click(function () {
-      alert("Play functionality must be implemented")
+      //alert("Play functionality must be implemented")
     })
     $('#pause').click(function () {
       alert("Pause functionality must be implemented")
@@ -608,15 +718,22 @@ class RightParameterUI extends React.Component {
   render() {
     return (<div id="rightParameterUI">
       Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-      <label for="parameter_1" id="label_1">Parameter 1:</label>
+      <br></br>
+      <label for="parameter_1" id="label_1">Other:</label>
+      <br></br>
       <input
         type="text"
         placeholder="Search..."
         id="parameter_1"
       />
       <br></br>
-      <label for="parameter_2" id="label_2">Parameter 2:</label>
-      <input type="number" id="parameter_2" />
+      <label for="parameter_2">Speed:</label>
+      <br></br>
+      <input type="number" placeholder="10" id="parameter_2" />
+      <br></br>
+      <label for="degree" >Degree:</label>
+      <br></br>
+      <input type="number" id="degree" placeholder='0'></input>
     </div>)
   }
 }
