@@ -271,6 +271,10 @@ class Canvas extends React.Component {
 
 
     //Does: Initalizes obstacles
+    class UI {
+
+
+    }
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
@@ -284,12 +288,20 @@ class Canvas extends React.Component {
 
     //Does: Creates new array for new object points per object
     $('#done').click(function () {
+      context.fillStyle = 'red';
+      context.fill();
       isDone = isDone + 1;
       var innerArray = [];
       coordinates.push(innerArray);
+
     });
 
-    //Does: Resets all of canvas 
+    //Does: deletes all obstacles
+    $('#clear').click(function () {
+      context.clearRect(0, 0, cw, ch);
+    });
+
+    //Does: Delete all of canvas and objects
     $('#delete').click(function () {
       context.clearRect(0, 0, cw, ch);
       isDone = 0;
@@ -298,9 +310,10 @@ class Canvas extends React.Component {
       coordinates.push(innerArray);
     });
 
-    //Do: sets up buttons for start and goal for robot 
-    //Do: setup initalize robot pos/ goal position 
-    //Do: setup collision detection when initalizing robot and obstacles 
+
+    //Does: sets up buttons for start and goal for robot 
+    //Does: setup initalize robot pos/ goal position 
+    //Does: setup collision detection when initalizing robot and obstacles 
     $('#goal').click(function () {
       setGoal = true;
       setStart = false;
@@ -353,6 +366,7 @@ class Canvas extends React.Component {
 
     };
     function drawObstacle(e) {
+
       //Does: Stops when there is 5 shapes or there the current point has 10 coords.
       //Does: prevents too many objects
       if (isDone > 5) {
@@ -371,33 +385,73 @@ class Canvas extends React.Component {
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
       coordinates[isDone].push({ x: mouseX, y: mouseY });
+      if (coordinates[isDone].length == 1) {
 
-      drawPolygon();
+        context.beginPath();
+        context.moveTo(mouseX, mouseY);
+      } else {
+
+        context.lineWidth = 2;
+        context.strokeStyle = 'red';
+        //context.fillStyle = 'red';
+        context.lineTo(mouseX, mouseY);
+        context.stroke();
+      }
+
+      //drawPolygon();
     }
 
-    //Does: Draws obstacles
-    function drawPolygon() {
+    //Does: Draws all stored obstacles 
+    function drawPolygons() {
       //Does: setup drawing
       context.lineWidth = 2;
       context.strokeStyle = 'red';
-      context.beginPath();
-      context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
-      for (var index = 1; index < coordinates[isDone].length; index++) {
-        context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
-      }
-      context.closePath();
+      for (var obstacle = 0; obstacle < coordinates.length - 1; obstacle++) {
+        context.beginPath();
 
-      //Colors/Fills Shapes
-      context.fillStyle = 'red';
-      context.fill();
+        context.moveTo(coordinates[obstacle][0].x, coordinates[obstacle][0].y);
+        for (var index = 1; index < coordinates[obstacle].length; index++) {
+          context.lineTo(coordinates[obstacle][index].x, coordinates[obstacle][index].y);
+        }
+        context.closePath();
+
+        //Colors/Fills Shapes
+        context.fillStyle = 'red';
+        context.fill();
+
+      }
+
 
       context.stroke();
     }
 
+    //Does: Draw Goal and Start
+    function drawGoalAndStart() {
+      context.beginPath();
+      context.arc(startCoord.x, startCoord.y, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'blue';
+      context.fill()
+
+      context.beginPath();
+      context.arc(goalCoord.x, goalCoord.y, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'yellow';
+      context.fill()
+    }
     $('#play').click(function () {
       if (startCoord != undefined) {
         branch(startCoord.x, startCoord.y);
       }
+    });
+
+    $('#reset').click(function () {
+      if (startCoord != undefined) {
+        branch(startCoord.x, startCoord.y);
+      }
+    });
+
+    $('#resetAlgo').click(function () {
+      drawPolygons();
+      drawGoalAndStart();
     });
 
     function detectPixel(x, y) {
@@ -418,7 +472,7 @@ class Canvas extends React.Component {
 
       //dot
       context.beginPath();
-      context.arc(x, y, 10, 0, 2 * Math.PI);
+      context.arc(x, y, 5, 0, 2 * Math.PI);
       context.fillStyle = 'green';
       context.fill()
       //split 
@@ -695,7 +749,7 @@ class LowerControlUI extends React.Component {
       //alert("Play functionality must be implemented")
     })
     $('#pause').click(function () {
-      alert("Pause functionality must be implemented")
+      //alert("Pause functionality must be implemented")
     })
   }
 
@@ -709,6 +763,10 @@ class LowerControlUI extends React.Component {
       <div>
         <button id="play">Start Simulation</button>
         <button id="pause">Pause Simulation</button>
+        <button id="step">1 Step</button>
+        <button id="line"> Even Smaller Step</button>
+        <button id="resetAlgo"> Reset</button>
+
       </div>
     </div>)
   }
@@ -743,9 +801,15 @@ class RightDrawingUI extends React.Component {
     return (<div id="rightDrawingUI">
       Drawing UI
       <div>
+
         <button id="done">Click when done assigning points</button>
+        <br></br>
+        <button id="clear">Click to clear all obstacles</button>
+        <br></br>
         <button id="delete">Click to delete all shapes</button>
+        <br></br>
         <button id="goal">Click to set goal</button>
+        <br></br>
         <button id="start">Click to set start</button>
       </div>
     </div>)
