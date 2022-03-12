@@ -37,8 +37,14 @@ class App extends React.Component {
       case 'Tricycle':
         return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
         break;
+      //changing this for testing
       default:
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /></>)
+        //return (<><Navbar toggleButton={this.toggleButton} /><HomePage /></>)
+
+        //return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={'Bicycle'} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+
+        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={'PRM'} /><RightDrawingUI /><RightParameterUI /><LowerControlUI /><Footer /></>)
+
 
     }
   }
@@ -265,6 +271,10 @@ class Canvas extends React.Component {
 
 
     //Does: Initalizes obstacles
+    class UI {
+
+
+    }
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
@@ -272,16 +282,26 @@ class Canvas extends React.Component {
 
     //Does: next mouse sets goal or start
     var setGoal = false;
+    var goalCoord;
     var setStart = false;
+    var startCoord;
 
     //Does: Creates new array for new object points per object
     $('#done').click(function () {
+      context.fillStyle = 'red';
+      context.fill();
       isDone = isDone + 1;
       var innerArray = [];
       coordinates.push(innerArray);
+
     });
 
-    //Does: Resets all of canvas 
+    //Does: deletes all obstacles
+    $('#clear').click(function () {
+      context.clearRect(0, 0, cw, ch);
+    });
+
+    //Does: Delete all of canvas and objects
     $('#delete').click(function () {
       context.clearRect(0, 0, cw, ch);
       isDone = 0;
@@ -290,9 +310,10 @@ class Canvas extends React.Component {
       coordinates.push(innerArray);
     });
 
-    //Do: sets up buttons for start and goal for robot 
-    //Do: setup initalize robot pos/ goal position 
-    //Do: setup collision detection when initalizing robot and obstacles 
+
+    //Does: sets up buttons for start and goal for robot 
+    //Does: setup initalize robot pos/ goal position 
+    //Does: setup collision detection when initalizing robot and obstacles 
     $('#goal').click(function () {
       setGoal = true;
       setStart = false;
@@ -324,6 +345,7 @@ class Canvas extends React.Component {
       context.fillStyle = 'blue';
       context.fill()
 
+      startCoord = { x: mouseX, y: mouseY };
       setStart = false;
     };
     function placeGoal(e) {
@@ -338,10 +360,13 @@ class Canvas extends React.Component {
       context.fillStyle = 'yellow';
       context.fill()
 
+
+      goalCoord = { x: mouseX, y: mouseY };
       setGoal = false;
 
     };
     function drawObstacle(e) {
+
       //Does: Stops when there is 5 shapes or there the current point has 10 coords.
       //Does: prevents too many objects
       if (isDone > 5) {
@@ -360,30 +385,74 @@ class Canvas extends React.Component {
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
       coordinates[isDone].push({ x: mouseX, y: mouseY });
+      if (coordinates[isDone].length == 1) {
 
-      drawPolygon();
+        context.beginPath();
+        context.moveTo(mouseX, mouseY);
+      } else {
+
+        context.lineWidth = 2;
+        context.strokeStyle = 'red';
+        //context.fillStyle = 'red';
+        context.lineTo(mouseX, mouseY);
+        context.stroke();
+      }
+
+      //drawPolygon();
     }
 
-    //Does: Draws obstacles
-    function drawPolygon() {
+    //Does: Draws all stored obstacles 
+    function drawPolygons() {
       //Does: setup drawing
       context.lineWidth = 2;
       context.strokeStyle = 'red';
-      context.beginPath();
-      context.moveTo(coordinates[isDone][0].x, coordinates[isDone][0].y);
-      for (var index = 1; index < coordinates[isDone].length; index++) {
-        context.lineTo(coordinates[isDone][index].x, coordinates[isDone][index].y);
-      }
-      context.closePath();
+      for (var obstacle = 0; obstacle < coordinates.length - 1; obstacle++) {
+        context.beginPath();
 
-      //Colors/Fills Shapes
-      context.fillStyle = 'red';
-      context.fill();
+        context.moveTo(coordinates[obstacle][0].x, coordinates[obstacle][0].y);
+        for (var index = 1; index < coordinates[obstacle].length; index++) {
+          context.lineTo(coordinates[obstacle][index].x, coordinates[obstacle][index].y);
+        }
+        context.closePath();
+
+        //Colors/Fills Shapes
+        context.fillStyle = 'red';
+        context.fill();
+
+      }
+
 
       context.stroke();
     }
 
+    //Does: Draw Goal and Start
+    function drawGoalAndStart() {
+      context.beginPath();
+      context.arc(startCoord.x, startCoord.y, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'blue';
+      context.fill()
 
+      context.beginPath();
+      context.arc(goalCoord.x, goalCoord.y, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'yellow';
+      context.fill()
+    }
+    $('#play').click(function () {
+      if (startCoord != undefined) {
+        branch(startCoord.x, startCoord.y);
+      }
+    });
+
+    $('#reset').click(function () {
+      if (startCoord != undefined) {
+        branch(startCoord.x, startCoord.y);
+      }
+    });
+
+    $('#resetAlgo').click(function () {
+      drawPolygons();
+      drawGoalAndStart();
+    });
 
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
@@ -391,6 +460,48 @@ class Canvas extends React.Component {
         return true;
       }
     }
+    function branch(x, y) {
+      if (x > 7000) {
+        return;
+      }
+
+      if (x < -400) {
+        return;
+      }
+
+
+      //dot
+      context.beginPath();
+      context.arc(x, y, 5, 0, 2 * Math.PI);
+      context.fillStyle = 'green';
+      context.fill()
+      //split 
+
+      //branch 
+      setTimeout(() => {
+        if (!detectPixel(x + 20, y - 60)) {
+          context.lineWidth = 2;
+          context.strokeStyle = 'yellow';
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x + 20, y - 60);
+          context.stroke();
+          branch(x + 20, y - 60);
+        }
+
+        if (!detectPixel(x + 30, y + 20)) {
+          context.lineWidth = 2;
+          context.strokeStyle = 'red';
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x + 30, y + 20);
+          context.stroke();
+          branch(x + 30, y + 20);
+        }
+      }, 1000);
+
+    }
+
   }
 
   jQueryCodeDiffDrive = () => {
@@ -432,43 +543,130 @@ class Canvas extends React.Component {
     }
     establishCanvas()
     var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var cw = canvas.width;
-    var ch = canvas.height;
-    var offsetX, offsetY;
-    function reOffset() {
-      var BB = canvas.getBoundingClientRect();
-      offsetX = BB.left;
-      offsetY = BB.top;
-    }
-    reOffset();
-    window.onscroll = function (e) { reOffset(); }
+    var ctx = canvas.getContext("2d");
 
+    document.getElementById("rightParameterUI").style.gridRowStart = 2;
+    document.getElementById("rightDrawingUI").style.gridRow = 0 / 0;
+    //document.getElementById("rightDrawingUI").style.gridColumn =
+
+    function draw() {
+      var ctx = context;
+      ctx.globalCompositeOperation = 'destination-over';
+      //var rect = { x: 100, y: 100, width: 175, height: 50 };
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+
+
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2,);
+
+      //earth
+      var time = new Date();
+      ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+      ctx.translate(105, 0);
+      //ctx.fillRect(0, -12, 40, 24); // Shadow
+      ctx.fillStyle = 'green';
+      ctx.fillRect(-12, -12, 60, 60);
+
+      // Moon
+      ctx.save();
+      ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+      context.fillStyle = 'red';
+      ctx.translate(0, 28.5);
+      ctx.fillRect(-3.5, -3.5, 50, 50);
+      ctx.restore();
+
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.strokeStyle = 'green';
+      ctx.arc(canvas.width / 2, canvas.height / 2, 105, 0, Math.PI * 2, false); // Earth orbit
+      ctx.stroke();
+
+      //these are not centered 
+      ctx.fillStyle = 'red';
+      var rectWidth = 10;
+      var rectHeight = 10;
+      ctx.fillRect(canvas.width / 2 - rectWidth / 2, canvas.height / 2 - rectHeight / 2, rectWidth, rectHeight);
+      ctx.fillStyle = 'blue';
+      ctx.fillRect(canvas.width / 2, canvas.height / 2, 30, 30);
+
+
+      window.requestAnimationFrame(draw);
+    }
 
     //to create animations delete screen and redraw in new position 
-    function testDontImpliment() {
-      var c = document.getElementById("myCanvas");
-      var ctx = c.getContext("2d");
 
-      //ctx.fillRect(50, 20, 100, 50);
-      //ctx.clearRect(50, 20, 100, 50));
 
-      var rect = { x: 100, y: 100, width: 175, height: 50 };
 
-      // draw the rectangle unrotated
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
 
-      // draw the rectangle rotated by 45 degrees (==PI/4 radians)
-      ctx.translate(rect.x + rect.width / 2, rect.y + rect.height / 2);
-      ctx.rotate(Math.PI / 4);
-      ctx.translate(-rect.x - rect.width / 2, -rect.y - rect.height / 2);
 
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-      var t = 3
+    $('#done').click(function () {
 
-      context.clearRect(0, 0, canvas.width, canvas.height);
+      alert(document.getElementById("degree").value)
 
-    };
+    });
+
+    function concept() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+
+      var startX = canvas.width / 2;
+      var startY = canvas.height / 2;
+
+      // draw an unrotated reference rect
+
+      function drawStaticRect() {
+        ctx.beginPath();
+
+        ctx.rect(startX + 50, startY - 10, 200, 30);
+
+        ctx.fillStyle = "blue";
+        ctx.fill();
+      }
+
+
+      // draw a rotated rect
+      drawRotatedRect(startX, startY, 100, 20, document.getElementById("degree").value);
+      drawStaticRect();
+
+
+      function drawRotatedRect(x, y, width, height, degrees) {
+
+        // first save the untranslated/unrotated context
+        ctx.save();
+
+        ctx.beginPath();
+        // move the rotation point to the center of the rect
+        ctx.translate(x + width / 2, y + height / 4);
+        // rotate the rect
+        ctx.rotate(degrees * Math.PI / 180);
+        //ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+
+        // draw the rect on the transformed context
+        // Note: after transforming [0,0] is visually [x,y]
+        //       so the rect needs to be offset accordingly when drawn
+        ctx.rect(-width / 2, -height / 2, width, height);
+
+        ctx.fillStyle = "gold";
+        ctx.fill();
+
+
+
+        // restore the context to its untranslated/unrotated state
+        ctx.restore();
+
+
+
+
+      }
+
+      window.requestAnimationFrame(concept);
+    }
+
+    //testDontImpliment
+    //window.requestAnimationFrame(draw);
+    window.requestAnimationFrame(concept);
   }
 
   jQueryCodeTricycle = () => {
@@ -548,10 +746,10 @@ class LowerControlUI extends React.Component {
 
   jQueryCode = () => {
     $('#play').click(function () {
-      alert("Play functionality must be implemented")
+      //alert("Play functionality must be implemented")
     })
     $('#pause').click(function () {
-      alert("Pause functionality must be implemented")
+      //alert("Pause functionality must be implemented")
     })
   }
 
@@ -565,6 +763,10 @@ class LowerControlUI extends React.Component {
       <div>
         <button id="play">Start Simulation</button>
         <button id="pause">Pause Simulation</button>
+        <button id="step">1 Step</button>
+        <button id="line"> Even Smaller Step</button>
+        <button id="resetAlgo"> Reset</button>
+
       </div>
     </div>)
   }
@@ -574,15 +776,22 @@ class RightParameterUI extends React.Component {
   render() {
     return (<div id="rightParameterUI">
       Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-      <label for="parameter_1" id="label_1">Parameter 1:</label>
+      <br></br>
+      <label for="parameter_1" id="label_1">Other:</label>
+      <br></br>
       <input
         type="text"
         placeholder="Search..."
         id="parameter_1"
       />
       <br></br>
-      <label for="parameter_2" id="label_2">Parameter 2:</label>
-      <input type="number" id="parameter_2" />
+      <label for="parameter_2">Speed:</label>
+      <br></br>
+      <input type="number" placeholder="10" id="parameter_2" />
+      <br></br>
+      <label for="degree" >Degree:</label>
+      <br></br>
+      <input type="number" id="degree" placeholder='0'></input>
     </div>)
   }
 }
@@ -592,9 +801,15 @@ class RightDrawingUI extends React.Component {
     return (<div id="rightDrawingUI">
       Drawing UI
       <div>
+
         <button id="done">Click when done assigning points</button>
+        <br></br>
+        <button id="clear">Click to clear all obstacles</button>
+        <br></br>
         <button id="delete">Click to delete all shapes</button>
+        <br></br>
         <button id="goal">Click to set goal</button>
+        <br></br>
         <button id="start">Click to set start</button>
       </div>
     </div>)
