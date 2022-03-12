@@ -201,7 +201,7 @@ class Canvas extends React.Component {
       var mouseY = parseInt(e.clientY - offsetY);
       coordinates[isDone].push({ x: mouseX, y: mouseY });
 
-      drawPolygon();
+      drawPolygon()
     }
 
     //Does: Draws obstacles
