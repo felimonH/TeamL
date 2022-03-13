@@ -14,7 +14,11 @@ body {
   font-size: 12px;
   background-color: black;
 }
-
+button {
+  padding: 10px;
+  margin: 10px;
+  border: 1px purple solid;
+}
 .center {
   height: 20vh;
   width: 100vw;
@@ -66,7 +70,7 @@ body {
   border-radius: 5px;
   grid-column-start: 2;
   grid-column-end: 3;
-  grid-row-start: 3;
+  grid-row-start: 2;
   grid-row-end: 5;
   background-color: #9d79bc;
 }
@@ -76,7 +80,7 @@ body {
   grid-column-start: 2;
   grid-column-end: 3;
   grid-row-start: 2;
-  grid-row-end: 3;
+  grid-row-end: 5;
   background-color: #45d4c6;
 }
 

@@ -49,11 +49,11 @@ class diff {
     
         robot_path.push([x, y]);
     
-        loopy = 0;
+        var loopy = 0;
     
         while ( loopy < 100 ) {
             t += t_step;
-            let result = robotStep(r_l, r_r, L, u_l, u_r, x, y, theta, t_step);
+            let result = this.robotStep(r_l, r_r, L, u_l, u_r, x, y, theta, t_step);
             robot_path.push([result[0], result[1]]);
             loopy += 1;
         }
@@ -64,3 +64,5 @@ class diff {
 
 
 }
+const p = new diff(2, 3, 3, 4, 4, 5, 5, 90);
+p.main(2, 3, 3, 4, 4, 5, 5, 90)
