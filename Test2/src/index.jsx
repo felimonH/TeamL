@@ -11,14 +11,22 @@ class App extends React.Component {
       default: true,
       filterText: '',
       page: '',
+      degree: 0,
     };
     this.toggleButton = this.toggleButton.bind(this)
+    this.handleDegreeChange = this.handleDegreeChange.bind(this)
   }
   toggleButton = (num) => {
     this.setState({ page: num }, () => {
       console.log('');
     });
   };
+
+   handleDegreeChange = (num) => {
+    this.setState({ degree: num }, () => {
+      console.log('');
+    });
+  }
   
   //rendering components conditionally based on what tab you clicked on: (this.state.page). Right now, all tabs are rendering the same stuff but that can be changed. 
   render() {
@@ -30,10 +38,10 @@ class App extends React.Component {
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onDegreeChange = {this.handleDegreeChange} jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
         break;
       case 'Bicycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} stat = {this.state.degree} /><RightParameterUI onDegreeChange = {this.handleDegreeChange} jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
         break;
       case 'Tricycle':
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
@@ -104,9 +112,10 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
   }
+  
   //THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   jQueryCodeRET = () => {
-
+    
     //Does: Creates canvas based off screen size
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
@@ -529,7 +538,10 @@ class Canvas extends React.Component {
     window.onscroll = function (e) { reOffset(); }
   }
 
+
+
   jQueryCodeBicycle = () => {
+    var degre = this.props.stat
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
@@ -624,7 +636,8 @@ class Canvas extends React.Component {
 
       //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       // draw a rotated rect
-      drawRotatedRect(startX, startY, 100, 20, document.getElementById("degree").value);
+    
+      drawRotatedRect(startX, startY, 100, 20, degre);
       drawStaticRect();
 
 
@@ -774,11 +787,10 @@ class RightParameterUI extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      updated_1: false,
-      updated_2: false,
-      updated_3: false,
-    }
+     this.handleDegreeChange = this.handleDegreeChange.bind(this);
+  }
+  handleDegreeChange(e) {
+    this.props.onDegreeChange(e.target.value);
   }
   render() {
     switch (this.props.jQuery) {
@@ -821,7 +833,7 @@ class RightParameterUI extends React.Component {
       <br></br>
       <label for="degree" >Degree:</label>
       <br></br>
-      <input type="number" id="degree" placeholder='0'></input>
+      <input type="number" id="degree" placeholder='0'onChange = {this.handleDegreeChange}></input>
     </div>)
       case 'Tricycle':
         return (<div id="rightParameterUI">
