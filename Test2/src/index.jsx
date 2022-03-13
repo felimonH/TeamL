@@ -24,19 +24,19 @@ class App extends React.Component {
   render() {
     switch (this.state.page) {
       case 'RET':
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'PRM':
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
         break;
       case 'Bicycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
         break;
       case 'Tricycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><HomePage /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
         break;
       //changing this for testing
       default:
