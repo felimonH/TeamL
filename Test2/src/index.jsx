@@ -541,6 +541,7 @@ class Canvas extends React.Component {
 
 
   jQueryCodeBicycle = () => {
+    //f
     var degre = this.props.stat
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
