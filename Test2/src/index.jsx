@@ -620,6 +620,10 @@ class Canvas extends React.Component {
         });
         */
 
+    //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
+    //Do: Use current JS code (other folder) to change poistion and redraw below 
+    //Do: 
+
     function concept() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
