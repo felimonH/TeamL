@@ -22,29 +22,29 @@ class App extends React.Component {
     });
   };
 
-   handleDegreeChange = (num) => {
+  handleDegreeChange = (num) => {
     this.setState({ degree: num }, () => {
       console.log('');
     });
   }
-  
+
   //rendering components conditionally based on what tab you clicked on: (this.state.page). Right now, all tabs are rendering the same stuff but that can be changed. 
   render() {
     switch (this.state.page) {
       case 'RET':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'PRM':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onDegreeChange = {this.handleDegreeChange} jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onDegreeChange={this.handleDegreeChange} jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       case 'Bicycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} stat = {this.state.degree} /><RightParameterUI onDegreeChange = {this.handleDegreeChange} jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} stat={this.state.degree} /><RightParameterUI onDegreeChange={this.handleDegreeChange} jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       case 'Tricycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       //changing this for testing
       default:
@@ -112,10 +112,10 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   //THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   jQueryCodeRET = () => {
-    
+
     //Does: Creates canvas based off screen size
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
@@ -445,29 +445,32 @@ class Canvas extends React.Component {
       context.fillStyle = 'yellow';
       context.fill()
     }
+    //Does: Plays algo
     $('#play').click(function () {
       if (startCoord != undefined) {
         branch(startCoord.x, startCoord.y);
       }
     });
-
+    //Does:  
     $('#reset').click(function () {
       if (startCoord != undefined) {
         branch(startCoord.x, startCoord.y);
       }
     });
-
+    //Does: redraws obstacles and goal and start
     $('#resetAlgo').click(function () {
       drawPolygons();
       drawGoalAndStart();
     });
 
+    //Does: Detects pixel and returns true if it is blank 
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
       if (pixel[2] == 255 || pixel[3] == 255) {
         return true;
       }
     }
+    //Does: test branch algo No actual just some BS
     function branch(x, y) {
       if (x > 7000) {
         return;
@@ -609,13 +612,13 @@ class Canvas extends React.Component {
 
 
 
-/*
-    $('#done').click(function () {
-
-      alert(document.getElementById("degree").value)
-
-    });
-    */
+    /*
+        $('#done').click(function () {
+    
+          alert(document.getElementById("degree").value)
+    
+        });
+        */
 
     function concept() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -637,7 +640,7 @@ class Canvas extends React.Component {
 
       //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       // draw a rotated rect
-    
+
       drawRotatedRect(startX, startY, 100, 20, degre);
       drawStaticRect();
 
@@ -788,7 +791,7 @@ class RightParameterUI extends React.Component {
   constructor(props) {
     super(props);
 
-     this.handleDegreeChange = this.handleDegreeChange.bind(this);
+    this.handleDegreeChange = this.handleDegreeChange.bind(this);
   }
   handleDegreeChange(e) {
     this.props.onDegreeChange(e.target.value);
@@ -797,103 +800,104 @@ class RightParameterUI extends React.Component {
     switch (this.props.jQuery) {
       case 'Diff. Drive':
         return (<div id="rightParameterUI">
-      Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2"/>
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>)
+          Parameters (just as a reminder for the future, we need to do error checking on all parameters)
+          <br></br>
+          <label for="parameter_1" id="label_1">Other:</label>
+          <br></br>
+          <input
+            type="text"
+            placeholder="Search..."
+            id="parameter_1"
+          />
+          <br></br>
+          <label for="parameter_2">Speed:</label>
+          <br></br>
+          <input type="number" placeholder="10" id="parameter_2" />
+          <br></br>
+          <label for="degree" >Degree:</label>
+          <br></br>
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>)
       case 'Bicycle':
         return (<div id="rightParameterUI">
-      Parameter (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-  
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2" />
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'onChange = {this.handleDegreeChange}></input>
-    </div>)
+          Parameter (just as a reminder for the future, we need to do error checking on all parameters)
+          <br></br>
+          <label for="parameter_1" id="label_1">Other:</label>
+          <br></br>
+          <input
+            type="text"
+            placeholder="Search..."
+            id="parameter_1"
+
+          />
+          <br></br>
+          <label for="parameter_2">Speed:</label>
+          <br></br>
+          <input type="number" placeholder="10" id="parameter_2" />
+          <br></br>
+          <label for="degree" >Degree:</label>
+          <br></br>
+          <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
+        </div>)
       case 'Tricycle':
         return (<div id="rightParameterUI">
-      Parametes (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-        
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2"/>
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>)
+          Parametes (just as a reminder for the future, we need to do error checking on all parameters)
+          <br></br>
+          <label for="parameter_1" id="label_1">Other:</label>
+          <br></br>
+          <input
+            type="text"
+            placeholder="Search..."
+            id="parameter_1"
 
-    //for some reason, switching between bicycle and one of the pathfinding algorithms causes an unforseen error because the jQueryCode is still checking for a parameter for some reason. This is a 
-    //way to fix it for now, just render an input that will be overwritten
+          />
+          <br></br>
+          <label for="parameter_2">Speed:</label>
+          <br></br>
+          <input type="number" placeholder="10" id="parameter_2" />
+          <br></br>
+          <label for="degree" >Degree:</label>
+          <br></br>
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>)
+
+      //for some reason, switching between bicycle and one of the pathfinding algorithms causes an unforseen error because the jQueryCode is still checking for a parameter for some reason. This is a 
+      //way to fix it for now, just render an input that will be overwritten
       case 'PRM':
         return (<div id="rightParameterUI">
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>
-      )
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>
+        )
       case 'RET':
         return (<div id="rightParameterUI">
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>
-      )
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>
+        )
     }
-      /*
-    return (<div id="rightParameterUI">
-      Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2" />
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>)
+    /*
+  return (<div id="rightParameterUI">
+    Parameters (just as a reminder for the future, we need to do error checking on all parameters)
+    <br></br>
+    <label for="parameter_1" id="label_1">Other:</label>
+    <br></br>
+    <input
+      type="text"
+      placeholder="Search..."
+      id="parameter_1"
+    />
+    <br></br>
+    <label for="parameter_2">Speed:</label>
+    <br></br>
+    <input type="number" placeholder="10" id="parameter_2" />
+    <br></br>
+    <label for="degree" >Degree:</label>
+    <br></br>
+    <input type="number" id="degree" placeholder='0'></input>
+  </div>)
+}
+*/
   }
-  */
-}}
+}
 
 class RightDrawingUI extends React.Component {
   render() {
