@@ -561,51 +561,7 @@ class Canvas extends React.Component {
     var ctx = canvas.getContext("2d");
     //document.getElementById("rightDrawingUI").style.gridColumn =
 
-    function draw() {
-      var ctx = context;
-      ctx.globalCompositeOperation = 'destination-over';
-      //var rect = { x: 100, y: 100, width: 175, height: 50 };
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
 
-
-
-      ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height / 2,);
-
-      //earth
-      var time = new Date();
-      ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
-      ctx.translate(105, 0);
-      //ctx.fillRect(0, -12, 40, 24); // Shadow
-      ctx.fillStyle = 'green';
-      ctx.fillRect(-12, -12, 60, 60);
-
-      // Moon
-      ctx.save();
-      ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
-      context.fillStyle = 'red';
-      ctx.translate(0, 28.5);
-      ctx.fillRect(-3.5, -3.5, 50, 50);
-      ctx.restore();
-
-      ctx.restore();
-
-      ctx.beginPath();
-      ctx.strokeStyle = 'green';
-      ctx.arc(canvas.width / 2, canvas.height / 2, 105, 0, Math.PI * 2, false); // Earth orbit
-      ctx.stroke();
-
-      //these are not centered 
-      ctx.fillStyle = 'red';
-      var rectWidth = 10;
-      var rectHeight = 10;
-      ctx.fillRect(canvas.width / 2 - rectWidth / 2, canvas.height / 2 - rectHeight / 2, rectWidth, rectHeight);
-      ctx.fillStyle = 'blue';
-      ctx.fillRect(canvas.width / 2, canvas.height / 2, 30, 30);
-
-
-      window.requestAnimationFrame(draw);
-    }
 
     //to create animations delete screen and redraw in new position 
 
@@ -627,7 +583,7 @@ class Canvas extends React.Component {
     function concept() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-
+      //Does: Sets Focul point to center of canvas
       var startX = canvas.width / 2;
       var startY = canvas.height / 2;
 
@@ -635,7 +591,7 @@ class Canvas extends React.Component {
 
       function drawStaticRect() {
         ctx.beginPath();
-
+        //just an offset to preposition the seperate drawing 
         ctx.rect(startX + 50, startY - 10, 200, 30);
 
         ctx.fillStyle = "blue";
@@ -643,6 +599,7 @@ class Canvas extends React.Component {
       }
 
       //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
       // draw a rotated rect
 
       drawRotatedRect(startX, startY, 100, 20, degre);
@@ -682,8 +639,6 @@ class Canvas extends React.Component {
       window.requestAnimationFrame(concept);
     }
 
-    //testDontImpliment
-    //window.requestAnimationFrame(draw);
     window.requestAnimationFrame(concept);
   }
 
@@ -835,13 +790,23 @@ class RightParameterUI extends React.Component {
 
           />
           <br></br>
-          <label for="parameter_2">Speed:</label>
+          <label for="fRadius">Front Wheel Radius:</label>
           <br></br>
-          <input type="number" placeholder="10" id="parameter_2" />
+          <input type="number" placeholder="10" id="fRadius" />
           <br></br>
           <label for="degree" >Degree:</label>
           <br></br>
           <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
+          <br></br>
+          <label for="paraDistFrontToBack">Distance front to back:</label>
+          <br></br>
+          <input type="number" placeholder="10" id="paraDistFrontToBack" />
+          <br></br>
+          <label for="AnglularVelocity">Anglular Velocity:</label>
+          <br></br>
+          <input type="number" placeholder="10" id="AnglularVelocity" />
+
+
         </div>)
       case 'Tricycle':
         return (<div id="rightParameterUI">
