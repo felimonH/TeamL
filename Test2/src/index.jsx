@@ -13,8 +13,11 @@ class App extends React.Component {
       page: '',
       degree: 0,
     };
-    this.toggleButton = this.toggleButton.bind(this)
-    this.handleDegreeChange = this.handleDegreeChange.bind(this)
+    this.toggleButton = this.toggleButton.bind(this);
+    this.handleDegreeChange = this.handleDegreeChange.bind(this);
+    this.handleDistF2BChange = this.handleDistF2BChange.bind(this);
+    this.handleAngularVelocityChange = this.handleAngularVelocityChange.bind(this);
+    this.handleFrontWheelRadiusChange = this.handleFrontWheelRadiusChange.bind(this)
   }
   toggleButton = (num) => {
     this.setState({ page: num }, () => {
@@ -24,6 +27,22 @@ class App extends React.Component {
 
   handleDegreeChange = (num) => {
     this.setState({ degree: num }, () => {
+      console.log('');
+    });
+  }
+
+  handleDistF2BChange = (num) => {
+    this.setState({ DistFrontToBack: num }, () => {
+      console.log('');
+    });
+  }
+  handleAngularVelocityChange = (num) => {
+    this.setState({ AnglularVelocity: num }, () => {
+      console.log('');
+    });
+  }
+  handleFrontWheelRadiusChange = (num) => {
+    this.setState({ fRadius: num }, () => {
       console.log('');
     });
   }
@@ -38,10 +57,22 @@ class App extends React.Component {
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onDegreeChange={this.handleDegreeChange} jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onDegreeChange={this.handleDegreeChange} onDistF2BChange={this.handleDistF2BChange} jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       case 'Bicycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} stat={this.state.degree} /><RightParameterUI onDegreeChange={this.handleDegreeChange} jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page}
+          degre={this.state.degree}
+          AnglularVelocity={this.state.AnglularVelocity}
+          DistFrontToBack={this.state.DistFrontToBack}
+          fRadius={this.state.fRadius}
+
+        /><RightParameterUI
+            onAngularVelocityChange={this.handleAngularVelocityChange}
+            onDegreeChange={this.handleDegreeChange}
+
+            onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
+            onDistF2BChange={this.handleDistF2BChange}
+            jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       case 'Tricycle':
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
@@ -545,7 +576,15 @@ class Canvas extends React.Component {
 
   jQueryCodeBicycle = () => {
     //f
-    var degre = this.props.stat
+    var degre = this.props.degre;
+
+    var degre = this.props.DistFrontToBack;
+    //var degre = this.props.fRadius;
+    var degre = this.props.AnglularVelocity;
+
+
+
+
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
@@ -587,6 +626,14 @@ class Canvas extends React.Component {
       var startX = canvas.width / 2;
       var startY = canvas.height / 2;
 
+
+      //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+      // draw a rotated rect
+
+      drawRotatedRect(startX, startY, 100, 20, degre);
+      drawStaticRect();
+
       // draw an unrotated reference rect
 
       function drawStaticRect() {
@@ -597,15 +644,6 @@ class Canvas extends React.Component {
         ctx.fillStyle = "blue";
         ctx.fill();
       }
-
-      //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-      // draw a rotated rect
-
-      drawRotatedRect(startX, startY, 100, 20, degre);
-      drawStaticRect();
-
-
       function drawRotatedRect(x, y, width, height, degrees) {
 
         // first save the untranslated/unrotated context
@@ -751,10 +789,24 @@ class RightParameterUI extends React.Component {
     super(props);
 
     this.handleDegreeChange = this.handleDegreeChange.bind(this);
+    this.handleAngularVelocityChange = this.handleAngularVelocityChange.bind(this);
+    this.handleFrontWheelRadiusChange = this.handleFrontWheelRadiusChange.bind(this);
+    this.handleDistF2BChange = this.handleDistF2BChange.bind(this);
+
   }
+  handleDistF2BChange(e) {
+    this.props.onDistF2BChange(e.target.value);
+  };
   handleDegreeChange(e) {
     this.props.onDegreeChange(e.target.value);
-  }
+  };
+  handleAngularVelocityChange(e) {
+    this.props.onAngularVelocityChange(e.target.value);
+  };
+  handleFrontWheelRadiusChange(e) {
+    this.props.onFrontWheelRadiusChange(e.target.value);
+  };
+
   render() {
     switch (this.props.jQuery) {
       case 'Diff. Drive':
@@ -792,20 +844,22 @@ class RightParameterUI extends React.Component {
           <br></br>
           <label for="fRadius">Front Wheel Radius:</label>
           <br></br>
-          <input type="number" placeholder="10" id="fRadius" />
+          <input type="number" id="fRadius" placeholder='0' onChange={this.handleFrontWheelRadiusChange}></input>
           <br></br>
+
           <label for="degree" >Degree:</label>
           <br></br>
           <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
           <br></br>
-          <label for="paraDistFrontToBack">Distance front to back:</label>
+
+          <label for="DistFrontToBack">Distance front to back:</label>
           <br></br>
-          <input type="number" placeholder="10" id="paraDistFrontToBack" />
+          <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
           <br></br>
+
           <label for="AnglularVelocity">Anglular Velocity:</label>
           <br></br>
-          <input type="number" placeholder="10" id="AnglularVelocity" />
-
+          <input type="number" id="AnglularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
 
         </div>)
       case 'Tricycle':
