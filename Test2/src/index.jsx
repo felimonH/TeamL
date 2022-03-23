@@ -454,14 +454,10 @@ class Canvas extends React.Component {
           context.lineTo(coordinates[obstacle][index].x, coordinates[obstacle][index].y);
         }
         context.closePath();
-
         //Colors/Fills Shapes
         context.fillStyle = 'red';
         context.fill();
-
       }
-
-
       context.stroke();
     }
 
@@ -542,9 +538,7 @@ class Canvas extends React.Component {
           branch(x + 30, y + 20);
         }
       }, 1000);
-
     }
-
   }
 
   jQueryCodeDiffDrive = () => {
@@ -573,8 +567,6 @@ class Canvas extends React.Component {
     window.onscroll = function (e) { reOffset(); }
   }
 
-
-
   jQueryCodeBicycle = () => {
     //f
 
@@ -594,16 +586,7 @@ class Canvas extends React.Component {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     //document.getElementById("rightDrawingUI").style.gridColumn =
-
-
-
     //to create animations delete screen and redraw in new position 
-
-
-
-
-
-
     //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
     //Do: Use current JS code (other folder) to change poistion and redraw below 
     //Do: 

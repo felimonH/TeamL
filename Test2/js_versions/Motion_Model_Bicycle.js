@@ -56,7 +56,7 @@ class cycles {
     
         if ( alpha == 0 ) {
         
-            result = straightMotion(v, x, y, theta, t);
+            result = this.straightMotion(v, x, y, theta, t);
         
         } else {
         
@@ -64,7 +64,7 @@ class cycles {
             let omega = v/Math.sqrt(d**2 + R**2);
             let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
     
-            result = forwardKinematics(R, omega, ICC, x,y, theta, t);
+            result = this.forwardKinematics(R, omega, ICC, x,y, theta, t);
         
         }
     
@@ -83,7 +83,7 @@ class cycles {
     
         while ( loopy < 50 ) {
             t += t_step;
-            let result = robotStep(r, d, u, alpha, x, y, theta, t_step);
+            let result = this.robotStep(r, d, u, alpha, x, y, theta, t_step);
             robot_path.push([result[0], result[1]]);
             loopy += 1;
         }
