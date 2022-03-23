@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import cycles from "/js_versions/Motion_Model_Bicycle.js";
 
 class App extends React.Component {
   /*TO SUMMARIZE, THE APP CLASS MANAGES ALL STATE CHANGES AND ACTS ALMOST LIKE A PARENT CLASS. THE TERM 'CLASS' AND 'COMPONENT' ARE USED
@@ -13,8 +14,11 @@ class App extends React.Component {
       page: '',
       degree: 0,
     };
-    this.toggleButton = this.toggleButton.bind(this)
-    this.handleDegreeChange = this.handleDegreeChange.bind(this)
+    this.toggleButton = this.toggleButton.bind(this);
+    this.handleDegreeChange = this.handleDegreeChange.bind(this);
+    this.handleDistF2BChange = this.handleDistF2BChange.bind(this);
+    this.handleAngularVelocityChange = this.handleAngularVelocityChange.bind(this);
+    this.handleFrontWheelRadiusChange = this.handleFrontWheelRadiusChange.bind(this)
   }
   toggleButton = (num) => {
     this.setState({ page: num }, () => {
@@ -22,29 +26,57 @@ class App extends React.Component {
     });
   };
 
-   handleDegreeChange = (num) => {
+  handleDegreeChange = (num) => {
     this.setState({ degree: num }, () => {
       console.log('');
     });
   }
-  
+
+  handleDistF2BChange = (num) => {
+    this.setState({ DistFrontToBack: num }, () => {
+      console.log('');
+    });
+  }
+  handleAngularVelocityChange = (num) => {
+    this.setState({ AnglularVelocity: num }, () => {
+      console.log('');
+    });
+  }
+  handleFrontWheelRadiusChange = (num) => {
+    this.setState({ fRadius: num }, () => {
+      console.log('');
+    });
+  }
+
   //rendering components conditionally based on what tab you clicked on: (this.state.page). Right now, all tabs are rendering the same stuff but that can be changed. 
   render() {
     switch (this.state.page) {
       case 'RET':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'PRM':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><RightDrawingUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onDegreeChange = {this.handleDegreeChange} jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onDegreeChange={this.handleDegreeChange} onDistF2BChange={this.handleDistF2BChange} jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       case 'Bicycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} stat = {this.state.degree} /><RightParameterUI onDegreeChange = {this.handleDegreeChange} jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page}
+          degre={this.state.degree}
+          AnglularVelocity={this.state.AnglularVelocity}
+          DistFrontToBack={this.state.DistFrontToBack}
+          fRadius={this.state.fRadius}
+
+        /><RightParameterUI
+            onAngularVelocityChange={this.handleAngularVelocityChange}
+            onDegreeChange={this.handleDegreeChange}
+
+            onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
+            onDistF2BChange={this.handleDistF2BChange}
+            jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       case 'Tricycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page}/><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><LowerControlUI /><Footer /></>)
         break;
       //changing this for testing
       default:
@@ -112,10 +144,10 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   //THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   jQueryCodeRET = () => {
-    
+
     //Does: Creates canvas based off screen size
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
@@ -422,14 +454,10 @@ class Canvas extends React.Component {
           context.lineTo(coordinates[obstacle][index].x, coordinates[obstacle][index].y);
         }
         context.closePath();
-
         //Colors/Fills Shapes
         context.fillStyle = 'red';
         context.fill();
-
       }
-
-
       context.stroke();
     }
 
@@ -445,29 +473,32 @@ class Canvas extends React.Component {
       context.fillStyle = 'yellow';
       context.fill()
     }
+    //Does: Plays algo
     $('#play').click(function () {
       if (startCoord != undefined) {
         branch(startCoord.x, startCoord.y);
       }
     });
-
+    //Does:  
     $('#reset').click(function () {
       if (startCoord != undefined) {
         branch(startCoord.x, startCoord.y);
       }
     });
-
+    //Does: redraws obstacles and goal and start
     $('#resetAlgo').click(function () {
       drawPolygons();
       drawGoalAndStart();
     });
 
+    //Does: Detects pixel and returns true if it is blank 
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
       if (pixel[2] == 255 || pixel[3] == 255) {
         return true;
       }
     }
+    //Does: test branch algo No actual just some BS
     function branch(x, y) {
       if (x > 7000) {
         return;
@@ -507,9 +538,7 @@ class Canvas extends React.Component {
           branch(x + 30, y + 20);
         }
       }, 1000);
-
     }
-
   }
 
   jQueryCodeDiffDrive = () => {
@@ -538,10 +567,11 @@ class Canvas extends React.Component {
     window.onscroll = function (e) { reOffset(); }
   }
 
-
-
   jQueryCodeBicycle = () => {
-    var degre = this.props.stat
+    //f
+
+
+
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
@@ -556,91 +586,48 @@ class Canvas extends React.Component {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     //document.getElementById("rightDrawingUI").style.gridColumn =
-
-    function draw() {
-      var ctx = context;
-      ctx.globalCompositeOperation = 'destination-over';
-      //var rect = { x: 100, y: 100, width: 175, height: 50 };
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
-
-
-
-      ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height / 2,);
-
-      //earth
-      var time = new Date();
-      ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
-      ctx.translate(105, 0);
-      //ctx.fillRect(0, -12, 40, 24); // Shadow
-      ctx.fillStyle = 'green';
-      ctx.fillRect(-12, -12, 60, 60);
-
-      // Moon
-      ctx.save();
-      ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
-      context.fillStyle = 'red';
-      ctx.translate(0, 28.5);
-      ctx.fillRect(-3.5, -3.5, 50, 50);
-      ctx.restore();
-
-      ctx.restore();
-
-      ctx.beginPath();
-      ctx.strokeStyle = 'green';
-      ctx.arc(canvas.width / 2, canvas.height / 2, 105, 0, Math.PI * 2, false); // Earth orbit
-      ctx.stroke();
-
-      //these are not centered 
-      ctx.fillStyle = 'red';
-      var rectWidth = 10;
-      var rectHeight = 10;
-      ctx.fillRect(canvas.width / 2 - rectWidth / 2, canvas.height / 2 - rectHeight / 2, rectWidth, rectHeight);
-      ctx.fillStyle = 'blue';
-      ctx.fillRect(canvas.width / 2, canvas.height / 2, 30, 30);
-
-
-      window.requestAnimationFrame(draw);
-    }
-
     //to create animations delete screen and redraw in new position 
+    //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
+    //Do: Use current JS code (other folder) to change poistion and redraw below 
+    //Do: 
+    var degre = this.props.degre;
+
+    var DistFrontToBack = this.props.DistFrontToBack;
+    var fRadius = this.props.fRadius;
+    var AnglularVelocity = this.props.AnglularVelocity;
 
 
+    var startX = canvas.width / 2;
+    var startY = canvas.height / 2;
 
+    var notUsedForBikeVariable = 0;
 
-/*
-    $('#done').click(function () {
-
-      alert(document.getElementById("degree").value)
-
-    });
-    */
-
+    const bike = new cycles(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, degre, notUsedForBikeVariable);
+    alert(bike.straightMotion(AnglularVelocity, startX, startY, degre, 1))
     function concept() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      //Does: Sets Focul point to center of canvas
 
 
-      var startX = canvas.width / 2;
-      var startY = canvas.height / 2;
+
+      //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+      // draw a rotated rect
+
+      drawRotatedRect(startX, startY, 100, 20, degre);
+      drawStaticRect();
 
       // draw an unrotated reference rect
 
       function drawStaticRect() {
         ctx.beginPath();
-
+        //just an offset to preposition the seperate drawing 
         ctx.rect(startX + 50, startY - 10, 200, 30);
 
         ctx.fillStyle = "blue";
         ctx.fill();
       }
-
-      //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      // draw a rotated rect
-    
-      drawRotatedRect(startX, startY, 100, 20, degre);
-      drawStaticRect();
-
-
       function drawRotatedRect(x, y, width, height, degrees) {
 
         // first save the untranslated/unrotated context
@@ -674,9 +661,6 @@ class Canvas extends React.Component {
       window.requestAnimationFrame(concept);
     }
 
-    //testDontImpliment
-    //window.requestAnimationFrame(draw);
-    window.requestAnimationFrame(concept);
   }
 
   jQueryCodeTricycle = () => {
@@ -787,112 +771,139 @@ class RightParameterUI extends React.Component {
   constructor(props) {
     super(props);
 
-     this.handleDegreeChange = this.handleDegreeChange.bind(this);
+    this.handleDegreeChange = this.handleDegreeChange.bind(this);
+    this.handleAngularVelocityChange = this.handleAngularVelocityChange.bind(this);
+    this.handleFrontWheelRadiusChange = this.handleFrontWheelRadiusChange.bind(this);
+    this.handleDistF2BChange = this.handleDistF2BChange.bind(this);
+
   }
+  handleDistF2BChange(e) {
+    this.props.onDistF2BChange(e.target.value);
+  };
   handleDegreeChange(e) {
     this.props.onDegreeChange(e.target.value);
-  }
+  };
+  handleAngularVelocityChange(e) {
+    this.props.onAngularVelocityChange(e.target.value);
+  };
+  handleFrontWheelRadiusChange(e) {
+    this.props.onFrontWheelRadiusChange(e.target.value);
+  };
+
   render() {
     switch (this.props.jQuery) {
       case 'Diff. Drive':
         return (<div id="rightParameterUI">
-      Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2"/>
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>)
+          Parameters (just as a reminder for the future, we need to do error checking on all parameters)
+          <br></br>
+          <label for="parameter_1" id="label_1">Other:</label>
+          <br></br>
+          <input
+            type="text"
+            placeholder="Search..."
+            id="parameter_1"
+          />
+          <br></br>
+          <label for="parameter_2">Speed:</label>
+          <br></br>
+          <input type="number" placeholder="10" id="parameter_2" />
+          <br></br>
+          <label for="degree" >Degree:</label>
+          <br></br>
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>)
       case 'Bicycle':
         return (<div id="rightParameterUI">
-      Parameter (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-  
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2" />
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'onChange = {this.handleDegreeChange}></input>
-    </div>)
+          Parameter (just as a reminder for the future, we need to do error checking on all parameters)
+          <br></br>
+          <label for="parameter_1" id="label_1">Other:</label>
+          <br></br>
+          <input
+            type="text"
+            placeholder="Search..."
+            id="parameter_1"
+
+          />
+          <br></br>
+          <label for="fRadius">Front Wheel Radius:</label>
+          <br></br>
+          <input type="number" id="fRadius" placeholder='0' onChange={this.handleFrontWheelRadiusChange}></input>
+          <br></br>
+
+          <label for="degree" >Degree:</label>
+          <br></br>
+          <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
+          <br></br>
+
+          <label for="DistFrontToBack">Distance front to back:</label>
+          <br></br>
+          <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
+          <br></br>
+
+          <label for="AnglularVelocity">Anglular Velocity:</label>
+          <br></br>
+          <input type="number" id="AnglularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
+
+        </div>)
       case 'Tricycle':
         return (<div id="rightParameterUI">
-      Parametes (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-        
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2"/>
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>)
+          Parametes (just as a reminder for the future, we need to do error checking on all parameters)
+          <br></br>
+          <label for="parameter_1" id="label_1">Other:</label>
+          <br></br>
+          <input
+            type="text"
+            placeholder="Search..."
+            id="parameter_1"
 
-    //for some reason, switching between bicycle and one of the pathfinding algorithms causes an unforseen error because the jQueryCode is still checking for a parameter for some reason. This is a 
-    //way to fix it for now, just render an input that will be overwritten
+          />
+          <br></br>
+          <label for="parameter_2">Speed:</label>
+          <br></br>
+          <input type="number" placeholder="10" id="parameter_2" />
+          <br></br>
+          <label for="degree" >Degree:</label>
+          <br></br>
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>)
+
+      //for some reason, switching between bicycle and one of the pathfinding algorithms causes an unforseen error because the jQueryCode is still checking for a parameter for some reason. This is a 
+      //way to fix it for now, just render an input that will be overwritten
       case 'PRM':
         return (<div id="rightParameterUI">
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>
-      )
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>
+        )
       case 'RET':
         return (<div id="rightParameterUI">
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>
-      )
+          <input type="number" id="degree" placeholder='0'></input>
+        </div>
+        )
     }
-      /*
-    return (<div id="rightParameterUI">
-      Parameters (just as a reminder for the future, we need to do error checking on all parameters)
-      <br></br>
-      <label for="parameter_1" id="label_1">Other:</label>
-      <br></br>
-      <input
-        type="text"
-        placeholder="Search..."
-        id="parameter_1"
-      />
-      <br></br>
-      <label for="parameter_2">Speed:</label>
-      <br></br>
-      <input type="number" placeholder="10" id="parameter_2" />
-      <br></br>
-      <label for="degree" >Degree:</label>
-      <br></br>
-      <input type="number" id="degree" placeholder='0'></input>
-    </div>)
+    /*
+  return (<div id="rightParameterUI">
+    Parameters (just as a reminder for the future, we need to do error checking on all parameters)
+    <br></br>
+    <label for="parameter_1" id="label_1">Other:</label>
+    <br></br>
+    <input
+      type="text"
+      placeholder="Search..."
+      id="parameter_1"
+    />
+    <br></br>
+    <label for="parameter_2">Speed:</label>
+    <br></br>
+    <input type="number" placeholder="10" id="parameter_2" />
+    <br></br>
+    <label for="degree" >Degree:</label>
+    <br></br>
+    <input type="number" id="degree" placeholder='0'></input>
+  </div>)
+}
+*/
   }
-  */
-}}
+}
 
 class RightDrawingUI extends React.Component {
   render() {
