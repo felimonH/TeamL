@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import cycles from "Motion_Model_Bicycle.js";
+import cycles from "/js_versions/Motion_Model_Bicycle.js";
 
 class App extends React.Component {
   /*TO SUMMARIZE, THE APP CLASS MANAGES ALL STATE CHANGES AND ACTS ALMOST LIKE A PARENT CLASS. THE TERM 'CLASS' AND 'COMPONENT' ARE USED
@@ -577,12 +577,6 @@ class Canvas extends React.Component {
 
   jQueryCodeBicycle = () => {
     //f
-    var degre = this.props.degre;
-
-    var degre = this.props.DistFrontToBack;
-    //var degre = this.props.fRadius;
-    var degre = this.props.AnglularVelocity;
-
 
 
 
@@ -608,24 +602,30 @@ class Canvas extends React.Component {
 
 
 
-    /*
-        $('#done').click(function () {
-    
-          alert(document.getElementById("degree").value)
-    
-        });
-        */
+
 
     //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
     //Do: Use current JS code (other folder) to change poistion and redraw below 
     //Do: 
+    var degre = this.props.degre;
 
+    var DistFrontToBack = this.props.DistFrontToBack;
+    var fRadius = this.props.fRadius;
+    var AnglularVelocity = this.props.AnglularVelocity;
+
+
+    var startX = canvas.width / 2;
+    var startY = canvas.height / 2;
+
+    var notUsedForBikeVariable = 0;
+
+    const bike = new cycles(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, degre, notUsedForBikeVariable);
+    alert(bike.straightMotion(AnglularVelocity, startX, startY, degre, 1))
     function concept() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       //Does: Sets Focul point to center of canvas
-      var startX = canvas.width / 2;
-      var startY = canvas.height / 2;
+
 
 
       //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
