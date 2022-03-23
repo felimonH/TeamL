@@ -612,15 +612,27 @@ class Canvas extends React.Component {
     var DistFrontToBack = this.props.DistFrontToBack;
     var fRadius = this.props.fRadius;
     var AnglularVelocity = this.props.AnglularVelocity;
-
+    degre = 0;
+    DistFrontToBack = 50;
+    fRadius = 30;
+    AnglularVelocity = 30;
 
     var startX = canvas.width / 2;
     var startY = canvas.height / 2;
+    var bikeBodyAngle = 10;
 
     var notUsedForBikeVariable = 0;
 
-    const bike = new cycles(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, degre, notUsedForBikeVariable);
-    alert(bike.straightMotion(AnglularVelocity, startX, startY, degre, 1))
+    const bike = new cycles(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, bikeBodyAngle, notUsedForBikeVariable);
+    //Does: Flips canvas to correct orientation
+    ctx.transform(1, 0, 0, -1, 0, canvas.height);
+
+    ctx.beginPath();
+    ctx.arc(200, 30, 40, 0, 2 * Math.PI);
+    ctx.stroke();
+    //alert(bike.straightMotion(AnglularVelocity, startX, startY, bikeBodyAngle, 1))
+    bike.main(startX, startY, fRadius, DistFrontToBack, AnglularVelocity, degre, bikeBodyAngle);
+    //bike.robotStep(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, bikeBodyAngle, 10)
     function concept() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -678,7 +690,7 @@ class Canvas extends React.Component {
       window.requestAnimationFrame(concept);
     }
 
-    window.requestAnimationFrame(concept);
+    //window.requestAnimationFrame(concept);
   }
 
   jQueryCodeTricycle = () => {
