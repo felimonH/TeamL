@@ -93,5 +93,3 @@ class cycles {
     }
 
 }
-
-export default cycles;

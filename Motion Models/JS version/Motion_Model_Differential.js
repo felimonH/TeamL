@@ -30,13 +30,13 @@ class diff {
         let result = [];
     
         if (v_l == v_r) {
-            result = straightMotion(v_l, x, y, theta, t);
+            result = this.straightMotion(v_l, x, y, theta, t);
         } else {
             let R = (L/2) * (v_l + v_r)/(v_r - v_l);
             let omega = (v_r - v_l)/L;
             let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
     
-            result = forwardKinematics(R, omega, ICC, x,y, theta, t);
+            result = this.forwardKinematics(R, omega, ICC, x,y, theta, t);
         }
     
         return result;
@@ -54,7 +54,7 @@ class diff {
     
         while ( loopy < 100 ) {
             t += t_step;
-            let result = robotStep(r_l, r_r, L, u_l, u_r, x, y, theta, t_step);
+            let result = this.robotStep(r_l, r_r, L, u_l, u_r, x, y, theta, t_step);
             robot_path.push([result[0], result[1]]);
             loopy += 1;
         }
