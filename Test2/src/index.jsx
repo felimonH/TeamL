@@ -13,6 +13,7 @@ class App extends React.Component {
       page: '',
       degree: 0,
     };
+    
     this.toggleButton = this.toggleButton.bind(this)
     this.handleDegreeChange = this.handleDegreeChange.bind(this)
   }
@@ -422,14 +423,10 @@ class Canvas extends React.Component {
           context.lineTo(coordinates[obstacle][index].x, coordinates[obstacle][index].y);
         }
         context.closePath();
-
         //Colors/Fills Shapes
         context.fillStyle = 'red';
         context.fill();
-
       }
-
-
       context.stroke();
     }
 
@@ -468,6 +465,7 @@ class Canvas extends React.Component {
         return true;
       }
     }
+
     function branch(x, y) {
       if (x > 7000) {
         return;
@@ -507,9 +505,7 @@ class Canvas extends React.Component {
           branch(x + 30, y + 20);
         }
       }, 1000);
-
     }
-
   }
 
   jQueryCodeDiffDrive = () => {
@@ -538,10 +534,7 @@ class Canvas extends React.Component {
     window.onscroll = function (e) { reOffset(); }
   }
 
-
-
   jQueryCodeBicycle = () => {
-    //f
     var degre = this.props.stat
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
@@ -609,13 +602,13 @@ class Canvas extends React.Component {
 
 
 
-/*
+
     $('#done').click(function () {
 
       alert(document.getElementById("degree").value)
 
     });
-    */
+    
 
     function concept() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
