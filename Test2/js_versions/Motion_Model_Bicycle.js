@@ -89,6 +89,7 @@ class cycles {
         }
     
         console.log(robot_path);
+        console.log("e");
     
     }
 
