@@ -20,7 +20,6 @@ class node {
 
     constructor (x, y, prev) {
         this.prev = prev;
-        this.next = null;
         this.x = x;
         this.y = y;
     }

@@ -39,13 +39,13 @@ class RRT {
         let d = distance(p, T);
         let direction = [(p[0] - n.x)/d + step, (p[1] - n.y)/d] + step;
 
-        let new_n = node(n.x + direction[0], n.y + direction[1], n);
+        let new_n = node(n.getX() + direction[0], n.getY() + direction[1], n);
         return new_n;
 
     }
     
     // check perimeter only
-    collision() {
+    collision(n, T, perimeter) {
 
     }
 
@@ -61,7 +61,7 @@ class RRT {
 
         while ( current_n != null ) {
             path.push(current_n);
-            current_n = current_n.prev;
+            current_n = current_n.incomingEdge();
         }
     }
 
@@ -77,7 +77,7 @@ class RRT {
             let sample;
             let range = Math.random();
             if ( range < this.goal_biasing ) {
-                sample = [this.goal.x - range, this.goal.y - range];
+                sample = [this.goal.getX() - range, this.goal.getY() - range];
             } else {
                 sample = this.sampleRandom();
             }
@@ -87,6 +87,8 @@ class RRT {
             // need to know what "obstacle is definted as before writing code"
             if (!this.collision( new_node, this.obstacles)) {
                 T.insert(new_node);
+                let left = [new_node.getX(), new_node.getY()];
+                let right = [this.goal.getX(), this.goal.getY()];
                 let compare = this.distance(left, right);
                 
                 if ( compare[0] < this.goal_biasing && compare[1] < this.goal_biasing ) {
