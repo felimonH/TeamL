@@ -8,6 +8,8 @@ class cycles {
         this.x = x;
         this.y = y;
         this.theta = theta;
+        this.time = 0;
+        this.t_step = 0.1;
     }
 
     forwardKinematics(R, omega, ICC, x, y, theta, t) {
@@ -26,44 +28,26 @@ class cycles {
     
     robotStep(r, d, u, alpha, x, y, theta, t) {
         let v = u*r;
-        let result = [];
-    
-    
+
         if ( alpha == 0 ) {
-        
-            result = this.straightMotion(v, x, y, theta, t);
-        
-        } else {
-        
-            let R = d * Math.tan((np.pi/2) - alpha);
-            let omega = v/Math.sqrt(d**2 + R**2);
-            let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
-    
-            result = this.forwardKinematics(R, omega, ICC, x,y, theta, t);
-        
+            return this.straightMotion(v, x, y, theta, t);
         }
+        
+        let R = d * Math.tan((np.pi/2) - alpha);
+        let omega = v/Math.sqrt(d**2 + R**2);
+        let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
     
-        return result;
+        return this.forwardKinematics(R, omega, ICC, x,y, theta, t);
+    
     }
     
-    main(x, y, r, d, u, alpha, theta) {
-        let robot_path = [];
-    
-        let t = 0;
-        let t_step = 0.1;
-    
-        robot_path.push([x, y]);
-    
-        let loopy = 0;
-    
-        while ( loopy < 50 ) {
-            t += t_step;
-            let result = this.robotStep(r, d, u, alpha, x, y, theta, t_step);
-            robot_path.push([result[0], result[1]]);
-            loopy += 1;
-        }
-    
-        console.log(robot_path);
+    main() {
+        this.time += this.t_step;
+        let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, this.t_step);
+        this.theta = result[2];
+
+        console.log(result);
+        return result;
     
     }
 
