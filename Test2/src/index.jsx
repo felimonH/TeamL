@@ -785,6 +785,7 @@ class Canvas extends React.Component {
         break;
     }
   }
+  //f
 
   render() {
     return (<div id="canvasSpace">
