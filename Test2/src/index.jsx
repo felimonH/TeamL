@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import cycles from "/js_versions/Motion_Model_Bicycle.js";
 
-class App extends React.Component {
+ class App extends React.Component {
   /*TO SUMMARIZE, THE APP CLASS MANAGES ALL STATE CHANGES AND ACTS ALMOST LIKE A PARENT CLASS. THE TERM 'CLASS' AND 'COMPONENT' ARE USED
   INTERCHANGEABLY. ALL STATE CHANGES ARE MADE, HOWEVER, BY CHILD CLASSES VIA EVENT HANDLERS. THINK ENCAPSULATION FROM COMP401.*/
 
@@ -785,8 +784,7 @@ class Canvas extends React.Component {
         break;
     }
   }
-  //f
-
+  
   render() {
     return (<div id="canvasSpace">
       <canvas id="canvas" width={900} height={300}></canvas>
@@ -999,7 +997,7 @@ class RightObstacleUI extends React.Component {
 
 class Footer extends React.Component {
   render() {
-    return (<div id="foot">
+    return (<div id="foot"> 
       Random Footer :)
     </div>)
   }
