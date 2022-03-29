@@ -31,9 +31,11 @@ class cycles {
 
         if ( alpha == 0 ) {
             return this.straightMotion(v, x, y, theta, t);
+        } else if ( Math.abs(alpha) >= 3.14 ) {
+            return this.straightMotion(-v, x, y, theta, t);
         }
         
-        let R = d * Math.tan((np.pi/2) - alpha);
+        let R = d * Math.tan((Math.PI/2) - alpha);
         let omega = v/Math.sqrt(d**2 + R**2);
         let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
     
