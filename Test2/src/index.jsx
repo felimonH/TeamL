@@ -310,10 +310,7 @@ class Canvas extends React.Component {
 
 
     //Does: Initalizes obstacles
-    class UI {
 
-
-    }
     var coordinates = [];
     var isDone = 0;
     var innerArray = [];
@@ -610,9 +607,9 @@ class Canvas extends React.Component {
     //Does: Flips canvas to correct orientation
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
-    ctx.beginPath();
-    ctx.arc(200, 30, 40, 0, 2 * Math.PI);
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.arc(200, 30, 40, 0, 2 * Math.PI);
+    // ctx.stroke();
     //alert(bike.straightMotion(AnglularVelocity, startX, startY, bikeBodyAngle, 1))
     bike.main(startX, startY, fRadius, DistFrontToBack, AnglularVelocity, degre, bikeBodyAngle);
     //bike.robotStep(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, bikeBodyAngle, 10)
@@ -673,7 +670,7 @@ class Canvas extends React.Component {
       window.requestAnimationFrame(concept);
     }
 
-    //window.requestAnimationFrame(concept);
+    window.requestAnimationFrame(concept);
   }
 
   jQueryCodeTricycle = () => {
@@ -845,7 +842,7 @@ class RightParameterUI extends React.Component {
 
           <label for="degree" >Degree:</label>
           <br></br>
-          <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
+          <input type="number" id="degree" placeholder='10' onChange={this.handleDegreeChange}></input>
           <br></br>
 
           <label for="DistFrontToBack">Distance front to back:</label>
