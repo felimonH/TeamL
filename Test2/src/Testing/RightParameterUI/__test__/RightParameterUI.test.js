@@ -10,7 +10,7 @@ beforeEach(async () => {
 });
 
 afterEach(cleanup);
-//unit testing using props
+//Unit Testing given a prop value
 it('Renders properly', () => {
      expect(screen.getByTestId('done')).toBeInTheDocument()
      expect(screen.getByTestId('r')).toBeInTheDocument()

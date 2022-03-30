@@ -1,15 +1,15 @@
 import React from "react"
 import "@testing-library/jest-dom/extend-expect";
 import { screen, cleanup, act, render } from "@testing-library/react";
-import { RightDrawingUI } from "../RightDrawingUI";
+import { Canvas } from "../Canvas";
 
 beforeEach(async () => {
   await act(async () => {
-    render(<RightDrawingUI />);
+    render(<Canvas jQuery = "RET" />);
   });
 });
 afterEach(cleanup);
 
-  it('Renders properly', () => {
-     expect(screen.getByTestId('done')).toBeInTheDocument()
+  it('Renders properly and executed jQuery given props from another component', () => {
+     expect(screen.getByTestId('c')).toBeInTheDocument()
   })
