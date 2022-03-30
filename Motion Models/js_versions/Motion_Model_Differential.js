@@ -20,8 +20,8 @@ class diff {
     }
     
     straightMotion (v, x, y, theta, t) {
-        let x_new = x + (v * t * np.cos(theta));
-        let y_new = y + (v * t * np.sin(theta));
+        let x_new = x + (v * t * Math.cos(theta));
+        let y_new = y + (v * t * Math.sin(theta));
         return [x_new, y_new, theta];
     }
     
