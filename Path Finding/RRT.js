@@ -69,8 +69,6 @@ class RRT {
         let T = new tree();
         let root = new node(start[0], start[1], null);
         T.insert(root);
-        
-        let look = T.nodes;
 
         while (true) {
 

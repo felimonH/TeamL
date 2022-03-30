@@ -56,8 +56,8 @@ class diff {
         this.time += this.t_step;
         // result in coordinates and theta (angle from horizantal)
         let result = this.robotStep(this.r_l, this.r_r, this.L, this.u_l, this.u_r, this.x, this.y, this.theta, this.t_step);
-        // update theta
-        this.theta = result[2];
+        // update x, y, and theta
+        [this.x, this.y, this.theta] = result;
     
         console.log(result);
         return result;
