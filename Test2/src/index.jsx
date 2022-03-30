@@ -80,6 +80,7 @@ class App extends React.Component {
         break;
       //changing this for testing
       default:
+
         return (<><Navbar toggleButton={this.toggleButton} /><HomePage /></>)
 
 
@@ -421,7 +422,7 @@ class Canvas extends React.Component {
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
       coordinates[isDone].push({ x: mouseX, y: mouseY });
-      console.log(coordinates[isDone])
+
       if (coordinates[isDone].length == 1) {
 
         context.beginPath();
@@ -587,23 +588,45 @@ class Canvas extends React.Component {
     //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
     //Do: Use current JS code (other folder) to change poistion and redraw below 
     //Do: 
-    var degre = this.props.degre;
+    //Degree to radians
+    // remainder to 360
+    var degre = (this.props.degre % 360)
+
 
     var DistFrontToBack = this.props.DistFrontToBack;
     var fRadius = this.props.fRadius;
     var AnglularVelocity = this.props.AnglularVelocity;
-    degre = 0;
-    DistFrontToBack = 50;
-    fRadius = 30;
-    AnglularVelocity = 30;
+
+    if (degre == 0) {
+      degre = 1;
+    }
+    if (isNaN(DistFrontToBack)) {
+      DistFrontToBack = 30;
+    }
+    if (isNaN(fRadius)) {
+      fRadius = 10;
+    }
+    if (isNaN(AnglularVelocity)) {
+      AnglularVelocity = 0;
+      //AnglularVelocity = 110;
+    }
+
+
+    var radians = 0;
+    // convert to neg when greater than 180
+    if (degre > 180) {
+      degre = degre - 360;
+    }
+    radians = degre * Math.PI / 180;
 
     var startX = canvas.width / 2;
     var startY = canvas.height / 2;
-    var bikeBodyAngle = 10;
-
+    var bikeBodyAngle = 0;
     var notUsedForBikeVariable = 0;
 
-    const bike = new cycles(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, bikeBodyAngle, notUsedForBikeVariable);
+
+
+    const bike = new cycles(fRadius, DistFrontToBack, AnglularVelocity, radians, startX, startY, bikeBodyAngle, notUsedForBikeVariable);
     //Does: Flips canvas to correct orientation
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
@@ -611,8 +634,10 @@ class Canvas extends React.Component {
     // ctx.arc(200, 30, 40, 0, 2 * Math.PI);
     // ctx.stroke();
     //alert(bike.straightMotion(AnglularVelocity, startX, startY, bikeBodyAngle, 1))
-    bike.main(startX, startY, fRadius, DistFrontToBack, AnglularVelocity, degre, bikeBodyAngle);
+
     //bike.robotStep(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, bikeBodyAngle, 10)
+    //console.log("create");
+    //console.log(bike.main());
     function concept() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -623,35 +648,93 @@ class Canvas extends React.Component {
       //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
       // draw a rotated rect
+      var Cpos = bike.main();
+      startX = Cpos[0];
+      startY = Cpos[1];
+      var theta = Cpos[2];
+      //Center is center of  body 
+      //draw wheel using dist from front to back / 2 
 
-      drawRotatedRect(startX, startY, 100, 20, degre);
-      drawStaticRect();
+      drawWheel(startX, startY, fRadius * 2, DistFrontToBack / 4, degre, theta, DistFrontToBack);
+      drawBody(startX, startY, DistFrontToBack, DistFrontToBack / 4, theta);
 
-      // draw an unrotated reference rect
+      //check rotation
+      bodyCenter(startX, startY);
+      wheelCenter(startX, startY, DistFrontToBack);
 
-      function drawStaticRect() {
+      function bodyCenter(x, y) {
         ctx.beginPath();
-        //just an offset to preposition the seperate drawing 
-        ctx.rect(startX + 50, startY - 10, 200, 30);
-
-        ctx.fillStyle = "blue";
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = 'black';
         ctx.fill();
       }
-      function drawRotatedRect(x, y, width, height, degrees) {
+      function wheelCenter(x, y, length) {
 
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(x, y);
+        ctx.rotate(theta);
+        ctx.arc(0, 0 + length / 2, 3, 0, 2 * Math.PI)
+        //ctx.arc(x, y + length / 2, 3, 0, 2 * Math.PI);
+        ctx.fillStyle = 'red';
+        //ctx.rect(x, y, 50, 100);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      function drawBody(x, y, height, width, theta) {
+        var bodyX = -width / 2;
+        var bodyY = -height / 2;
         // first save the untranslated/unrotated context
         ctx.save();
 
         ctx.beginPath();
         // move the rotation point to the center of the rect
-        ctx.translate(x + width / 2, y + height / 4);
+        ctx.translate(x, y);
         // rotate the rect
-        ctx.rotate(degrees * Math.PI / 180);
-        //ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+        //ctx.rotate(theta);
+        ctx.rotate(theta);
 
         // draw the rect on the transformed context
         // Note: after transforming [0,0] is visually [x,y]
         //       so the rect needs to be offset accordingly when drawn
+        ctx.rect(bodyX, bodyY, width, height);
+        //ctx.rect(startX + 50, startY - 10, 200, 30);
+
+        ctx.fillStyle = "blue";
+        ctx.fill();
+
+
+
+        // restore the context to its untranslated/unrotated state
+        ctx.restore();
+
+
+      }
+      function drawWheel(x, y, height, width, degrees, theta, offset) {
+
+        // var wheely = -height / 2 + offset / 2;
+        // first save the untranslated/unrotated context
+        ctx.save();
+
+        ctx.beginPath();
+        // move the rotation point to the center of the body
+        ctx.translate(x, y);
+        ctx.rotate(theta);
+        //Center is now 
+        //  0, 0 + offset / 2
+
+        //now offset for size of box 
+        ctx.translate(0, 0 + offset / 2);
+        ctx.rotate(degrees * Math.PI / 180);
+        // rotate the rect
+
+        // ctx.translate(x, y);
+        // draw the rect on the transformed context
+        // Note: after transforming [0,0] is visually [x,y]
+        //       so the rect needs to be offset accordingly when drawn
+
         ctx.rect(-width / 2, -height / 2, width, height);
 
         ctx.fillStyle = "gold";
@@ -820,7 +903,7 @@ class RightParameterUI extends React.Component {
           <br></br>
           <label for="degree" >Degree:</label>
           <br></br>
-          <input type="number" id="degree" placeholder='0'></input>
+          <input type="number" id="degree" placeholder='1'></input>
         </div>)
       case 'Bicycle':
         return (<div id="rightParameterUI">
@@ -837,7 +920,7 @@ class RightParameterUI extends React.Component {
           <br></br>
           <label for="fRadius">Front Wheel Radius:</label>
           <br></br>
-          <input type="number" id="fRadius" placeholder='0' onChange={this.handleFrontWheelRadiusChange}></input>
+          <input type="number" id="fRadius" placeholder='10' onChange={this.handleFrontWheelRadiusChange}></input>
           <br></br>
 
           <label for="degree" >Degree:</label>
@@ -847,12 +930,12 @@ class RightParameterUI extends React.Component {
 
           <label for="DistFrontToBack">Distance front to back:</label>
           <br></br>
-          <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
+          <input type="number" id="DistFrontToBack" placeholder='30' onChange={this.handleDistF2BChange}></input>
           <br></br>
 
           <label for="AnglularVelocity">Anglular Velocity:</label>
           <br></br>
-          <input type="number" id="AnglularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
+          <input type="number" id="AnglularVelocity" placeholder='10' onChange={this.handleAngularVelocityChange}></input>
 
         </div>)
       case 'Tricycle':
