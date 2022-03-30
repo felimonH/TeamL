@@ -32,6 +32,8 @@ class cycles {
         if ( alpha == 0 ) {
             return this.straightMotion(v, x, y, theta, t);
         } else if ( Math.abs(alpha) >= 3.14 ) {
+            // no need to go past pi for turning, also avoids limit theorem problem with the Math.tan() function
+            // in the variable R
             return this.straightMotion(-v, x, y, theta, t);
         }
         
@@ -46,7 +48,7 @@ class cycles {
     main() {
         this.time += this.t_step;
         let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, this.t_step);
-        this.theta = result[2];
+        [this.x, this.y, this.theta] = result;
 
         console.log(result);
         return result;
