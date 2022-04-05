@@ -92,6 +92,6 @@ class cycles {
         console.log("");
     
     }
-
+//n
 }
 export default cycles;

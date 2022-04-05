@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import cycles from "/js_versions/Motion_Model_Bicycle.js";
 
-class App extends React.Component {
+ class App extends React.Component {
   /*TO SUMMARIZE, THE APP CLASS MANAGES ALL STATE CHANGES AND ACTS ALMOST LIKE A PARENT CLASS. THE TERM 'CLASS' AND 'COMPONENT' ARE USED
   INTERCHANGEABLY. ALL STATE CHANGES ARE MADE, HOWEVER, BY CHILD CLASSES VIA EVENT HANDLERS. THINK ENCAPSULATION FROM COMP401.*/
 
@@ -111,7 +110,7 @@ class Navbar extends React.Component {
       <nav class="navbar navbar-inverse">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Start Here</a>
+            <a class="navbar-brand" href="#">Interactive Robotics Education Tool</a>
           </div>
 
           <ul class="nav navbar-nav">
@@ -191,6 +190,8 @@ class Canvas extends React.Component {
     //Does: next mouse sets goal or start
     var setGoal = false;
     var setStart = false;
+    var goalCoord;
+    var startCoord;
 
     //Does: Creates new array for new object points per object
     $('#done').click(function () {
@@ -220,6 +221,60 @@ class Canvas extends React.Component {
       setStart = true;
       setGoal = false;
     });
+     //Does: sets up buttons for start and goal for robot 
+    //Does: setup initalize robot pos/ goal position 
+    //Does: setup collision detection when initalizing robot and obstacles 
+    $('#goal').click(function () {
+      setGoal = true;
+      setStart = false;
+    });
+
+    $('#start').click(function () {
+      setStart = true;
+      setGoal = false;
+    });
+    //Does: handles when cavas is clicked
+    //Do: make conditions for goal and start
+    $("#canvas").mousedown(function (e) {
+      if (setStart) {
+        placeStart(e);
+      } else if (setGoal) {
+        placeGoal(e);
+      } else {
+        drawObstacle(e);
+      }
+    });
+    function placeStart(e) {
+      //Do: edgecase for pre drawn obstacles
+      e.preventDefault();
+      e.stopPropagation();
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'blue';
+      context.fill()
+
+      startCoord = { x: mouseX, y: mouseY };
+      setStart = false;
+    };
+    function placeGoal(e) {
+      //Do: edgecase for predrawn obstacles
+      e.preventDefault();
+      e.stopPropagation();
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'yellow';
+      context.fill()
+
+
+      goalCoord = { x: mouseX, y: mouseY };
+      setGoal = false;
+
+    };
     //Does: handles when cavas is clicked
     //Do: make conditions for goal and start
     $("#canvas").mousedown(function (e) {
@@ -742,7 +797,7 @@ class Canvas extends React.Component {
         break;
     }
   }
-
+  
   render() {
     return (<div id="canvasSpace">
       <canvas id="canvas" width={900} height={300}></canvas>
@@ -955,7 +1010,7 @@ class RightObstacleUI extends React.Component {
 
 class Footer extends React.Component {
   render() {
-    return (<div id="foot">
+    return (<div id="foot"> 
       Random Footer :)
     </div>)
   }
