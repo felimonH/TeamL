@@ -583,6 +583,8 @@ class Canvas extends React.Component {
     establishCanvas()
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
+
+    var stop = false;
     //document.getElementById("rightDrawingUI").style.gridColumn =
     //to create animations delete screen and redraw in new position 
     //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
@@ -598,7 +600,7 @@ class Canvas extends React.Component {
     var AnglularVelocity = this.props.AnglularVelocity;
 
     if (degre == 0) {
-      degre = 1;
+      //degre = 1;
     }
     if (isNaN(DistFrontToBack)) {
       DistFrontToBack = 30;
@@ -620,47 +622,55 @@ class Canvas extends React.Component {
     radians = degre * Math.PI / 180;
 
     var startX = canvas.width / 2;
-    var startY = canvas.height / 2;
+    var startY = canvas.height / 4;
     var bikeBodyAngle = 0;
     var notUsedForBikeVariable = 0;
 
+    $('#play').click(function () {
+      //alert("Play functionality must be implemented")
+      stop = false;
+    })
+    $('#pause').click(function () {
+      //alert("Play functionality must be implemented")
+      stop = true;
+    })
 
 
     const bike = new cycles(fRadius, DistFrontToBack, AnglularVelocity, radians, startX, startY, bikeBodyAngle, notUsedForBikeVariable);
     //Does: Flips canvas to correct orientation
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
-    // ctx.beginPath();
-    // ctx.arc(200, 30, 40, 0, 2 * Math.PI);
-    // ctx.stroke();
-    //alert(bike.straightMotion(AnglularVelocity, startX, startY, bikeBodyAngle, 1))
 
-    //bike.robotStep(fRadius, DistFrontToBack, AnglularVelocity, degre, startX, startY, bikeBodyAngle, 10)
-    //console.log("create");
-    //console.log(bike.main());
+    $('#resetAlgo').click(function () {
+      //alert("Play functionality must be implemented")
+
+
+    })
     function concept() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 
       //Does: Sets Focul point to center of canvas
 
 
 
-      //"DEGREE".value GENERATES UNEXPECTED ERRORS, MUST CONVERT THIS TO STATE TO USE BETWEEN COMPONENTS FOR A PERMANENT SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-      // draw a rotated rect
-      var Cpos = bike.main();
-      startX = Cpos[0];
-      startY = Cpos[1];
-      var theta = Cpos[2];
+
       //Center is center of  body 
       //draw wheel using dist from front to back / 2 
+      if (!stop) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawWheel(startX, startY, fRadius * 2, DistFrontToBack / 4, degre, theta, DistFrontToBack);
-      drawBody(startX, startY, DistFrontToBack, DistFrontToBack / 4, theta);
-
+        // draw a rotated rect
+        var Cpos = bike.main();
+        startX = Cpos[0];
+        startY = Cpos[1];
+        var theta = Cpos[2] - Math.PI / 2;
+        drawWheel(startX, startY, fRadius * 2, DistFrontToBack / 4, degre, theta, DistFrontToBack);
+        drawBody(startX, startY, DistFrontToBack, DistFrontToBack / 4, theta);
+      }
       //check rotation
-      bodyCenter(startX, startY);
-      wheelCenter(startX, startY, DistFrontToBack);
+      //bodyCenter(startX, startY);
+      //wheelCenter(startX, startY, DistFrontToBack);
 
       function bodyCenter(x, y) {
         ctx.beginPath();
@@ -712,6 +722,7 @@ class Canvas extends React.Component {
 
 
       }
+
       function drawWheel(x, y, height, width, degrees, theta, offset) {
 
         // var wheely = -height / 2 + offset / 2;
@@ -737,7 +748,7 @@ class Canvas extends React.Component {
 
         ctx.rect(-width / 2, -height / 2, width, height);
 
-        ctx.fillStyle = "gold";
+        ctx.fillStyle = "red";
         ctx.fill();
 
 
@@ -749,8 +760,8 @@ class Canvas extends React.Component {
 
 
       }
-
-      window.requestAnimationFrame(concept);
+      setTimeout(() => { window.requestAnimationFrame(concept); }, 1000 / 65);
+      //window.requestAnimationFrame(concept);
     }
 
     window.requestAnimationFrame(concept);
@@ -835,6 +846,7 @@ class LowerControlUI extends React.Component {
   jQueryCode = () => {
     $('#play').click(function () {
       //alert("Play functionality must be implemented")
+      //alert("boom");
     })
     $('#pause').click(function () {
       //alert("Pause functionality must be implemented")
