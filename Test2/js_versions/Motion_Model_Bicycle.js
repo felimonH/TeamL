@@ -1,33 +1,4 @@
-// #Bicycle Robot Model
-// ############################################################
-// #THE BICYCLE IS EXACTLY THE SAME AS THE TRICYCLE, WITH L=0
-// #(the distance between the two back wheels is 0, representing only one wheel)
-// ############################################################
-// #Input:
-// #Input Vehicle parameters:
-
-
-// #Control Input parameters:
-
-
-
-// #Robot State Input parameters
-// #(x,y) = initial robot position in 2D, measured at the center between the two back wheels
-// #theta = initial robot orientation, angle counterclockwise from the x-axis
-
-// #Output: New robot state
-
-
-
-// #The following input parameters should be reflected in the visualization of the robot model:
-// #r, alpha, d
-// #r = radius of the front wheel
-// #d = distance between the front wheel and the two back wheels
-// #u = front wheel angular velocity
-// #alpha = steering angle of the front wheel
-// #(x,y) = position in 2D
-// #theta = angle body with respect to the x-axis
-class cycles {
+class bicycles {
 
     constructor(r, d, u, alpha, x, y, theta, L) {
         this.u = u;
@@ -85,6 +56,3 @@ class cycles {
     }
 
 }
-
-
-export default cycles;

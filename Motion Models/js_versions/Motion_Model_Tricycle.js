@@ -1,4 +1,4 @@
-class cycles {
+class tricycles {
 
     constructor(r, d, u, alpha, x, y, theta, L) {
         this.u = u;
@@ -7,6 +7,7 @@ class cycles {
         this.alpha = alpha;
         this.x = x;
         this.y = y;
+        // Theta MUST be between 
         this.theta = theta;
         this.L = L;
         this.time = 0;
@@ -32,20 +33,24 @@ class cycles {
     
         if ( alpha == 0 ) {
             return this.straightMotion(v, x, y, theta, t);
+        } else if ( Math.abs(alpha) >= 3.14 ) {
+            // no need to go past pi for turning, also avoids limit theorem problem with the Math.tan() function
+            // in the variable R
+            return this.straightMotion(-v, x, y, theta, t);
         }
         
-        let R = d * Math.tan((np.pi/2) - alpha);
+        let R = d * Math.tan((Math.PI/2) - alpha);
         let omega = v/Math.sqrt(d**2 + R**2);
         let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
     
-        return this.forwardKinematics( omega, ICC, x,y, theta, t);
+        return this.forwardKinematics( omega, ICC, x, y, theta, t);
         
     }
     
     main() {
         this.time += this.t_step;
         let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, t_step);
-        this.theta = result[2];
+        [this.x, this.y, this.theta] = result;
 
         console.log(result);
         return result;
