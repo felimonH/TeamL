@@ -1,29 +1,4 @@
-// #Bicycle Robot Model
-// ############################################################
-// #THE BICYCLE IS EXACTLY THE SAME AS THE TRICYCLE, WITH L=0
-// #(the distance between the two back wheels is 0, representing only one wheel)
-// ############################################################
-// #Input:
-// #Input Vehicle parameters:
-// #r = radius of the front wheel
-// #d = distance between the front wheel and the two back wheels
-// #L = 0 (only one back wheel)
-
-// #Control Input parameters:
-// #u = front wheel angular velocity
-// #alpha = steering angle of the front wheel
-
-// #Robot State Input parameters
-// #(x,y) = initial robot position in 2D, measured at the center between the two back wheels
-// #theta = initial robot orientation, angle counterclockwise from the x-axis
-
-// #Output: New robot state
-// #(x,y) = position in 2D
-// #theta = angle with respect to the x-axis
-
-// #The following input parameters should be reflected in the visualization of the robot model:
-// #r, alpha, d
-class cycles {
+class bicycles {
 
     constructor(r, d, u, alpha, x, y, theta, L) {
         this.u = u;
@@ -33,6 +8,8 @@ class cycles {
         this.x = x;
         this.y = y;
         this.theta = theta;
+        this.time = 0;
+        this.t_step = 0.1;
     }
 
     forwardKinematics(R, omega, ICC, x, y, theta, t) {
@@ -51,47 +28,31 @@ class cycles {
     
     robotStep(r, d, u, alpha, x, y, theta, t) {
         let v = u*r;
-        let result = [];
-    
-    
+
         if ( alpha == 0 ) {
-        
-            result = this.straightMotion(v, x, y, theta, t);
-        
-        } else {
-        
-            let R = d * Math.tan((np.pi/2) - alpha);
-            let omega = v/Math.sqrt(d**2 + R**2);
-            let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
-    
-            result = this.forwardKinematics(R, omega, ICC, x,y, theta, t);
-        
+            return this.straightMotion(v, x, y, theta, t);
+        } else if ( Math.abs(alpha) >= 3.14 ) {
+            // no need to go past pi for turning, also avoids limit theorem problem with the Math.tan() function
+            // in the variable R
+            return this.straightMotion(-v, x, y, theta, t);
         }
+        
+        let R = d * Math.tan((Math.PI/2) - alpha);
+        let omega = v/Math.sqrt(d**2 + R**2);
+        let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
     
+        return this.forwardKinematics(R, omega, ICC, x,y, theta, t);
+    
+    }
+    
+    main() {
+        this.time += this.t_step;
+        let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, this.t_step);
+        [this.x, this.y, this.theta] = result;
+
+        console.log(result);
         return result;
-    }
-    
-    main(x, y, r, d, u, alpha, theta) {
-        let robot_path = [];
-    
-        let t = 0;
-        let t_step = 0.1;
-    
-        robot_path.push([x, y]);
-    
-        let loopy = 0;
-    
-        while ( loopy < 50 ) {
-            t += t_step;
-            let result = this.robotStep(r, d, u, alpha, x, y, theta, t_step);
-            robot_path.push([result[0], result[1]]);
-            loopy += 1;
-        }
-    
-        console.log(robot_path);
-        console.log("");
     
     }
-//n
+
 }
-export default cycles;

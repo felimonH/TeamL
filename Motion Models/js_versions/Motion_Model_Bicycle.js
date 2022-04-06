@@ -1,4 +1,4 @@
-class cycles {
+class bicycles {
 
     constructor(r, d, u, alpha, x, y, theta, L) {
         this.u = u;
