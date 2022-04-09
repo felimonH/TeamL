@@ -11,6 +11,8 @@ class RRT {
         this.goal_biasing = goal_biasing;
         this.obstacles = obstacles;
         this.environment_boundaries = environment_boundaries;
+        this.T = new tree();
+        this.root = new node(start[0], start[1], null);
     }
 
 
@@ -50,14 +52,12 @@ class RRT {
     }
 
     sampleRandom() {
-        let rand_x = Math.random() * this.environment_boundaries[0];
-        let rand_y = Math.random() * this.environment_boundaries[1];
-        return [rand_x, rand_y];
+        return [Math.random() * this.environment_boundaries[0], Math.random() * this.environment_boundaries[1]];
     }
 
     extractPath( node ) {
         let current_n = node;
-        let path = [];
+        let path = [goal];
 
         while ( current_n != null ) {
             path.push(current_n);
@@ -65,47 +65,40 @@ class RRT {
         }
     }
 
-    main () {
-        let T = new tree();
-        let root = new node(start[0], start[1], null);
-        T.insert(root);
+    randomCheck () {
 
-        while (true) {
+        let sample;
+        let range = Math.random();
+        if ( range < this.goal_biasing ) {
+            sample = [this.goal.getX(), this.goal.getY()];
+        } else {
+            sample = this.sampleRandom();
+        }
 
-            let sample;
-            let range = Math.random();
-            if ( range < this.goal_biasing ) {
-                sample = [this.goal.getX() - range, this.goal.getY() - range];
-            } else {
-                sample = this.sampleRandom();
-            }
+        let new_node = step(sample, this.T, this.step_size);
 
-            let new_node = step(sample, T, this.step_size);
-
-            // need to know what "obstacle is definted as before writing code"
-            if (!this.collision( new_node, this.obstacles)) {
-                T.insert(new_node);
-                let left = [new_node.getX(), new_node.getY()];
-                let right = [this.goal.getX(), this.goal.getY()];
-                let compare = this.distance(left, right);
-                
-                if ( compare[0] < this.goal_biasing && compare[1] < this.goal_biasing ) {
-                    return extractPath(T, new_node);
-                }
-            } else {
-                new_node.prev = null;
-            }
-
-
-
-        } 
-
-        
-
-
+        return new_node;
 
     }
 
+    collide (n) {
+        n.prev = null;
+    }
+
+    move(n) {
+        
+        this.T.insert(n);
+        let left = [n.getX(), n.getY()];
+        let right = [this.goal.getX(), this.goal.getY()];
+        let compare = this.distance(left, right);
+                    
+        if ( compare[0] < this.goal_biasing && compare[1] < this.goal_biasing ) {
+            return extractPath(T, new_node);
+        }
+
+        return "again";
+
+    }
 
 
 
