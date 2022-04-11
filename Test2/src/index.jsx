@@ -1059,6 +1059,7 @@ class RightParameterUI extends React.Component {
           <h4>Parameters</h4>
           <br></br>
           <br></br>
+          <h5>Robot Properties</h5>
           <label for="fRadius">Left Wheel Radius (0 &#60; x &#8804; 10)</label>
           <br></br>
           <input type="number" id="fRadius" placeholder = '0' onChange={this.handleLeftWheelRadiusChange}></input>
@@ -1074,6 +1075,7 @@ class RightParameterUI extends React.Component {
           <input type="number" id="fRadius" placeholder = '0' onChange={this.handleDistBetweenWheelsChange}></input>
           <br></br>
 
+          <h5>Control Parameters</h5>
           <label for="AngularVelocity">Left Angular Velocity (0 &#8804; x &#8804; 10)</label>
           <br></br>
           <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleLeftAngularVelocityChange}></input>
@@ -1089,20 +1091,23 @@ class RightParameterUI extends React.Component {
           <h4>Parameters</h4>
           <br></br>
           <br></br>
+          <h5>Robot Properties</h5>
           <label for="fRadius">Front Wheel Radius (0 &#60; x &#8804; 50)</label>
           <br></br>
           <input type="number" id="fRadius" placeholder = '0' onChange={this.handleFrontWheelRadiusChange}></input>
-          <br></br>
-
-          <label for="degree" >Degree (&#8477;)</label>
-          <br></br>
-          <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
           <br></br>
 
           <label for="DistFrontToBack">Distance front to back (10 &#60; x &#8804; 100)</label>
           <br></br>
           <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
           <br></br>
+          <h5>Control Parameters</h5>
+          <label for="degree" >Degree (&#8477;)</label>
+          <br></br>
+          <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
+          <br></br>
+
+      
 
           <label for="AngularVelocity">Angular Velocity (0 &#8804; x &#8804; 10)</label>
           <br></br>
@@ -1114,9 +1119,24 @@ class RightParameterUI extends React.Component {
           <h4>Parameters</h4>
           <br></br>
           <br></br>
+          <h5>Robot Properties</h5>
           <label for="fRadius">Front Wheel Radius (0 &#60; x &#8804; 50)</label>
           <br></br>
           <input type="number" id="fRadius" placeholder = '0' onChange={this.handleFrontWheelRadiusChange}></input>
+          <br></br>
+
+          <label for="DistFrontToBack">Distance front to back (10 &#60; x &#8804; 100)</label>
+          <br></br>
+          <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
+          <br></br>
+          <label for="DistanceBetweenBackWheels">Distance Between Back Wheels (10 &#60; x &#8804; 50)</label>
+          <br></br>
+          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
+          <br></br>
+          <h5>Control Parameters</h5>
+          <label for="AngularVelocity">Angular Velocity (0 &#8804; x &#8804; 10)</label>
+          <br></br>
+          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
           <br></br>
 
           <label for="degree" >Degree (&#8477;)</label>
@@ -1124,19 +1144,7 @@ class RightParameterUI extends React.Component {
           <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
           <br></br>
 
-          <label for="DistFrontToBack">Distance front to back (10 &#60; x &#8804; 100)</label>
-          <br></br>
-          <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
-          <br></br>
-
-          <label for="AngularVelocity">Angular Velocity (0 &#8804; x &#8804; 10)</label>
-          <br></br>
-          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
-          <br></br>
-
-          <label for="DistanceBetweenBackWheels">Distance Between Back Wheels (10 &#60; x &#8804; 50)</label>
-          <br></br>
-          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
+          
         </div>)
 
       //for some reason, switching between bicycle and one of the pathfinding algorithms causes an unforseen error because the jQueryCode is still checking for a parameter for some reason. This is a 
