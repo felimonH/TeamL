@@ -1,4 +1,4 @@
-class bicycles {
+class cycles {
 
     constructor(r, d, u, alpha, x, y, theta, L) {
         this.u = u;
@@ -56,3 +56,4 @@ class bicycles {
     }
 
 }
+export default cycles;

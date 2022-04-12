@@ -4,6 +4,7 @@ import { screen, cleanup, act, render, fireEvent } from "@testing-library/react"
 import { App } from "../App";
 import ShallowRenderer from 'react-test-renderer/shallow'; // ES6
 
+
 beforeEach(async () => {
   await act(async () => {
     render(<App />);
