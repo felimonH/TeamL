@@ -514,6 +514,15 @@ class Canvas extends React.Component {
       e.stopPropagation();
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
+
+      //Edge case that "erases previous drawn circle"
+      if (startCoord != null) {
+        context.beginPath();
+        context.arc(startCoord.x, startCoord.y, 31, 0, 2 * Math.PI);
+        context.fillStyle = `rgb(233, 221, 221)`;
+        context.fill()
+      }
+
       context.beginPath();
       context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
       context.fillStyle = 'blue';
@@ -528,6 +537,14 @@ class Canvas extends React.Component {
       e.stopPropagation();
       var mouseX = parseInt(e.clientX - offsetX);
       var mouseY = parseInt(e.clientY - offsetY);
+
+      //Edge case that "erases previous drawn circle"
+      if (goalCoord != null) {
+        context.beginPath();
+        context.arc(goalCoord.x, goalCoord.y, 31, 0, 2 * Math.PI);
+        context.fillStyle = `rgb(233, 221, 221)`;
+        context.fill()
+      }
 
       context.beginPath();
       context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
