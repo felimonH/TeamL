@@ -115,10 +115,7 @@ class App extends React.Component {
   render() {
     switch (this.state.page) {
       case 'RET':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
-        break;
-      case 'PRM':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /></>)
         break;
       case 'Diff. Drive':
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas
@@ -195,7 +192,6 @@ class Navbar extends React.Component {
                 <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#Algorithm_1" onClick={this.toggleButton} name="RET">Rapidly Exploring Random Trees</a></li>
-                <li><a href="#Algorithm_2" onClick={this.toggleButton} name="PRM">Probabilistic Road Map</a></li>
               </ul>
             </li>
 
@@ -258,294 +254,7 @@ class Canvas extends React.Component {
     }
   }
 
-  jQueryCodePRM = () => {
-    //Does: Creates canvas based off screen size
-    function establishCanvas() {
-      var div = document.getElementById("canvasSpace");
-      var canvas = document.createElement('canvas');
-      var sizeWidth = 80 * window.innerWidth / 100,
-        sizeHeight = 60 * window.innerHeight / 100 || 766;
-      canvas.width = sizeWidth;
-      canvas.height = sizeHeight;
-      document.getElementById("canvas").remove();
-      div.innerHTML += '<canvas id="canvas" width= ' + sizeWidth + ' height=' + sizeHeight + '></canvas>';
-    }
-
-    establishCanvas()
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var cw = canvas.width;
-    var ch = canvas.height;
-    var offsetX, offsetY;
-    //Does: Setups canvas so you can draw even after scrolling
-    function reOffset() {
-      var BB = canvas.getBoundingClientRect();
-      offsetX = BB.left;
-      offsetY = BB.top;
-    }
-
-    reOffset();
-    window.onscroll = function (e) {
-      reOffset();
-    }
-
-
-
-    //Does: Initalizes obstacles
-
-    var coordinates = [];
-    var isDone = 0;
-    var innerArray = [];
-    coordinates.push(innerArray);
-
-    //Does: next mouse sets goal or start
-    var setGoal = false;
-    var goalCoord;
-    var setStart = false;
-    var startCoord;
-
-    //Does: Creates new array for new object points per object
-
-    //Does: deletes all obstacles
-    $('#clear').click(function () {
-      context.clearRect(0, 0, cw, ch);
-    });
-
-    //Does: Delete all of canvas and objects
-    $('#delete').click(function () {
-      context.clearRect(0, 0, cw, ch);
-      isDone = 0;
-      coordinates = [];
-      innerArray = [];
-      coordinates.push(innerArray);
-    });
-
-
-    //Does: sets up buttons for start and goal for robot 
-    //Does: setup initalize robot pos/ goal position 
-    //Does: setup collision detection when initalizing robot and obstacles 
-    $('#goal').click(function () {
-      setGoal = true;
-      setStart = false;
-    });
-
-    $('#start').click(function () {
-      setStart = true;
-      setGoal = false;
-    });
-    //Does: handles when cavas is clicked
-    //Do: make conditions for goal and start
-    $("#canvas").mousedown(function (e) {
-      if (setStart) {
-        placeStart(e);
-      } else if (setGoal) {
-        placeGoal(e);
-      } else {
-        drawObstacle(e);
-      }
-    });
-    function placeStart(e) {
-      //Do: edgecase for pre drawn obstacles
-      e.preventDefault();
-      e.stopPropagation();
-      var mouseX = parseInt(e.clientX - offsetX);
-      var mouseY = parseInt(e.clientY - offsetY);
-
-      //Edge case that "erases previous drawn circle"
-      if (startCoord != null) {
-        context.beginPath();
-        context.arc(startCoord.x, startCoord.y, 31, 0, 2 * Math.PI);
-        context.fillStyle = `rgb(233, 221, 221)`;
-        context.fill()
-      }
-
-      context.beginPath();
-      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
-      context.fillStyle = 'blue';
-      context.fill()
-
-      startCoord = { x: mouseX, y: mouseY };
-      setStart = false;
-    };
-    function placeGoal(e) {
-      //Do: edgecase for predrawn obstacles
-      e.preventDefault();
-      e.stopPropagation();
-      var mouseX = parseInt(e.clientX - offsetX);
-      var mouseY = parseInt(e.clientY - offsetY);
-
-      //Edge case that "erases previous drawn circle"
-      if (goalCoord != null) {
-        context.beginPath();
-        context.arc(goalCoord.x, goalCoord.y, 31, 0, 2 * Math.PI);
-        context.fillStyle = `rgb(233, 221, 221)`;
-        context.fill()
-      }
-
-      context.beginPath();
-      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
-      context.fillStyle = 'yellow';
-      context.fill()
-
-
-      goalCoord = { x: mouseX, y: mouseY };
-      setGoal = false;
-
-    };
-    function drawObstacle(e) {
-
-      //Does: Stops when there is 5 shapes or there the current point has 10 coords.
-      //Does: prevents too many objects
-      if (isDone > 5) {
-        alert("too much arrays")
-        return;
-      }
-      //Does: prevents too many points to an object
-      if (coordinates[isDone].length > 10) {
-        alert("too many points")
-        return;
-      }
-      // Does: tell the browser we're handling this event
-      e.preventDefault();
-      e.stopPropagation();
-
-      var mouseX = parseInt(e.clientX - offsetX);
-      var mouseY = parseInt(e.clientY - offsetY);
-      coordinates[isDone].push({ x: mouseX, y: mouseY });
-
-      if (coordinates[isDone].length == 1) {
-
-        context.beginPath();
-        context.moveTo(mouseX, mouseY);
-      } else {
-
-        //Check distance and snap if close enough to start
-
-        var a = coordinates[isDone][0].x - mouseX;
-        var b = coordinates[isDone][0].y - mouseY;
-
-        var c = Math.sqrt(a * a + b * b);
-
-        if (c < 20) {
-
-          context.lineWidth = 2;
-          context.strokeStyle = 'red';
-          context.lineTo(mouseX, mouseY);
-          context.stroke();
-          fill();
-
-        } else {
-          context.lineWidth = 2;
-          context.strokeStyle = 'red';
-          context.lineTo(mouseX, mouseY);
-          context.stroke();
-        }
-
-      }
-
-      //drawPolygon();
-    }
-    function fill() {
-      context.fillStyle = 'red';
-      context.fill();
-      isDone = isDone + 1;
-      var innerArray = [];
-      coordinates.push(innerArray);
-    }
-    //Does: Draws all stored obstacles 
-    function drawPolygons() {
-      //Does: setup drawing
-      context.lineWidth = 2;
-      context.strokeStyle = 'red';
-      for (var obstacle = 0; obstacle < coordinates.length - 1; obstacle++) {
-        context.beginPath();
-
-        context.moveTo(coordinates[obstacle][0].x, coordinates[obstacle][0].y);
-        for (var index = 1; index < coordinates[obstacle].length; index++) {
-          context.lineTo(coordinates[obstacle][index].x, coordinates[obstacle][index].y);
-        }
-        context.closePath();
-        //Colors/Fills Shapes
-        context.fillStyle = 'red';
-        context.fill();
-      }
-      context.stroke();
-    }
-
-    //Does: Draw Goal and Start
-    function drawGoalAndStart() {
-      context.beginPath();
-      context.arc(startCoord.x, startCoord.y, 30, 0, 2 * Math.PI);
-      context.fillStyle = 'blue';
-      context.fill()
-
-      context.beginPath();
-      context.arc(goalCoord.x, goalCoord.y, 30, 0, 2 * Math.PI);
-      context.fillStyle = 'yellow';
-      context.fill()
-    }
-    //Does: Plays algo
-    $('#play').click(function () {
-      if (startCoord != undefined) {
-        branch(startCoord.x, startCoord.y);
-      }
-    });
-    //Does:  
-    $('#reset').click(function () {
-      if (startCoord != undefined) {
-        branch(startCoord.x, startCoord.y);
-      }
-    });
-   
-    //Does: Detects pixel and returns true if it is blank 
-    function detectPixel(x, y) {
-      var pixel = context.getImageData(x, y, 1, 1).data;
-      if (pixel[2] == 255 || pixel[3] == 255) {
-        return true;
-      }
-    }
-    //Does: test branch algo No actual just some BS
-    function branch(x, y) {
-      if (x > 7000) {
-        return;
-      }
-
-      if (x < -400) {
-        return;
-      }
-
-
-      //dot
-      context.beginPath();
-      context.arc(x, y, 5, 0, 2 * Math.PI);
-      context.fillStyle = 'green';
-      context.fill()
-      //split 
-
-      //branch 
-      setTimeout(() => {
-        if (!detectPixel(x + 20, y - 60)) {
-          context.lineWidth = 2;
-          context.strokeStyle = 'yellow';
-          context.beginPath();
-          context.moveTo(x, y);
-          context.lineTo(x + 20, y - 60);
-          context.stroke();
-          branch(x + 20, y - 60);
-        }
-
-        if (!detectPixel(x + 30, y + 20)) {
-          context.lineWidth = 2;
-          context.strokeStyle = 'red';
-          context.beginPath();
-          context.moveTo(x, y);
-          context.lineTo(x + 30, y + 20);
-          context.stroke();
-          branch(x + 30, y + 20);
-        }
-      }, 1000);
-    }
-  }
+ 
 
   jQueryCodeDiffDrive = () => {
     function establishCanvas() {
@@ -814,9 +523,6 @@ class Canvas extends React.Component {
       case "RET":
         this.jQueryCodeRET();
         break;
-      case "PRM":
-        this.jQueryCodePRM();
-        break;
       case "Diff. Drive":
         this.jQueryCodeDiffDrive();
         break;
@@ -833,9 +539,6 @@ class Canvas extends React.Component {
     switch (this.props.jQuery) {
       case "RET":
         this.jQueryCodeRET();
-        break;
-      case "PRM":
-        this.jQueryCodePRM();
         break;
       case "Diff. Drive":
         this.jQueryCodeDiffDrive();
@@ -1078,7 +781,7 @@ class RightParameterUI extends React.Component {
           <input type="number" id="TAngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
           <br></br>
 
-          <label for="degree" >Degree (&#8477;)</label>
+          <label for="degree" >Steering Angle (&#8477;)</label>
           <br></br>
           <input type="number" id="Tdegree" placeholder='0' onChange={this.handleDegreeChange}></input>
           <br></br>
@@ -1088,11 +791,8 @@ class RightParameterUI extends React.Component {
 
       //for some reason, switching between bicycle and one of the pathfinding algorithms causes an unforseen error because the jQueryCode is still checking for a parameter for some reason. This is a 
       //way to fix it for now, just render an input that will be overwritten
-      case 'PRM':
-        return (<div id="rightParameterUI">
-          <input type="number" id="degree" placeholder='0'></input>
-        </div>
-        )
+    
+        
       case 'RET':
         return (<div id="rightParameterUI">
           <input type="number" id="degree" placeholder='0'></input>
