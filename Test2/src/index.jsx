@@ -21,9 +21,10 @@ class App extends React.Component {
       right_wheel_radius: 0,
       fRadius: 0,
       DistFrontToBack: 0,
-
+      last_position: [],
+      var: true,
     };
-
+    this.handleLastPosition = this.handleLastPosition.bind(this)
     this.toggleButton = this.toggleButton.bind(this);
     this.toggleButton2 = this.toggleButton2.bind(this);
     this.handleDegreeChange = this.handleDegreeChange.bind(this);
@@ -39,6 +40,10 @@ class App extends React.Component {
     this.handleRightWheelRadiusChange = this.handleRightWheelRadiusChange.bind(this);
 
 
+  }
+  handleLastPosition = (array) => {
+    this.setState({last_position: array, var:false}, 
+      () => {console.log("")})
   }
   toggleButton2 = () => {
     this.setState({
@@ -61,7 +66,7 @@ class App extends React.Component {
     });
   };
   handleDegreeChange = (num) => {
-    this.setState({ degree: num }, () => {
+    this.setState({ degree: num, var:true }, () => {
       console.log('');
     });
   }
@@ -118,7 +123,7 @@ class App extends React.Component {
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas onPositionChange = {this.handleLastPosition}
           jQuery={this.state.page} /><RightParameterUI onLeftAngularVelocityChange={this.handleLeftAngularVelocityChange}
             onRightAngularVelocityChange={this.handleRightAngularVelocityChange}
             onLeftWheelRadiusChange={this.handleLeftWheelRadiusChange}
@@ -127,7 +132,7 @@ class App extends React.Component {
             jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       case 'Bicycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page}
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas  state = {this.state.var}  onPositionChange = {this.handleLastPosition} jQuery={this.state.page}
           degre={this.state.degree}
           AngularVelocity={this.state.AngularVelocity}
           DistFrontToBack={this.state.DistFrontToBack}
@@ -142,7 +147,7 @@ class App extends React.Component {
             jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       case 'Tricycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onAngularVelocityChange={this.handleAngularVelocityChange}
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas onPositionChange = {this.handleLastPosition} jQuery={this.state.page} /><RightParameterUI onAngularVelocityChange={this.handleAngularVelocityChange}
           onDegreeChange={this.handleDegreeChange}
           onDistB2WChange={this.handleDistB2WChange}
           onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
@@ -215,11 +220,8 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggleButton2 = this.toggleButton2.bind(this)
   }
-  toggleButton2() {
-    this.props.toggleButton2()
-  }
+ 
   //THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   jQueryCodeRET = () => {
 
@@ -541,7 +543,9 @@ class Canvas extends React.Component {
 
   jQueryCodeBicycle = () => {
 
-
+    
+  
+  
 
 
     function establishCanvas() {
@@ -614,10 +618,10 @@ class Canvas extends React.Component {
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
 
-
+    var cm = this.props.onPositionChange
+    var cm2 = this.props.state;
     function concept() {
-
-
+      
       //Does: Sets Focul point to center of canvas
 
 
@@ -634,15 +638,18 @@ class Canvas extends React.Component {
       if (0 > startY) {
         proceed = false;
       }
-
-
       //Pause when stop is false
       if (proceed) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // draw a rotated rect
         var Cpos = bike.main();
-
+        $(document).ready(function(){
+          if (document.getElementById("fRadius").value != '' && document.getElementById("DistFrontToBack").value != '' && document.getElementById("degree").value != '' && document.getElementById("AngularVelocity").value != '' && cm2 == true) {
+            cm2 = false;
+            cm(Cpos)
+          }
+     });
         startX = Cpos[0];
         startY = Cpos[1];
         var theta = Cpos[2] - Math.PI / 2;
