@@ -461,14 +461,6 @@ class Canvas extends React.Component {
     var startCoord;
 
     //Does: Creates new array for new object points per object
-    $('#done').click(function () {
-      context.fillStyle = 'red';
-      context.fill();
-      isDone = isDone + 1;
-      var innerArray = [];
-      coordinates.push(innerArray);
-
-    });
 
     //Does: deletes all obstacles
     $('#clear').click(function () {
@@ -583,16 +575,39 @@ class Canvas extends React.Component {
         context.moveTo(mouseX, mouseY);
       } else {
 
-        context.lineWidth = 2;
-        context.strokeStyle = 'red';
-        //context.fillStyle = 'red';
-        context.lineTo(mouseX, mouseY);
-        context.stroke();
+        //Check distance and snap if close enough to start
+
+        var a = coordinates[isDone][0].x - mouseX;
+        var b = coordinates[isDone][0].y - mouseY;
+
+        var c = Math.sqrt(a * a + b * b);
+
+        if (c < 20) {
+
+          context.lineWidth = 2;
+          context.strokeStyle = 'red';
+          context.lineTo(mouseX, mouseY);
+          context.stroke();
+          fill();
+
+        } else {
+          context.lineWidth = 2;
+          context.strokeStyle = 'red';
+          context.lineTo(mouseX, mouseY);
+          context.stroke();
+        }
+
       }
 
       //drawPolygon();
     }
-
+    function fill() {
+      context.fillStyle = 'red';
+      context.fill();
+      isDone = isDone + 1;
+      var innerArray = [];
+      coordinates.push(innerArray);
+    }
     //Does: Draws all stored obstacles 
     function drawPolygons() {
       //Does: setup drawing
@@ -1227,12 +1242,10 @@ class RightDrawingUI extends React.Component {
       Drawing UI
       <div>
 
-        <button id="done">Click when done assigning points</button>
-        <br></br>
+
         <button id="clear">Click to clear all obstacles</button>
         <br></br>
-        <button id="delete">Click to delete all shapes</button>
-        <br></br>
+
         <button id="goal">Click to set goal</button>
         <br></br>
         <button id="start">Click to set start</button>
