@@ -12,22 +12,20 @@ class App extends React.Component {
       default: true,
       filterText: '',
       page: '',
-      degree: 0,
-      AngularVelocity: 0,
-      distance_between_wheels: 0,
-      left_angular_velocity: 0,
-      right_angular_velocity: 0,
-      left_wheel_radius: 0,
-      right_wheel_radius: 0,
-      fRadius: 0,
-      DistFrontToBack: 0,
-      last_position: [],
-      var: true,
+     // degree: 0,
+      //AngularVelocity: 0,
+      //distance_between_wheels: 0,
+     // left_angular_velocity: 0,
+     // right_angular_velocity: 0,
+     // left_wheel_radius: 0,
+     // right_wheel_radius: 0,
+     // fRadius: 0,
+     // DistFrontToBack: 0,
     };
-    this.handleLastPosition = this.handleLastPosition.bind(this)
+  
     this.toggleButton = this.toggleButton.bind(this);
     this.toggleButton2 = this.toggleButton2.bind(this);
-    this.handleDegreeChange = this.handleDegreeChange.bind(this);
+    /*this.handleDegreeChange = this.handleDegreeChange.bind(this);
     this.handleDistF2BChange = this.handleDistF2BChange.bind(this);
     this.handleAngularVelocityChange = this.handleAngularVelocityChange.bind(this);
     this.handleFrontWheelRadiusChange = this.handleFrontWheelRadiusChange.bind(this)
@@ -38,13 +36,10 @@ class App extends React.Component {
     this.handleRightAngularVelocityChange = this.handleRightAngularVelocityChange.bind(this);
     this.handleLeftWheelRadiusChange = this.handleLeftWheelRadiusChange.bind(this);
     this.handleRightWheelRadiusChange = this.handleRightWheelRadiusChange.bind(this);
-
+*/
 
   }
-  handleLastPosition = (array) => {
-    this.setState({last_position: array, var:false}, 
-      () => {console.log("")})
-  }
+  
   toggleButton2 = () => {
     this.setState({
       degree: 0,
@@ -56,6 +51,7 @@ class App extends React.Component {
       right_wheel_radius: 0,
       fRadius: 0,
       DistFrontToBack: 0,
+      last_position: [],
     }, () => {
       console.log('');
     });
@@ -65,8 +61,9 @@ class App extends React.Component {
       console.log('');
     });
   };
+  /*
   handleDegreeChange = (num) => {
-    this.setState({ degree: num, var:true }, () => {
+    this.setState({ degree: num }, () => {
       console.log('');
     });
   }
@@ -115,7 +112,7 @@ class App extends React.Component {
       console.log('');
     });
   }
-
+*/
   //rendering components conditionally based on what tab you clicked on: (this.state.page). Right now, all tabs are rendering the same stuff but that can be changed. 
   render() {
     switch (this.state.page) {
@@ -123,35 +120,35 @@ class App extends React.Component {
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas onPositionChange = {this.handleLastPosition}
-          jQuery={this.state.page} /><RightParameterUI onLeftAngularVelocityChange={this.handleLeftAngularVelocityChange}
-            onRightAngularVelocityChange={this.handleRightAngularVelocityChange}
-            onLeftWheelRadiusChange={this.handleLeftWheelRadiusChange}
-            onRightWheelRadiusChange={this.handleRightWheelRadiusChange}
-            onDistBetweenWheelsChange={this.handleDistBetweenWheelsChange}
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas
+          jQuery={this.state.page} /><RightParameterUI //onLeftAngularVelocityChange={this.handleLeftAngularVelocityChange}
+          //  onRightAngularVelocityChange={this.handleRightAngularVelocityChange}
+          //  onLeftWheelRadiusChange={this.handleLeftWheelRadiusChange}
+           // onRightWheelRadiusChange={this.handleRightWheelRadiusChange}
+           // onDistBetweenWheelsChange={this.handleDistBetweenWheelsChange}
             jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       case 'Bicycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas  state = {this.state.var}  onPositionChange = {this.handleLastPosition} jQuery={this.state.page}
-          degre={this.state.degree}
-          AngularVelocity={this.state.AngularVelocity}
-          DistFrontToBack={this.state.DistFrontToBack}
-          fRadius={this.state.fRadius}
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page}
+         // degre={this.state.degree}
+          //AngularVelocity={this.state.AngularVelocity}
+          //DistFrontToBack={this.state.DistFrontToBack}
+          //fRadius={this.state.fRadius}
 
         /><RightParameterUI
-            onAngularVelocityChange={this.handleAngularVelocityChange}
-            onDegreeChange={this.handleDegreeChange}
+           // onAngularVelocityChange={this.handleAngularVelocityChange}
+            //onDegreeChange={this.handleDegreeChange}
 
-            onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
-            onDistF2BChange={this.handleDistF2BChange}
+            //onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
+            //onDistF2BChange={this.handleDistF2BChange}
             jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       case 'Tricycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas onPositionChange = {this.handleLastPosition} jQuery={this.state.page} /><RightParameterUI onAngularVelocityChange={this.handleAngularVelocityChange}
-          onDegreeChange={this.handleDegreeChange}
-          onDistB2WChange={this.handleDistB2WChange}
-          onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
-          onDistF2BChange={this.handleDistF2BChange}
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI //onAngularVelocityChange={this.handleAngularVelocityChange}
+        //  onDegreeChange={this.handleDegreeChange}
+         // onDistB2WChange={this.handleDistB2WChange}
+         // onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
+        //  onDistF2BChange={this.handleDistF2BChange}
           jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       //changing this for testing
@@ -543,11 +540,6 @@ class Canvas extends React.Component {
 
   jQueryCodeBicycle = () => {
 
-    
-  
-  
-
-
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       var canvas = document.createElement('canvas');
@@ -617,9 +609,6 @@ class Canvas extends React.Component {
     //Does: Flips canvas to correct orientation
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
-
-    var cm = this.props.onPositionChange
-    var cm2 = this.props.state;
     function concept() {
       
       //Does: Sets Focul point to center of canvas
@@ -644,17 +633,13 @@ class Canvas extends React.Component {
 
         // draw a rotated rect
         var Cpos = bike.main();
-        $(document).ready(function(){
-          if (document.getElementById("fRadius").value != '' && document.getElementById("DistFrontToBack").value != '' && document.getElementById("degree").value != '' && document.getElementById("AngularVelocity").value != '' && cm2 == true) {
-            cm2 = false;
-            cm(Cpos)
-          }
-     });
+    
         startX = Cpos[0];
         startY = Cpos[1];
         var theta = Cpos[2] - Math.PI / 2;
         drawWheel(startX, startY, fRadius * 2, DistFrontToBack / 4, degre, theta, DistFrontToBack);
         drawBody(startX, startY, DistFrontToBack, DistFrontToBack / 4, theta);
+      
       }
       //check rotation
       //bodyCenter(startX, startY);
@@ -692,6 +677,7 @@ class Canvas extends React.Component {
         ctx.translate(x, y);
         // rotate the rect
         //ctx.rotate(theta);
+      
         ctx.rotate(theta);
 
         // draw the rect on the transformed context
@@ -887,7 +873,7 @@ class LowerControlUI extends React.Component {
 class RightParameterUI extends React.Component {
   constructor(props) {
     super(props);
-
+/*
     this.handleDegreeChange = this.handleDegreeChange.bind(this);
     this.handleAngularVelocityChange = this.handleAngularVelocityChange.bind(this);
     this.handleFrontWheelRadiusChange = this.handleFrontWheelRadiusChange.bind(this);
@@ -898,8 +884,9 @@ class RightParameterUI extends React.Component {
     this.handleRightWheelRadiusChange = this.handleRightWheelRadiusChange.bind(this);
     this.handleLeftAngularVelocityChange = this.handleLeftAngularVelocityChange.bind(this);
     this.handleRightAngularVelocityChange = this.handleRightAngularVelocityChange.bind(this);
+  */
   }
-
+/*
   handleDistB2WChange(e) {
     if (e.target.value <= 10 || e.target.value > 50) {
     } else {
@@ -957,7 +944,7 @@ class RightParameterUI extends React.Component {
       this.props.onRightWheelRadiusChange(e.target.value);
     }
   };
-
+*/
   render() {
     switch (this.props.jQuery) {
       case 'Diff. Drive':
@@ -981,7 +968,7 @@ class RightParameterUI extends React.Component {
           <input type="number" id="DBW" placeholder='0' onChange={this.handleDistBetweenWheelsChange}></input>
           <br></br>
 
-          <h5>Control Parameters</h5>
+          <h5>Control Inputs</h5>
           <label for="AngularVelocity">Left Angular Velocity (0 &#8804; x &#8804; 10)</label>
           <br></br>
           <input type="number" id="LAV" placeholder='0' onChange={this.handleLeftAngularVelocityChange}></input>
@@ -1007,13 +994,11 @@ class RightParameterUI extends React.Component {
           <br></br>
           <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
           <br></br>
-          <h5>Control Parameters</h5>
+          <h5>Control Inputs</h5>
           <label for="degree" >Steering Angle(&#8477;)</label>
           <br></br>
           <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
           <br></br>
-
-
 
           <label for="AngularVelocity">Angular Velocity (0 &#8804; x &#8804; 10)</label>
           <br></br>
