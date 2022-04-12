@@ -14,9 +14,18 @@ import cycles from '../js_versions/Motion_Model_Bicycle'
       page: '',
       degree: 0,
       AngularVelocity: 0,
+      distance_between_wheels: 0,
+      left_angular_velocity: 0,
+      right_angular_velocity: 0,
+      left_wheel_radius: 0,
+      right_wheel_radius: 0,
+      fRadius: 0,
+      DistFrontToBack: 0,
   
     };
+
     this.toggleButton = this.toggleButton.bind(this);
+    this.toggleButton2 = this.toggleButton2.bind(this);
     this.handleDegreeChange = this.handleDegreeChange.bind(this);
     this.handleDistF2BChange = this.handleDistF2BChange.bind(this);
     this.handleAngularVelocityChange = this.handleAngularVelocityChange.bind(this);
@@ -30,6 +39,21 @@ import cycles from '../js_versions/Motion_Model_Bicycle'
     this.handleRightWheelRadiusChange = this.handleRightWheelRadiusChange.bind(this);
 
 
+  }
+  toggleButton2 = () => {
+    this.setState({
+      degree: 0,
+      AngularVelocity: 0,
+      distance_between_wheels: 0,
+      left_angular_velocity: 0,
+      right_angular_velocity: 0,
+      left_wheel_radius: 0,
+      right_wheel_radius: 0,
+      fRadius: 0,
+      DistFrontToBack: 0,
+  }, () => {
+      console.log('');
+    });
   }
   toggleButton = (num) => {
     this.setState({ page: num }, () => {
@@ -97,12 +121,13 @@ import cycles from '../js_versions/Motion_Model_Bicycle'
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI jQuery={this.state.page} /><RightDrawingUI /><LowerControlUI /><Footer /></>)
         break;
       case 'Diff. Drive':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas 
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas
         jQuery={this.state.page} /><RightParameterUI   onLeftAngularVelocityChange = {this.handleLeftAngularVelocityChange}
         onRightAngularVelocityChange = {this.handleRightAngularVelocityChange}
         onLeftWheelRadiusChange = {this.handleLeftWheelRadiusChange}
         onRightWheelRadiusChange = {this.handleRightWheelRadiusChange}
-        onDistBetweenWheelsChange = {this.handleDistBetweenWheelsChange} jQuery={this.state.page} /><LowerControlUI /></>)
+        onDistBetweenWheelsChange = {this.handleDistBetweenWheelsChange}
+        jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2 = {this.toggleButton2} /></>)
         break;
       case 'Bicycle':
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page}
@@ -117,7 +142,7 @@ import cycles from '../js_versions/Motion_Model_Bicycle'
 
             onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
             onDistF2BChange={this.handleDistF2BChange}
-            jQuery={this.state.page} /><LowerControlUI /></>)
+            jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2 = {this.toggleButton2}  /></>)
         break;
       case 'Tricycle':
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI  onAngularVelocityChange={this.handleAngularVelocityChange}
@@ -125,7 +150,7 @@ import cycles from '../js_versions/Motion_Model_Bicycle'
             onDistB2WChange = {this.handleDistB2WChange}
             onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
             onDistF2BChange={this.handleDistF2BChange}
-            jQuery={this.state.page} /><LowerControlUI /></>)
+            jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2 = {this.toggleButton2} /></>)
         break;
       //changing this for testing
       default:
@@ -194,9 +219,10 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      last_position: [],
-    }
+    this.toggleButton2 = this.toggleButton2.bind(this)
+  }
+  toggleButton2() {
+    this.props.toggleButton2()
   }
   //THIS IS WHERE YOU PUT YOUR JAVASCRIPT/JQUERY CODE FOR MOTION MODELS/PATHFINDING ALGORITHMS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   jQueryCodeRET = () => {
@@ -591,12 +617,7 @@ class Canvas extends React.Component {
         branch(startCoord.x, startCoord.y);
       }
     });
-    //Does: redraws obstacles and goal and start
-    $('#resetAlgo').click(function () {
-      drawPolygons();
-      drawGoalAndStart();
-    });
-
+   
     //Does: Detects pixel and returns true if it is blank 
     function detectPixel(x, y) {
       var pixel = context.getImageData(x, y, 1, 1).data;
@@ -748,11 +769,7 @@ class Canvas extends React.Component {
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
 
-    $('#resetAlgo').click(function () {
-      //alert("Play functionality must be implemented")
-
-
-    })
+   
     function concept() {
 
 
@@ -950,7 +967,37 @@ class Canvas extends React.Component {
 }
 
 class LowerControlUI extends React.Component {
-
+  constructor(props) {
+    super(props);
+   
+    this.toggleButton2 = this.toggleButton2.bind(this);
+  }
+  
+  toggleButton2 () {
+    this.props.toggleButton2()
+     switch (this.props.jQuery) {
+         case 'Diff. Drive':
+           document.getElementById('LWR').value = '';
+           document.getElementById('RWR').value = '';
+           document.getElementById('DBW').value = '';
+           document.getElementById('LAV').value = '';
+           document.getElementById('RAV').value = '';
+           break;
+          case 'Bicycle':
+            document.getElementById('fRadius').value = '';
+            document.getElementById('DistFrontToBack').value = '';
+            document.getElementById('degree').value = '';
+            document.getElementById('AngularVelocity').value = '';
+            break;
+          case 'Tricycle':
+             document.getElementById('TfRadius').value = '';
+            document.getElementById('TDistFrontToBack').value = '';
+            document.getElementById('Tdegree').value = '';
+            document.getElementById('TAngularVelocity').value = '';
+             document.getElementById('DBBW').value = '';
+            break;
+       }
+  }
   jQueryCode = () => {
     $('#play').click(function () {
       //alert("Play functionality must be implemented")
@@ -973,7 +1020,7 @@ class LowerControlUI extends React.Component {
         <button id="pause"><img width = "40" height = "25" src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARwAAACxCAMAAAAh3/JWAAAAgVBMVEX///8hISEAAAAeHh6/v7+lpaUHBwckJCQXFxcaGho5OTleXl4UFBQZGRkVFRUQEBD29vbw8PCJiYno6OjT09PGxsavr6/MzMwqKirg4OA3Nze2trZVVVXa2tpFRUViYmKUlJRqamp5eXmPj4+cnJxMTEwwMDCCgoJwcHBAQECEhIRzuIecAAAJc0lEQVR4nO2deXuiMBDGZaIoHuCJeKNVq/3+H3BFa5cJQROahNHy+2efdZcjLzlmJpOkVquoqKioqKioqKioqKh4K/qDhH7Zr0GJ/ngR7zpzFsA3bis6nIbhZFT2m5XLYBJvnESOoMUuON8w5nWvUq0/w1nZ71gK/clwDnBRxcnHu0jkbsM/VoUGYecizCNdfmA+wPFjXPYb26K/WAK0ZIT5ESgA5+MvNLDVDqCnosyPPutF2e9umPoaAnVlbngAH4OyC2COMAKvqDTf1Wf3pr1zyECqC35IAKc3lGdy1CDNTZ6vNzOiZwdN0tzkaZRdHp0MiwxQ+TA4r8ouki6mzJUqMvMSmEwV8+Cr7FLpYfekRbGue/U3o/NhuTysj97V/XzsWDiOG71B5VlFj6pN76JL+7Svr5AB059Nw+HSe+xhMIhLKpI2GvnVJglSdBrj/KFntPiMHjkacHjtYWsL+coch9PnNxglLmpeb+67L+yQDto5vkIPgqF0l9EPD3nti0Fo8v1NsnLFnzyAZV3tTqOhm9M84dPMu5tmIi7PxQEoEn0Im+LbwUb7i1sgFBamW9x1XETCO7oHra9thYaoK/Zg+xu3MQxEZkHQfrVBS6TNxer/7egi9EO689dSR6SNr8NfnK1Fd57//sb2CAUlgKWeMF5DEDDrrrXc2gr1rDZMX5hhdM7ePljqurtpVtlRJYh0Th58ZtWBk8b7G2TgZrTRbYwssvK/iBs6zwwo8KH7GbNWxh8FRau7FLYZf8qEA9TPuG0M6EfeM4M4g4mRBx14g9A7GnmORlZZbUyFFTq8Oi71TjlitrQRqAO0J4x3rj1tarVlwD+N8nTxlG9UhvqbO+sufpxP2Rbkp1VMB+r6EedKEG5YQ65R6bdveEacNciAqoM+4xpV0DH/TL4hBzvzzyzEAZvGrGnjoXtOHaA518f74mAnUa2DhyyPZvSCM3FspUL0OT+XpI/FBbha1kbVCX4wo+hFONwHtOcGnnDDIjiccxXHZn4R17BYZO/RkjTRC3ptm89ecB+GWq/DDVVGXaosa2REkBuwDsiO727tPn1c6qd5BhfGsR6U2/jpx/u0Ajs7NGBI2vDneTvN/ecwSv8aSfn1nOdCy8MqVHGcHvuPx+4/NyD1M5PsXbcoeOFSysXFw0VXslajAY45958byLeXFAe3a2Z1sHzCEo0Wsr6fTnE4r9eSXyfDAH02TzZhRqs42IkIYvVSGAJbx9Lmu1ZxsPtCyErupKcfWSB7mV5xYnwZmXaFa7R0CqNecUboLciMV7i5y5unesWprdNGeo/KPMQwbQEyX/o6zeJw1xGxA8/pQsq3Kt3i4HYFEunxFsADucI0nmZxavP0/dy9WikMwXU58tVZtzioeRPpdPZuwXfSLQ73lZQKYQoULnBj+Qt1i9PH4pDIZUKmqUrmgG5xakdW8EJjcN9LIQlEuzi7dNyCRI+MggXMU7hSuzjIx5MNnBgFhdZbKjm12sVBWQUkwuyoLIFK0ol2cQaFK7EpPtPWhVK2knZxami1IwUHYpOOVygZ7frFQY4MhbEczVgphVH0i9NJx0opzF5h40IlnVO/OGgsN5ysKQVKklSy2fWL84H6PwLZFumisK7KlfrFQW4egTXnyEBWi2vrFwddSmCXHSyO0mJL/eIgE5mcOEozjYbFIRBjr8R5QNWsHlB1yI9ARZGe7Ux4/6GcMwJVnL0/YATOCbkPJ2ruA13Hk8ASkS0KWah8Lf3itKmFLL4IBbvIzZbjMOlQ4UrDYVLn+QXGQQH2nsriPMMBdgrbVaEUYPm0rpoBcdCVXQoLGglN6p3ITerhFXqlTgfjN6EwHVzbphMJVCaudIszIJhIgFNQFLpB3eKgoYHRSEGZUkleQtOLLQuL2iXgemT5wugWB00S0eiPuRxXhRFUszizghm/ZkGBAuZKX6dZnD055yFhWjDHVbM4KHaiZKobBaf3S7crveLgVkUguv4NXmEpXaH1ioMaNxErJwEv1JMOW+gVx0d3o7OVKx7MvbPkZVrFwR+IykCegBKYpEdRreKc0cJ2Osut+P0IfMmsSZ3i4GX3JJIlf+CWTst9N9Zt9XqthMsf3d795wYkv1z/qdfrSYrTwXWXwJTVf1Ag2fHldmvYdBD3nxfL9K9LKbOJ3xGBiAV4g98RwPasCF67TW1XM/x2ttfzTEv+Nk/g9oayPNs498r8NM9B8QLL67obpX4ZCfjdj2J7j8bhUcu7PsmBq45NM2yDt2+lEVnHcBtTSTsRv2ZR1oNVmHNVJ7bz2AG3dyuRNdMc/B6qlgKVeDMzslsid1BYx2GBDTt1WM6OqMqMuPf0LUzl87vFumTP94z5r2jcjOe3YFZKZLAMN5w7YDjmNOAPIqQ4jN/JnPpgNqOzf+RObgksb96oBt89mv2UZ27zfuaSClVkaPOn8Bh0dNb8cTP0nCoMv52+wbqT1YbsSHVnwTcsQ/1O9piiFkm/AbPLqmNgzBo5PvcU5lI+S+UOf8aJCXtnmj11kEpaxWP6TubF3bXeYURw0DetCYd8sp2y0wp0+sqCg75BJTu8VMbZl2f6zp0ZN7MHfQNp6w8jOMjTgbYef/lDcLzy6xzjmZAd0JNTlTVUnulRcOeAQia/AiJ1HNf5pUE4OIlO5X41bXLUYXD4zXxbDNne5iL5S7WpG+KD7nvQKSrPHkSnlb/oUfdjwfHQTnIyd6fAsD6IXaHYFgJqZhg1M7byd+05hmpG4fgE2QOJb9oQSuFSo38QdTxO0vfASTq8MNofQazyZQAkHPl7ype4LVxbF5zqz13FcTzPqzTJQd9kckYLUYfM8dA/dAHOw3pu+frjxsYHPkqcrn4vZBaLGaxzmtatXQQAsPxqTFaD/71QfzZexKcIwG3lKpP0XC/iaj4khswB5lwxA/ciEfjN43x+jNj1L4H/QJcEOL92k7ozOz+qPD/cT5eR+b+t1x2lMjSEpm1hGCzfo9rcuDhFQouwENB85QFcxPigR55Ll/Q+Leo/k/Pv5blI80F74q4wkzXwcwZq0gDEbypNwnibb+8+w4eIzAozQwxilucpPcID2JDMZ9PN9ATQVak/ngvrxitM2elhsuuC+8RwvsEuDsah8U5mjQyr/TJxE7x8x5L5F2Hmn/U37oMfsQo/z4krFXR73t1vSI6t9K/eVnMTT/5OYxIzmobxrrM+MrgSRO3Dadior/5ohamoqKioqKioqKigyj+1JnlNAaVbcAAAAABJRU5ErkJggg=="></img></button>
         <button id="step">1 Step</button>
         <button id="line"> Even Smaller Step</button>
-        <button id="resetAlgo"> Reset</button>
+        <button id="resetAlgo" onClick = {this.toggleButton2}> Reset</button>
 
       </div>
     </div>)
@@ -995,6 +1042,7 @@ class RightParameterUI extends React.Component {
     this.handleLeftAngularVelocityChange = this.handleLeftAngularVelocityChange.bind(this);
     this.handleRightAngularVelocityChange = this.handleRightAngularVelocityChange.bind(this);
   }
+    
   handleDistB2WChange(e) {
     if (e.target.value <= 10 || e.target.value > 50) {
   } else {
@@ -1062,28 +1110,28 @@ class RightParameterUI extends React.Component {
           <h5>Robot Properties</h5>
           <label for="fRadius">Left Wheel Radius (0 &#60; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="fRadius" placeholder = '0' onChange={this.handleLeftWheelRadiusChange}></input>
+          <input type="number" id="LWR" placeholder = '0' onChange={this.handleLeftWheelRadiusChange}></input>
           <br></br>
 
           <label for="fRadius">Right Wheel Radius (0 &#60; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="fRadius" placeholder = '0' onChange={this.handleRightWheelRadiusChange}></input>
+          <input type="number" id="RWR" placeholder = '0' onChange={this.handleRightWheelRadiusChange}></input>
           <br></br>
           
           <label for="fRadius">Distance Between Wheels (0 &#60; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="fRadius" placeholder = '0' onChange={this.handleDistBetweenWheelsChange}></input>
+          <input type="number" id="DBW" placeholder = '0' onChange={this.handleDistBetweenWheelsChange}></input>
           <br></br>
 
           <h5>Control Parameters</h5>
           <label for="AngularVelocity">Left Angular Velocity (0 &#8804; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleLeftAngularVelocityChange}></input>
+          <input type="number" id="LAV" placeholder='0' onChange={this.handleLeftAngularVelocityChange}></input>
           <br></br>
           
           <label for="AngularVelocity">Right Angular Velocity (0 &#8804; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleRightAngularVelocityChange}></input>
+          <input type="number" id="RAV" placeholder='0' onChange={this.handleRightAngularVelocityChange}></input>
 
         </div>)
       case 'Bicycle':
@@ -1122,26 +1170,26 @@ class RightParameterUI extends React.Component {
           <h5>Robot Properties</h5>
           <label for="fRadius">Front Wheel Radius (0 &#60; x &#8804; 50)</label>
           <br></br>
-          <input type="number" id="fRadius" placeholder = '0' onChange={this.handleFrontWheelRadiusChange}></input>
+          <input type="number" id="TfRadius" placeholder = '0' onChange={this.handleFrontWheelRadiusChange}></input>
           <br></br>
 
           <label for="DistFrontToBack">Distance front to back (10 &#60; x &#8804; 100)</label>
           <br></br>
-          <input type="number" id="DistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
+          <input type="number" id="TDistFrontToBack" placeholder='0' onChange={this.handleDistF2BChange}></input>
           <br></br>
           <label for="DistanceBetweenBackWheels">Distance Between Back Wheels (10 &#60; x &#8804; 50)</label>
           <br></br>
-          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
+          <input type="number" id="DBBW" placeholder='0' onChange={this.handleDistB2WChange}></input>
           <br></br>
           <h5>Control Parameters</h5>
           <label for="AngularVelocity">Angular Velocity (0 &#8804; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="AngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
+          <input type="number" id="TAngularVelocity" placeholder='0' onChange={this.handleAngularVelocityChange}></input>
           <br></br>
 
           <label for="degree" >Degree (&#8477;)</label>
           <br></br>
-          <input type="number" id="degree" placeholder='0' onChange={this.handleDegreeChange}></input>
+          <input type="number" id="Tdegree" placeholder='0' onChange={this.handleDegreeChange}></input>
           <br></br>
 
           
