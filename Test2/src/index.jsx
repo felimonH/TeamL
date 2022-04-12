@@ -21,7 +21,7 @@ class App extends React.Component {
       right_wheel_radius: 0,
       fRadius: 0,
       DistFrontToBack: 0,
-  
+
     };
 
     this.toggleButton = this.toggleButton.bind(this);
@@ -51,7 +51,7 @@ class App extends React.Component {
       right_wheel_radius: 0,
       fRadius: 0,
       DistFrontToBack: 0,
-  }, () => {
+    }, () => {
       console.log('');
     });
   }
@@ -119,12 +119,12 @@ class App extends React.Component {
         break;
       case 'Diff. Drive':
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas
-        jQuery={this.state.page} /><RightParameterUI   onLeftAngularVelocityChange = {this.handleLeftAngularVelocityChange}
-        onRightAngularVelocityChange = {this.handleRightAngularVelocityChange}
-        onLeftWheelRadiusChange = {this.handleLeftWheelRadiusChange}
-        onRightWheelRadiusChange = {this.handleRightWheelRadiusChange}
-        onDistBetweenWheelsChange = {this.handleDistBetweenWheelsChange}
-        jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2 = {this.toggleButton2} /></>)
+          jQuery={this.state.page} /><RightParameterUI onLeftAngularVelocityChange={this.handleLeftAngularVelocityChange}
+            onRightAngularVelocityChange={this.handleRightAngularVelocityChange}
+            onLeftWheelRadiusChange={this.handleLeftWheelRadiusChange}
+            onRightWheelRadiusChange={this.handleRightWheelRadiusChange}
+            onDistBetweenWheelsChange={this.handleDistBetweenWheelsChange}
+            jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       case 'Bicycle':
         return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page}
@@ -139,15 +139,15 @@ class App extends React.Component {
 
             onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
             onDistF2BChange={this.handleDistF2BChange}
-            jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2 = {this.toggleButton2}  /></>)
+            jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       case 'Tricycle':
-        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI  onAngularVelocityChange={this.handleAngularVelocityChange}
-            onDegreeChange={this.handleDegreeChange}
-            onDistB2WChange = {this.handleDistB2WChange}
-            onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
-            onDistF2BChange={this.handleDistF2BChange}
-            jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2 = {this.toggleButton2} /></>)
+        return (<><Navbar toggleButton={this.toggleButton} /><Canvas jQuery={this.state.page} /><RightParameterUI onAngularVelocityChange={this.handleAngularVelocityChange}
+          onDegreeChange={this.handleDegreeChange}
+          onDistB2WChange={this.handleDistB2WChange}
+          onFrontWheelRadiusChange={this.handleFrontWheelRadiusChange}
+          onDistF2BChange={this.handleDistF2BChange}
+          jQuery={this.state.page} /><LowerControlUI jQuery={this.state.page} toggleButton2={this.toggleButton2} /></>)
         break;
       //changing this for testing
       default:
@@ -252,9 +252,266 @@ class Canvas extends React.Component {
     window.onscroll = function (e) {
       reOffset();
     }
+
+
+
+    //Does: Initalizes obstacles
+
+    var coordinates = [];
+    var isDone = 0;
+    var innerArray = [];
+    coordinates.push(innerArray);
+
+    //Does: next mouse sets goal or start
+    var setGoal = false;
+    var goalCoord;
+    var setStart = false;
+    var startCoord;
+
+    //Does: Creates new array for new object points per object
+
+    //Does: deletes all obstacles
+    $('#clear').click(function () {
+      context.clearRect(0, 0, cw, ch);
+    });
+
+    //Does: Delete all of canvas and objects
+    $('#delete').click(function () {
+      context.clearRect(0, 0, cw, ch);
+      isDone = 0;
+      coordinates = [];
+      innerArray = [];
+      coordinates.push(innerArray);
+    });
+
+
+    //Does: sets up buttons for start and goal for robot 
+    //Does: setup initalize robot pos/ goal position 
+    //Does: setup collision detection when initalizing robot and obstacles 
+    $('#goal').click(function () {
+      setGoal = true;
+      setStart = false;
+    });
+
+    $('#start').click(function () {
+      setStart = true;
+      setGoal = false;
+    });
+    //Does: handles when cavas is clicked
+    //Do: make conditions for goal and start
+    $("#canvas").mousedown(function (e) {
+      if (setStart) {
+        placeStart(e);
+      } else if (setGoal) {
+        placeGoal(e);
+      } else {
+        drawObstacle(e);
+      }
+    });
+    function placeStart(e) {
+      //Do: edgecase for pre drawn obstacles
+      e.preventDefault();
+      e.stopPropagation();
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+
+      //Edge case that "erases previous drawn circle"
+      if (startCoord != null) {
+        context.beginPath();
+        context.arc(startCoord.x, startCoord.y, 31, 0, 2 * Math.PI);
+        context.fillStyle = `rgb(233, 221, 221)`;
+        context.fill()
+      }
+
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'blue';
+      context.fill()
+
+      startCoord = { x: mouseX, y: mouseY };
+      setStart = false;
+    };
+    function placeGoal(e) {
+      //Do: edgecase for predrawn obstacles
+      e.preventDefault();
+      e.stopPropagation();
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+
+      //Edge case that "erases previous drawn circle"
+      if (goalCoord != null) {
+        context.beginPath();
+        context.arc(goalCoord.x, goalCoord.y, 31, 0, 2 * Math.PI);
+        context.fillStyle = `rgb(233, 221, 221)`;
+        context.fill()
+      }
+
+      context.beginPath();
+      context.arc(mouseX, mouseY, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'yellow';
+      context.fill()
+
+
+      goalCoord = { x: mouseX, y: mouseY };
+      setGoal = false;
+
+    };
+    function drawObstacle(e) {
+
+      //Does: Stops when there is 5 shapes or there the current point has 10 coords.
+      //Does: prevents too many objects
+      if (isDone > 5) {
+        alert("too much arrays")
+        return;
+      }
+      //Does: prevents too many points to an object
+      if (coordinates[isDone].length > 10) {
+        alert("too many points")
+        return;
+      }
+      // Does: tell the browser we're handling this event
+      e.preventDefault();
+      e.stopPropagation();
+
+      var mouseX = parseInt(e.clientX - offsetX);
+      var mouseY = parseInt(e.clientY - offsetY);
+      coordinates[isDone].push({ x: mouseX, y: mouseY });
+
+      if (coordinates[isDone].length == 1) {
+
+        context.beginPath();
+        context.moveTo(mouseX, mouseY);
+      } else {
+
+        //Check distance and snap if close enough to start
+
+        var a = coordinates[isDone][0].x - mouseX;
+        var b = coordinates[isDone][0].y - mouseY;
+
+        var c = Math.sqrt(a * a + b * b);
+
+        if (c < 20) {
+
+          context.lineWidth = 2;
+          context.strokeStyle = 'red';
+          context.lineTo(mouseX, mouseY);
+          context.stroke();
+          fill();
+
+        } else {
+          context.lineWidth = 2;
+          context.strokeStyle = 'red';
+          context.lineTo(mouseX, mouseY);
+          context.stroke();
+        }
+
+      }
+
+      //drawPolygon();
+    }
+    function fill() {
+      context.fillStyle = 'red';
+      context.fill();
+      isDone = isDone + 1;
+      var innerArray = [];
+      coordinates.push(innerArray);
+    }
+    //Does: Draws all stored obstacles 
+    function drawPolygons() {
+      //Does: setup drawing
+      context.lineWidth = 2;
+      context.strokeStyle = 'red';
+      for (var obstacle = 0; obstacle < coordinates.length - 1; obstacle++) {
+        context.beginPath();
+
+        context.moveTo(coordinates[obstacle][0].x, coordinates[obstacle][0].y);
+        for (var index = 1; index < coordinates[obstacle].length; index++) {
+          context.lineTo(coordinates[obstacle][index].x, coordinates[obstacle][index].y);
+        }
+        context.closePath();
+        //Colors/Fills Shapes
+        context.fillStyle = 'red';
+        context.fill();
+      }
+      context.stroke();
+    }
+
+    //Does: Draw Goal and Start
+    function drawGoalAndStart() {
+      context.beginPath();
+      context.arc(startCoord.x, startCoord.y, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'blue';
+      context.fill()
+
+      context.beginPath();
+      context.arc(goalCoord.x, goalCoord.y, 30, 0, 2 * Math.PI);
+      context.fillStyle = 'yellow';
+      context.fill()
+    }
+    //Does: Plays algo
+    $('#play').click(function () {
+      if (startCoord != undefined) {
+        branch(startCoord.x, startCoord.y);
+      }
+    });
+    //Does:  
+    $('#reset').click(function () {
+      if (startCoord != undefined) {
+        branch(startCoord.x, startCoord.y);
+      }
+    });
+
+    //Does: Detects pixel and returns true if it is blank 
+    function detectPixel(x, y) {
+      var pixel = context.getImageData(x, y, 1, 1).data;
+      if (pixel[2] == 255 || pixel[3] == 255) {
+        return true;
+      }
+    }
+    //Does: test branch algo No actual just some BS
+    function branch(x, y) {
+      if (x > 7000) {
+        return;
+      }
+
+      if (x < -400) {
+        return;
+      }
+
+
+      //dot
+      context.beginPath();
+      context.arc(x, y, 5, 0, 2 * Math.PI);
+      context.fillStyle = 'green';
+      context.fill()
+      //split 
+
+      //branch 
+      setTimeout(() => {
+        if (!detectPixel(x + 20, y - 60)) {
+          context.lineWidth = 2;
+          context.strokeStyle = 'yellow';
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x + 20, y - 60);
+          context.stroke();
+          branch(x + 20, y - 60);
+        }
+
+        if (!detectPixel(x + 30, y + 20)) {
+          context.lineWidth = 2;
+          context.strokeStyle = 'red';
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x + 30, y + 20);
+          context.stroke();
+          branch(x + 30, y + 20);
+        }
+      }, 1000);
+    }
   }
 
- 
+
 
   jQueryCodeDiffDrive = () => {
     function establishCanvas() {
@@ -357,7 +614,7 @@ class Canvas extends React.Component {
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
 
-   
+
     function concept() {
 
 
@@ -562,34 +819,34 @@ class Canvas extends React.Component {
 class LowerControlUI extends React.Component {
   constructor(props) {
     super(props);
-   
+
     this.toggleButton2 = this.toggleButton2.bind(this);
   }
-  
-  toggleButton2 () {
+
+  toggleButton2() {
     this.props.toggleButton2()
-     switch (this.props.jQuery) {
-         case 'Diff. Drive':
-           document.getElementById('LWR').value = '';
-           document.getElementById('RWR').value = '';
-           document.getElementById('DBW').value = '';
-           document.getElementById('LAV').value = '';
-           document.getElementById('RAV').value = '';
-           break;
-          case 'Bicycle':
-            document.getElementById('fRadius').value = '';
-            document.getElementById('DistFrontToBack').value = '';
-            document.getElementById('degree').value = '';
-            document.getElementById('AngularVelocity').value = '';
-            break;
-          case 'Tricycle':
-             document.getElementById('TfRadius').value = '';
-            document.getElementById('TDistFrontToBack').value = '';
-            document.getElementById('Tdegree').value = '';
-            document.getElementById('TAngularVelocity').value = '';
-             document.getElementById('DBBW').value = '';
-            break;
-       }
+    switch (this.props.jQuery) {
+      case 'Diff. Drive':
+        document.getElementById('LWR').value = '';
+        document.getElementById('RWR').value = '';
+        document.getElementById('DBW').value = '';
+        document.getElementById('LAV').value = '';
+        document.getElementById('RAV').value = '';
+        break;
+      case 'Bicycle':
+        document.getElementById('fRadius').value = '';
+        document.getElementById('DistFrontToBack').value = '';
+        document.getElementById('degree').value = '';
+        document.getElementById('AngularVelocity').value = '';
+        break;
+      case 'Tricycle':
+        document.getElementById('TfRadius').value = '';
+        document.getElementById('TDistFrontToBack').value = '';
+        document.getElementById('Tdegree').value = '';
+        document.getElementById('TAngularVelocity').value = '';
+        document.getElementById('DBBW').value = '';
+        break;
+    }
   }
   jQueryCode = () => {
     $('#play').click(function () {
@@ -613,7 +870,7 @@ class LowerControlUI extends React.Component {
         <button id="pause"><img width="40" height="25" src="data:image/png;base64,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"></img></button>
         <button id="step">1 Step</button>
         <button id="line"> Even Smaller Step</button>
-        <button id="resetAlgo" onClick = {this.toggleButton2}> Reset</button>
+        <button id="resetAlgo" onClick={this.toggleButton2}> Reset</button>
 
       </div>
     </div>)
@@ -635,7 +892,7 @@ class RightParameterUI extends React.Component {
     this.handleLeftAngularVelocityChange = this.handleLeftAngularVelocityChange.bind(this);
     this.handleRightAngularVelocityChange = this.handleRightAngularVelocityChange.bind(this);
   }
-    
+
   handleDistB2WChange(e) {
     if (e.target.value <= 10 || e.target.value > 50) {
     } else {
@@ -704,17 +961,17 @@ class RightParameterUI extends React.Component {
           <h5>Robot Properties</h5>
           <label for="fRadius">Left Wheel Radius (0 &#60; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="LWR" placeholder = '0' onChange={this.handleLeftWheelRadiusChange}></input>
+          <input type="number" id="LWR" placeholder='0' onChange={this.handleLeftWheelRadiusChange}></input>
           <br></br>
 
           <label for="fRadius">Right Wheel Radius (0 &#60; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="RWR" placeholder = '0' onChange={this.handleRightWheelRadiusChange}></input>
+          <input type="number" id="RWR" placeholder='0' onChange={this.handleRightWheelRadiusChange}></input>
           <br></br>
 
           <label for="fRadius">Distance Between Wheels (0 &#60; x &#8804; 10)</label>
           <br></br>
-          <input type="number" id="DBW" placeholder = '0' onChange={this.handleDistBetweenWheelsChange}></input>
+          <input type="number" id="DBW" placeholder='0' onChange={this.handleDistBetweenWheelsChange}></input>
           <br></br>
 
           <h5>Control Parameters</h5>
@@ -764,7 +1021,7 @@ class RightParameterUI extends React.Component {
           <h5>Robot Properties</h5>
           <label for="fRadius">Front Wheel Radius (0 &#60; x &#8804; 50)</label>
           <br></br>
-          <input type="number" id="TfRadius" placeholder = '0' onChange={this.handleFrontWheelRadiusChange}></input>
+          <input type="number" id="TfRadius" placeholder='0' onChange={this.handleFrontWheelRadiusChange}></input>
           <br></br>
 
           <label for="DistFrontToBack">Distance front to back (10 &#60; x &#8804; 100)</label>
@@ -791,8 +1048,8 @@ class RightParameterUI extends React.Component {
 
       //for some reason, switching between bicycle and one of the pathfinding algorithms causes an unforseen error because the jQueryCode is still checking for a parameter for some reason. This is a 
       //way to fix it for now, just render an input that will be overwritten
-    
-        
+
+
       case 'RET':
         return (<div id="rightParameterUI">
           <input type="number" id="degree" placeholder='0'></input>
