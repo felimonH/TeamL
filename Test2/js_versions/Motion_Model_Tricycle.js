@@ -11,7 +11,6 @@ class tricycles {
         this.theta = theta;
         this.L = L;
         this.time = 0;
-        this.t_step = 0.1;
     }
 
     forwardKinematics( omega, ICC, x, y, theta, t) {
@@ -47,7 +46,7 @@ class tricycles {
         
     }
     
-    main() {
+    main(t_step) {
         this.time += this.t_step;
         let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, t_step);
         [this.x, this.y, this.theta] = result;

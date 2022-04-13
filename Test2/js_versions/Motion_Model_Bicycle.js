@@ -9,7 +9,6 @@ class cycles {
         this.y = y;
         this.theta = theta;
         this.time = 0;
-        this.t_step = 0.1;
     }
 
     forwardKinematics(R, omega, ICC, x, y, theta, t) {
@@ -45,9 +44,9 @@ class cycles {
     
     }
     
-    main() {
-        this.time += this.t_step;
-        let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, this.t_step);
+    main(t_step) {
+        this.time += t_step;
+        let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, t_step);
         [this.x, this.y, this.theta] = result;
 
         console.log(result);

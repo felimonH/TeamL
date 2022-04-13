@@ -9,7 +9,6 @@ class diff {
         this.y = y;
         this.theta = theta;
         this.time = 0;
-        this.t_step = 0.1;
     }
 
     // motion of model when wheel speeds are different based in robotStep
@@ -51,11 +50,11 @@ class diff {
 
     }
     
-    main () {
+    main (t_step) {
         // total time that has passed
         this.time += this.t_step;
         // result in coordinates and theta (angle from horizantal)
-        let result = this.robotStep(this.r_l, this.r_r, this.L, this.u_l, this.u_r, this.x, this.y, this.theta, this.t_step);
+        let result = this.robotStep(this.r_l, this.r_r, this.L, this.u_l, this.u_r, this.x, this.y, this.theta, t_step);
         // update x, y, and theta
         [this.x, this.y, this.theta] = result;
     
