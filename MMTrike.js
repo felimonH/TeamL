@@ -70,7 +70,6 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
       angularVelocity = document.getElementById("angularVelocity").value;
       
       distBackTwoWheels = document.getElementById("distBetweenBackWheels").value;
-      alert(distBackTwoWheels)
       
       // convert to neg when greater than 180
       if (steeringAngle > 180) {

@@ -39,10 +39,15 @@ class tricycle {
             return this.straightMotion(-v, x, y, theta, t);
         }
         
+        if ( alpha < 0 ) {
+            v = -v;
+        }
+
         let R = d * Math.tan((Math.PI/2) - alpha);
         let omega = v/Math.sqrt(d**2 + R**2);
         let ICC = [x - R * Math.sin(theta), y + R * Math.cos(theta)];
-    
+        
+
         return this.forwardKinematics( omega, ICC, x, y, theta, t);
         
     }
