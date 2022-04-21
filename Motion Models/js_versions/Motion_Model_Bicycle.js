@@ -1,4 +1,4 @@
-class bicycles {
+class cycles {
 
     constructor(r, d, u, alpha, x, y, theta, L) {
         this.u = u;
@@ -49,10 +49,10 @@ class bicycles {
         this.time += this.t_step;
         let result = this.robotStep(this.r, this.d, this.u, this.alpha, this.x, this.y, this.theta, this.t_step);
         [this.x, this.y, this.theta] = result;
-
-        console.log(result);
+        
         return result;
     
     }
 
 }
+export default cycles;

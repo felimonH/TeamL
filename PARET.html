@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Interactive Robotics Education Tool</title>
+        
+        <!-- Bootstrap CSS File -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Bootstrap JS File -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <!-- CSS File -->
+        <link rel="stylesheet" type="text/css" href="test.css">
+    </head>
+    <body id = "root">
+        <script type = "module" src = "./PARET.js"></script>
+
+
+        <div id="naving">
+          <button onclick="window.location.href='PARET.html'">PARET</button>
+          <button onclick="window.location.href='MMBike.html'">MMBIKE</button>
+          <button onclick="window.location.href='PARET.html'">MMTRIKE</button>
+          <button onclick="window.location.href='PARET.html'">MMDD</button>
+        </div>
+
+        <div id="canvasSpace">
+
+        </div>
+
+        <div id="rightDrawingUI">
+          Drawing UI
+          <div>
+            <button id="clear">Click to clear all obstacles</button>
+            <br></br>
+            <button id="goal">Click to set goal</button>
+            <br></br>
+            <button id="start">Click to set start</button>
+          </div>
+        </div>
+        <div id="lowerControlUI">
+            Simulation Control
+            <div>
+              <button id="playRET"><img width="25" height="25" src="https://media.istockphoto.com/vectors/vector-play-button-icon-vector-id1066846868?k=20&m=1066846868&s=612x612&w=0&h=BikDjIPuOmb08aDFeDiEwDiKosX7EgnvtdQyLUvb3eA="></img></button>
+              <button id="pauseRET"> Pause</button>
+              <button id="stepRET">1 Step</button>
+              <button id="lineRET"> Even Smaller Step</button>
+              <button id="resetRET" >Reset</button>
+            </div>
+          </div>
+
+
+    </body>
+</html>

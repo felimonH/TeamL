@@ -1,17 +1,22 @@
 class tree  {
 
-    constructor () {
-        this.root;
-        this.nodes = [];
+    constructor (root) {
+        this.root = root;
+        this.nodes = [root];
     }
 
-    insert ( node ) {
+    insert ( node ) {    
+        //changed    
+        //nodes.push(node);
+        this.nodes.push(node);
+    }
 
-        if ( root == null ) {
-            this.root = node;
-        }
-        
-        nodes.push(node);
+    getNodeIndex( i ) {
+        return this.nodes[i];
+    }
+
+    getNodeArray() {
+        return this.nodes;
     }
 
 }
@@ -36,5 +41,12 @@ class node {
         return this.y;
     }
 
+    getPrev() {
+        return this.prev;
+    }
+
 
 }
+
+export {tree, node} 
+
