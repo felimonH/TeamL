@@ -1,4 +1,5 @@
 
+import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
     function establishCanvas() {
       var div = document.getElementById("canvasSpace");
       $("canvas").remove();
@@ -154,4 +155,5 @@
     }
 
     window.requestAnimationFrame(concept);
+    alert("working");
   

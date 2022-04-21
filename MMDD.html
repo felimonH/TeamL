@@ -16,7 +16,7 @@
         <link rel="stylesheet" type="text/css" href="test.css">
     </head>
     <body id = "root">
-      <script type = "module" src = "./MMBike.js"></script>
+      <script type = "module" src = "./MMDD.js"></script>
 
         <div id="naving">
           <button onclick="window.location.href='PARET.html'">PARET</button>
@@ -43,24 +43,24 @@
           <h4>Parameters</h4>
           <h5>Robot Properties</h5>
           <label for="leftWheelRadius">Left Wheel Radius (0 &#60; x &#8804; 10)</label>
-          <input type="number" id="leftWheelRadius" placeholder='0' onChange={this.handleLeftWheelRadiusChange}></input>
+          <input type="number" id="leftWheelRadius" placeholder='5' onChange={this.handleLeftWheelRadiusChange}></input>
          
   
           <label for="rightWheelRadius">Right Wheel Radius (0 &#60; x &#8804; 10)</label>
-          <input type="number" id="rightWheelRadius" placeholder='0' onChange={this.handleRightWheelRadiusChange}></input>
+          <input type="number" id="rightWheelRadius" placeholder='5' onChange={this.handleRightWheelRadiusChange}></input>
           
   
           <label for="distBetweenWheels">Distance Between Wheels (0 &#60; x &#8804; 10)</label>
-          <input type="number" id="distBetweenWheels" placeholder='0' onChange={this.handleDistBetweenWheelsChange}></input>
+          <input type="number" id="distBetweenWheels" placeholder='3' onChange={this.handleDistBetweenWheelsChange}></input>
           <br></br>
   
           <h5>Control Inputs</h5>
           <label for="leftAngularVelocity">Left Angular Velocity (0 &#8804; x &#8804; 10)</label>
-          <input type="number" id="leftAngularVelocity" placeholder='0' onChange={this.handleLeftAngularVelocityChange}></input>
+          <input type="number" id="leftAngularVelocity" placeholder='1' onChange={this.handleLeftAngularVelocityChange}></input>
         
   
           <label for="rightAngularVelocity">Right Angular Velocity (0 &#8804; x &#8804; 10)</label>
-          <input type="number" id="rightAngularVelocity" placeholder='0' onChange={this.handleRightAngularVelocityChange}></input>
+          <input type="number" id="rightAngularVelocity" placeholder='1' onChange={this.handleRightAngularVelocityChange}></input>
         </div>
 <footer></footer>
 
