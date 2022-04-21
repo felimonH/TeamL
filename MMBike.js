@@ -18,28 +18,26 @@ import cycles from '/Motion Models/js_versions/Motion_Model_Bicycle.js';
     var proceed = true;
     var reset = false;
     
-    //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
-    //Do: Use current JS code (other folder) to change poistion and redraw below 
-    //first take the remainder out of 360
-
+    
+//Declare variables changed per instance
     var steeringAngle = 0;
     var distFrontToBack = 0;
     var frontWheelRadius = 0;
     var angularVelocity = 0;
     var radians = 0;
-   
     var notUsedForBikeVariable = 0;
-    //save theta 
     
-    var theta = - Math.PI / 2;;
+    //Declare 
+    var theta = 0;
     var startX = canvas.width / 2;
     var startY = canvas.height / 4;
-   
     let bike = new cycles(frontWheelRadius, distFrontToBack, angularVelocity, radians, startX, startY, theta, notUsedForBikeVariable);;
 
     //Does: Flips canvas to correct orientation
     ctx.transform(1, 0, 0, -1, 0, canvas.height);
     ctx2.transform(1, 0, 0, -1, 0, canvas.height);
+
+
     initalize();
     function initalize() {
       
