@@ -46,7 +46,7 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
        distFrontToBack = 50;
        frontWheelRadius = 15;
        angularVelocity = 1;
-       distBackTwoWheels = 30;
+       distBackTwoWheels = 60;
        radians = 0;
     
   
@@ -69,7 +69,7 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
       frontWheelRadius = document.getElementById("frontWheelRadius").value;
       angularVelocity = document.getElementById("angularVelocity").value;
       
-      distBackTwoWheels = document.getElementById("distBetweenBackWheels").value /2;
+      distBackTwoWheels = document.getElementById("distBetweenBackWheels").value;
       
       // convert to neg when greater than 180
       if (steeringAngle > 180) {
@@ -127,11 +127,11 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
         theta = cPos[2];
 
         //front wheel
-        drawWheel(startX , startY-5, frontWheelRadius * 0.3, distFrontToBack / 3.5, steeringAngle, theta, distFrontToBack);
+        drawWheel(startX , startY, frontWheelRadius , distFrontToBack/ 4, steeringAngle, theta, distFrontToBack);
         //back left wheel
-        drawWheels(startX, startY, frontWheelRadius * 0.3, distFrontToBack / 4, steeringAngle, theta, -distBackTwoWheels / 3, distFrontToBack * -1);
+        drawWheels(startX, startY, frontWheelRadius, distFrontToBack / 4, steeringAngle, theta, -distBackTwoWheels / 3, distFrontToBack * -1);
         //back right wheel
-        drawWheels(startX, startY, frontWheelRadius * 0.3, distFrontToBack / 4, steeringAngle, theta, distBackTwoWheels / 3, distFrontToBack * -1);
+        drawWheels(startX, startY, frontWheelRadius , distFrontToBack / 4, steeringAngle, theta, distBackTwoWheels / 3, distFrontToBack * -1);
         drawBody(startX, startY, distFrontToBack, distFrontToBack / 4, theta);
         drawBackRectangle(startX, startY, distFrontToBack / 2, distBackTwoWheels, theta)
         drawTrail(startX, startY);
@@ -191,8 +191,9 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
         ctx.fill();
         ctx.restore();
       }
-
-      function drawWheel(x, y, height, width, steeringAngles, theta, offset) {
+// drawWheel(startX , startY, frontWheelRadius , distFrontToBack, steeringAngle, theta, distFrontToBack);
+      function drawWheel(x, y, length,thick, steeringAngles, theta, offset) {
+      
         // first save the untranslated/unrotated context
         ctx.save();
         ctx.beginPath();
@@ -203,7 +204,7 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
         ctx.translate(0 + offset / 2, 0 );
         ctx.rotate(steeringAngles * Math.PI / 180);
         // Note: after transforming [0,0] is visually [x,y] so the rect needs to be offset accordingly when drawn
-        ctx.rect(  -width / 2, -height / 2, height, width);
+        ctx.rect( -length / 2,-thick / 2,   length,thick );
         ctx.fillStyle = "red";
         ctx.fill();
         // restore the context to its untranslated/unrotated state
