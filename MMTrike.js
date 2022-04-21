@@ -13,36 +13,93 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
     var ctx = canvas.getContext("2d");
     var ctx2 = canvas2.getContext("2d");
     var proceed = true;
+    var reset = true;
     //Do: Establish vehicle frame and and wheel off of a single X and Y coordinate ("concept" function below)
     //Do: Use current JS code (other folder) to change poistion and redraw below 
     //first take the remainder out of 360
-    var steeringAngle = (this.props.steeringAngle % 360)
-    var distFrontToBack = this.props.distFrontToBack;
-    var frontWheelRadius = this.props.frontWheelRadius;
-    var angularVelocity = this.props.angularVelocity;
-    var distBackTwoWheels = (this.props.distBackTwoWheels / 2);
-    var radians = 0;
-    // convert to neg when greater than 180
-    if (steeringAngle > 180) {
-      steeringAngle = steeringAngle - 360;
-    }
-    radians = steeringAngle * Math.PI / 180;
 
+    //Changing variables
+    var steeringAngle = 0;
+    var distFrontToBack = 0;
+    var frontWheelRadius = 0;
+    var angularVelocity = 0;
+    var distBackTwoWheels = 0;
+    var radians = 0;
+    //var notUsedForTrikeVariable = 0;
+ 
+  
+    //positional variables
     var startX = canvas.width / 2;
     var startY = canvas.height / 4;
-    var trikeBodyAngle = 0;
-    var notUsedForTrikeVariable = 0;
+    var theta = 0;
+    let trike = new tricycle(frontWheelRadius, distFrontToBack, angularVelocity, radians, startX, startY, theta, distBackTwoWheels);
 
+    //Does: Flips canvas to correct orientation
+    ctx.transform(1, 0, 0, -1, 0, canvas.height);
+    ctx2.transform(1, 0, 0, -1, 0, canvas.height);
+
+
+    initalize();
+    function initalize() {
+      
+      steeringAngle = 0;
+       distFrontToBack = 50;
+       frontWheelRadius = 15;
+       angularVelocity = 1;
+       distBackTwoWheels = 30;
+       radians = 0;
+    
+  
+      startX = canvas.width / 2;
+      startY = canvas.height / 4;
+      theta = 0;
+      trike = new tricycle(frontWheelRadius, distFrontToBack, angularVelocity, radians, startX, startY, theta, distBackTwoWheels);
+
+      proceed = true;
+      reset = true;
+      window.requestAnimationFrame(concept);
+      //proceed = false;
+      
+    }
+    function update() {
+      steeringAngle = document.getElementById("steeringAngle").value % 360;
+      
+      distFrontToBack = document.getElementById("distFrontToBack").value;
+     
+      frontWheelRadius = document.getElementById("frontWheelRadius").value;
+      angularVelocity = document.getElementById("angularVelocity").value;
+      
+      distBackTwoWheels = document.getElementById("distBetweenBackWheels").value /2;
+      
+      // convert to neg when greater than 180
+      if (steeringAngle > 180) {
+      steeringAngle = steeringAngle - 360;
+      }
+     radians = steeringAngle * Math.PI / 180;
+
+     
+     trike = new tricycle(frontWheelRadius, distFrontToBack, angularVelocity, radians, startX, startY, theta, distBackTwoWheels);
+     
+    }
+    $('#updateMotionModel').click(function () {
+      update()
+    })
+    $('#resetMotionModel').click(function () {
+      ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      
+     
+      initalize();
+    })
     $('#playMotionModel').click(function () {
       proceed = true;
+
     })
     $('#pauseMotionModel').click(function () {
       proceed = false;
     })
-    const trike = new tricycle(frontWheelRadius, distFrontToBack, angularVelocity, radians, startX, startY, trikeBodyAngle, notUsedForTrikeVariable);
-    //Does: Flips canvas to correct orientation
-    ctx.transform(1, 0, 0, -1, 0, canvas.height);
-    ctx2.transform(1, 0, 0, -1, 0, canvas.height);
+
     function concept() {
       //Does: Sets Focul point to center of canvas
 
@@ -67,10 +124,10 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
         var cPos = trike.main();
         startX = cPos[0];
         startY = cPos[1];
-        var theta = cPos[2] - Math.PI / 2;
+        theta = cPos[2];
 
         //front wheel
-        drawWheel(startX - 5, startY, frontWheelRadius * 0.3, distFrontToBack / 3.5, steeringAngle, theta, distFrontToBack);
+        drawWheel(startX , startY-5, frontWheelRadius * 0.3, distFrontToBack / 3.5, steeringAngle, theta, distFrontToBack);
         //back left wheel
         drawWheels(startX, startY, frontWheelRadius * 0.3, distFrontToBack / 4, steeringAngle, theta, -distBackTwoWheels / 3, distFrontToBack * -1);
         //back right wheel
@@ -86,7 +143,7 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
         ctx.beginPath();
         ctx.translate(x, y);
         ctx.rotate(theta);
-        ctx.rect(bodyX, bodyY, distBackTwoWheels / 1.5, height / 4);
+        ctx.rect(bodyY, bodyX ,  height / 4,distBackTwoWheels / 1.5);
         ctx.fillStyle = "purple";
         ctx.fill();
         ctx.restore();
@@ -99,10 +156,11 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
         ctx.translate(x, y);
         ctx.rotate(theta);
         //Center is now  0, 0 + offset / 2, now offset for size of box 
-        ctx.translate(offset1, 0 + offset / 2);
+        ctx.translate( 0 + offset / 2, offset1);
         ctx.rotate(steeringAngles * Math.PI / 180);
         // Note: after transforming [0,0] is visually [x,y] so the rect needs to be offset accordingly when drawn
-        ctx.rect(-width / 2, -height / 2, width, height);
+        ctx.rect(  -width / 2, -height / 2, height, width);
+        
         ctx.fillStyle = "red";
         ctx.fill();
         // restore the context to its untranslated/unrotated state
@@ -121,13 +179,14 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
       }
 
       function drawBody(x, y, height, width, theta) {
-        var bodyX = -width / 2;
-        var bodyY = -height / 2;
+        var bodyX =-height / 2;
+         
+        var bodyY = -width / 2;
         ctx.save();
         ctx.beginPath();
         ctx.translate(x, y);
         ctx.rotate(theta);
-        ctx.rect(bodyX, bodyY, width, height);
+        ctx.rect(bodyX, bodyY,  height,width);
         ctx.fillStyle = "blue";
         ctx.fill();
         ctx.restore();
@@ -141,19 +200,24 @@ import tricycle from '/Motion Models/js_versions/Motion_Model_Tricycle.js';
         ctx.translate(x, y);
         ctx.rotate(theta);
         //Center is now  0, 0 + offset / 2, now offset for size of box 
-        ctx.translate(0, 0 + offset / 2);
+        ctx.translate(0 + offset / 2, 0 );
         ctx.rotate(steeringAngles * Math.PI / 180);
         // Note: after transforming [0,0] is visually [x,y] so the rect needs to be offset accordingly when drawn
-        ctx.rect(-width / 2, -height / 2, width, height);
+        ctx.rect(  -width / 2, -height / 2, height, width);
         ctx.fillStyle = "red";
         ctx.fill();
         // restore the context to its untranslated/unrotated state
         ctx.restore();
       }
-
+      if (reset) {
+        proceed = false;
+        reset = false;
+        return;
+        
+      }
       setTimeout(() => { window.requestAnimationFrame(concept); }, 1000 / 65);
     }
 
     window.requestAnimationFrame(concept);
-    alert("working");
+
   
